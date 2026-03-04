@@ -1,10 +1,16 @@
-# 🍔 Lieferspatz – Full-Stack Food Delivery Platform
+# 🍔 Lieferspatz – Scalable Food Delivery Platform
 
-Lieferspatz is a modern food delivery platform built with FastAPI, Python, and JavaScript, designed to simulate a real-world delivery ecosystem similar to Uber Eats / Lieferando.
+Lieferspatz is a **backend-focused food delivery platform** built with **FastAPI and Python**, inspired by systems like **Uber Eats and Lieferando**.
 
-The platform supports customers, restaurants, and administrators, including real-time order updates, authentication, wallet systems, vouchers, and order management.
+The project simulates a real-world delivery ecosystem supporting **customers, restaurants, and administrators** with features such as:
 
-This project demonstrates backend architecture, API design, authentication, database modeling, and real-time communication.
+- Real-time order updates via WebSockets
+- JWT-based authentication
+- Wallet and voucher payment systems
+- Restaurant order management
+- Admin monitoring tools
+
+This project demonstrates **modern backend architecture, API design, authentication systems, database modeling, and real-time communication**.
 
 ## 🚀 Features
 
@@ -37,6 +43,17 @@ This project demonstrates backend architecture, API design, authentication, data
 - System audit logs
 - Manage platform visibility
 
+## 🖥 Demo Screenshots
+
+### Customer Interface
+![Customer App](docs/customer-app.png)
+
+### Restaurant Dashboard
+![Restaurant Dashboard](docs/restaurant-dashboard.png)
+
+### Admin Dashboard
+![Admin Dashboard](docs/admin-dashboard.png)
+
 ## ⚡ Real-Time Order System
 
 The system uses WebSockets to deliver live updates:
@@ -45,6 +62,36 @@ The system uses WebSockets to deliver live updates:
 - Admin can monitor system activity
 
 This demonstrates event-driven architecture.
+
+## 🔍 Example API Request
+
+Create a new order:
+
+**POST** `/orders`
+
+Request body:
+
+```json
+{
+  "restaurant_id": 1,
+  "items": [
+    {
+      "menu_item_id": 4,
+      "quantity": 2
+    }
+  ]
+}
+```
+
+Response:
+
+```json
+{
+  "order_id": 101,
+  "status": "pending",
+  "total_price": 24.50
+}
+```
 
 ## 🧱 System Architecture
 
@@ -261,6 +308,16 @@ Planned improvements include:
 - Push notifications
 - Kubernetes deployment
 - Microservice architecture
+
+## 🏗 Design Principles
+
+The backend architecture follows several design principles:
+
+- **Modular Router Structure** – each domain is separated into its own router
+- **Service-Oriented Logic** – business logic separated from routing
+- **Scalable Database Design** – models structured for relational consistency
+- **Event-Driven Updates** – WebSockets for real-time order notifications
+- **Role-Based Access Control** – secure endpoints for different user roles
 
 ## 👨‍💻 Author
 

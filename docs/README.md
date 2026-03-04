@@ -1,0 +1,1 @@
+This directory stores demo screenshots referenced by `README.md`. Replace the placeholder images with high-resolution captures of the customer, restaurant, and admin interfaces to make the project look production ready.
