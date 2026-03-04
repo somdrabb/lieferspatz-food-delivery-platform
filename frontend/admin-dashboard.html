@@ -1,0 +1,3887 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://127.0.0.1:5500/frontend/admin-dashboard.html? -->
+<html lang="en-DE" suppresshydrationwarning="true" data-lt-installed="true" style="transition-property: none; margin-right: 0px;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lieferspatz — Admin Control Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+  <link href="./Lieferspatz — Admin Control Center_files/css2" rel="stylesheet">
+  <link rel="stylesheet" href="./Lieferspatz — Admin Control Center_files/all.min.css">
+  <style>
+    :root {
+      --bg: #ecf7f1;
+      --surface: #ffffff;
+      --surface-2: #f4fbf6;
+      --surface-3: #e4f3ea;
+      --border: rgba(16, 34, 28, 0.1);
+      --border-light: rgba(16, 34, 28, 0.06);
+      --brand: #2f9f6a;
+      --brand-dark: #227552;
+      --brand-soft: rgba(47, 159, 106, 0.12);
+      --highlight: #e9d70e;
+      --text: #082c22;
+      --muted: rgba(8, 44, 34, 0.7);
+      --danger: #dc2626;
+      --danger-dark: #b91c1c;
+      --success: #22c55e;
+      --warn: #f59e0b;
+      --shadow: 0 18px 40px rgba(15, 35, 27, 0.08);
+      --radius: 10px;
+      --transition: all 0.22s ease;
+      --max-width: min(1240px, 96vw);
+      font-family: "Manrope", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 48px 20px 80px;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .app {
+      width: var(--max-width);
+      display: grid;
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      display: grid;
+      gap: 20px;
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      border-color: rgba(47, 159, 106, 0.35);
+      box-shadow: 0 18px 34px rgba(17, 45, 33, 0.12);
+    }
+
+    .card--center {
+      max-width: 420px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .dashboard {
+      display: grid;
+      gap: 5px;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: minmax(320px, 360px) minmax(0, 1fr);
+      gap: 5px;
+      align-items: start;
+    }
+
+    .dashboard-grid__column {
+      display: grid;
+      gap: 5px;
+    }
+
+    .dashboard-grid__column--sidebar {
+      position: relative;
+    }
+
+    .card__header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .card__eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .card__subtitle {
+      margin: 4px 0 0;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.5;
+    }
+
+    .card__body {
+      display: grid;
+      gap: 20px;
+    }
+
+    .card__toggle {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface-2);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      height: 34px;
+      padding: 0 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .card__toggle:hover {
+      border-color: var(--brand);
+      color: var(--brand);
+    }
+
+    .card__toggle-icon {
+      transition: transform 0.2s ease;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .card__toggle-label {
+      line-height: 1;
+    }
+
+    .card.is-collapsed .card__body {
+      display: none;
+    }
+
+    .card.is-collapsed .card__toggle-icon {
+      transform: rotate(-90deg);
+    }
+
+    .hidden { display: none !important; }
+
+    h1, h2, h3 {
+      margin: 0;
+      font-weight: 700;
+      letter-spacing: 0.015em;
+    }
+
+    h1 { font-size: clamp(24px, 3vw, 32px); }
+    h2 { font-size: clamp(18px, 2vw, 24px); }
+    h3 { font-size: 18px; }
+
+    p { margin: 0; color: var(--muted); line-height: 1.5; }
+
+    label {
+      display: grid;
+      gap: 6px;
+      text-align: left;
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--border-light);
+      background: var(--surface-2);
+      color: var(--text);
+      padding: 11px 14px;
+      font-size: 14px;
+      transition: var(--transition);
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: rgba(47, 159, 106, 0.5);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(47, 159, 106, 0.18);
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--text);
+      background: var(--surface-3);
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .btn--primary { background: linear-gradient(135deg, var(--brand), #3cc782); color: #f8fafc; box-shadow: 0 12px 24px rgba(47, 159, 106, 0.24); }
+    .btn--primary:hover { background: linear-gradient(135deg, var(--brand-dark), #32b070); }
+
+    .btn--ghost { background: transparent; border: 1px solid var(--border); }
+    .btn--ghost:hover { border-color: rgba(47, 159, 106, 0.35); color: var(--brand-dark); }
+    .btn--danger { background: rgba(220, 38, 38, 0.12); color: var(--danger); border: 1px solid rgba(220, 38, 38, 0.18); }
+    .btn--danger:hover { background: rgba(220, 38, 38, 0.18); }
+
+    .btn--icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      padding: 0;
+      font-size: 18px;
+    }
+
+    .btn--wide {
+      padding-left: 22px;
+      padding-right: 22px;
+      min-height: 40px;
+    }
+
+    .create-btn-icon {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    form {
+      display: grid;
+      gap: 16px;
+      text-align: left;
+    }
+
+    .grid {
+      display: grid;
+      gap: 24px;
+    }
+
+    .grid--columns {
+      grid-template-columns: minmax(280px, 1fr) minmax(360px, 2fr);
+    }
+
+    .stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .toolbar input {
+      flex: 1;
+    }
+
+    .insights {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+
+    .insight {
+      background: var(--surface-2);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: grid;
+      gap: 4px;
+      min-height: 90px;
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .insight::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(47, 159, 106, 0.18), transparent 60%);
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .insight > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .insight:hover::after {
+      opacity: 1;
+    }
+
+    .insight__label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .insight__value {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--brand-dark);
+    }
+
+    .insight__hint {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .quick-actions {
+      display: grid;
+      gap: 16px;
+    }
+
+    .quick-actions__row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .quick-actions__row input {
+      flex: 1 1 140px;
+      min-width: 120px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 4px 10px;
+      background: rgba(47, 159, 106, 0.12);
+      font-size: 12px;
+      color: var(--brand-dark);
+    }
+
+    .badge--online { background: rgba(34, 197, 94, 0.14); color: #15803d; }
+    .badge--offline { background: rgba(239, 68, 68, 0.16); color: #b91c1c; }
+
+    .list {
+      display: grid;
+      gap: 12px;
+      max-height: 520px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .list::-webkit-scrollbar { width: 6px; }
+    .list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 999px; }
+
+    .voucher-list {
+      display: grid;
+      gap: 10px;
+      max-height: 260px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .voucher-item {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .voucher-item__action {
+      justify-self: start;
+      border: 1px solid var(--brand);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(37, 99, 235, 0.12);
+      color: var(--brand);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .voucher-item__action:hover {
+      background: rgba(37, 99, 235, 0.18);
+    }
+
+    .voucher-item__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .voucher-item__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .voucher-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .voucher-history {
+      display: grid;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .voucher-history__entry {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .voucher-history__empty {
+      font-style: italic;
+      color: rgba(15, 23, 42, 0.6);
+    }
+
+    .voucher-item.is-invalid {
+      border-color: rgba(239, 68, 68, 0.38);
+      background: rgba(239, 68, 68, 0.08);
+      opacity: 0.9;
+    }
+
+    .admin-order-list {
+      display: grid;
+      gap: 12px;
+    }
+    .admin-order-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface-2);
+      padding: 12px 14px;
+      display: grid;
+      gap: 8px;
+    }
+    .admin-order-card__header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: space-between;
+      align-items: flex-start;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .admin-order-card__title {
+      font-weight: 600;
+      color: var(--text);
+    }
+    .admin-order-card__badges {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .admin-order-card__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      background: rgba(148, 163, 184, 0.18);
+      color: var(--muted);
+    }
+    .admin-order-card__badge--status {
+      background: rgba(59, 130, 246, 0.2);
+      color: #60a5fa;
+    }
+    .admin-order-card__badge--paid {
+      background: rgba(34, 197, 94, 0.2);
+      color: #4ade80;
+    }
+    .admin-order-card__meta {
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .admin-order-card__items {
+      display: grid;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .admin-order-card__item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+    }
+    .admin-order-card__summary {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .admin-order-card__toggle {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 6px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      background: #fff;
+      transition: var(--transition);
+    }
+    .admin-order-card__toggle:hover { border-color: var(--brand); color: var(--brand); }
+
+    .admin-order-card__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .admin-order-card__actions .btn {
+      flex: 0 0 auto;
+    }
+
+
+    .list-item {
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 14px 16px;
+      background: var(--surface-2);
+      display: grid;
+      gap: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .list-item:hover {
+      border-color: rgba(47, 159, 106, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .list--compact {
+      gap: 8px;
+      max-height: 360px;
+    }
+
+    .list--compact .list-item {
+      padding: 10px 12px;
+    }
+
+    .list-item.is-selected {
+      border-color: rgba(47, 159, 106, 0.6);
+      background: rgba(47, 159, 106, 0.12);
+    }
+
+    .list-item h3 {
+      font-size: 15px;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .detail-section {
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 16px;
+      background: var(--surface-2);
+      display: grid;
+      gap: 12px;
+    }
+
+    .section-heading {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--brand-dark);
+    }
+
+    .section-heading i {
+      color: var(--brand);
+    }
+
+    .detail-section ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .detail-section li strong {
+      color: var(--text);
+    }
+
+    .pill {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: rgba(47, 159, 106, 0.14);
+      color: var(--brand-dark);
+    }
+
+    .avatar {
+      width: 68px;
+      height: 68px;
+      border-radius: 16px;
+      object-fit: cover;
+      border: 2px solid rgba(15, 23, 42, 0.08);
+      background: rgba(15, 23, 42, 0.04);
+    }
+
+    .detail-header {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .detail-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    #toasts {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      display: grid;
+      gap: 10px;
+      z-index: 40;
+    }
+
+    .toast {
+      border-radius: 12px;
+      padding: 12px 16px;
+      background: rgba(8, 36, 28, 0.9);
+      border: 1px solid rgba(255,255,255,0.16);
+      min-width: 220px;
+      color: var(--text);
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 4px;
+      font-size: 14px;
+    }
+
+    .toast--ok { border-left: 4px solid var(--success); }
+    .toast--err { border-left: 4px solid var(--danger); }
+    .toast small { color: var(--muted); font-size: 12px; }
+
+    .disclaimer {
+      font-size: 12px;
+      color: rgba(8, 44, 34, 0.55);
+      margin-top: -12px;
+    }
+
+    .inline {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .small-caps {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .timestamp {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 1200px) {
+      body { padding: 40px 16px 72px; }
+      .dashboard-grid { grid-template-columns: 1fr; }
+      .dashboard-grid__column--sidebar { order: 2; }
+    }
+
+    @media (max-width: 720px) {
+      body { padding: 32px 12px 56px; }
+      .card { padding: 20px; }
+      .toolbar { width: 100%; }
+      .toolbar input { flex: 1 1 100%; }
+      .insights { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+      .list { max-height: none; }
+    }
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      background: var(--surface-2);
+      padding: 10px 14px;
+      transition: var(--transition);
+    }
+
+    .input-wrapper input,
+    .input-wrapper textarea,
+    .input-wrapper select {
+      border: none;
+      background: transparent;
+      padding: 0;
+    }
+
+    .input-wrapper input:focus,
+    .input-wrapper textarea:focus,
+    .input-wrapper select:focus {
+      box-shadow: none;
+    }
+
+    .input-wrapper:focus-within {
+      border-color: rgba(47, 159, 106, 0.5);
+      box-shadow: 0 0 0 3px rgba(47, 159, 106, 0.18);
+    }
+
+    .input-wrapper i {
+      color: var(--brand-dark);
+      font-size: 15px;
+    }
+
+    .card__title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .highlight-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(244, 176, 0, 0.16);
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #8a6300;
+    }
+  </style>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+<style id="ReanimatedPredefinedWebAnimationsStyle"></style><style id="ReanimatedCustomWebAnimationsStyle"></style></head>
+<body>
+  <main class="app">
+    <section id="login-view" class="card card--center hidden">
+      <div class="stack" style="gap: 12px;">
+        <h1 class="card__title">
+          <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+          <span>Admin Control Center</span>
+        </h1>
+        <p>Sign in with your administrator credentials to manage restaurants and their owners in real time.</p>
+      </div>
+      <form id="form-login" autocomplete="off">
+        <label>
+          <span>Email</span>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+            <input id="login-email" type="email" placeholder="admin@example.com" required="">
+          </div>
+        </label>
+        <label>
+          <span>Password</span>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-lock" aria-hidden="true"></i>
+            <input id="login-password" type="password" placeholder="••••••••" required="">
+          </div>
+        </label>
+        <button class="btn btn--primary" type="submit" id="btn-login">Sign in</button>
+      </form>
+      <p class="disclaimer">Access limited to authorised administrators.</p>
+    </section>
+
+    <section id="dashboard-view" class="dashboard">
+      <header class="card">
+        <div class="card__header">
+          <div>
+            <div class="card__eyebrow">Lieferspatz Admin</div>
+            <h1 class="card__title">
+              <i class="fa-solid fa-gauge-high" aria-hidden="true"></i>
+              <span>Restaurant &amp; Owner Overview</span>
+            </h1>
+            <div class="highlight-pill">
+              <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+              <span>Live operations</span>
+            </div>
+            <div class="timestamp">Last refresh: <span id="last-refresh">22:47:18</span></div>
+          </div>
+          <div class="stack" style="gap: 10px; align-items: flex-end;">
+            <div class="inline muted">
+              <i class="fa-solid fa-user-tie" aria-hidden="true"></i>
+              <span>Logged in as <strong id="whoami">admin:admin34024742@gmail.com</strong></span>
+            </div>
+            <div class="toolbar">
+              <button class="btn btn--ghost" id="btn-refresh" type="button">
+                <i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i>
+                <span>Refresh</span>
+              </button>
+              <button class="btn btn--ghost" id="btn-toggle-auto" type="button">
+                <i class="fa-solid fa-circle-pause" aria-hidden="true"></i>
+                <span>Pause Auto-refresh</span>
+              </button>
+              <button class="btn btn--danger" id="btn-logout" type="button">
+                <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
+                <span>Sign out</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card__body">
+          <div class="insights">
+            <div class="insight">
+              <span class="insight__label">
+                <i class="fa-solid fa-store" aria-hidden="true"></i>
+                <span>Restaurants</span>
+              </span>
+              <span class="insight__value" id="metric-restaurants">12</span>
+              <span class="insight__hint">Total records</span>
+            </div>
+            <div class="insight">
+              <span class="insight__label">
+                <i class="fa-solid fa-wifi" aria-hidden="true"></i>
+                <span>Online now</span>
+              </span>
+              <span class="insight__value" id="metric-online">12</span>
+              <span class="insight__hint">Restaurants accepting orders</span>
+            </div>
+            <div class="insight">
+              <span class="insight__label">
+                <i class="fa-solid fa-ticket" aria-hidden="true"></i>
+                <span>Active vouchers</span>
+              </span>
+              <span class="insight__value" id="metric-vouchers">11 · 1628.40 €</span>
+              <span class="insight__hint">Balance remaining</span>
+            </div>
+            <div class="insight">
+              <span class="insight__label">
+                <i class="fa-solid fa-bell" aria-hidden="true"></i>
+                <span>Open orders</span>
+              </span>
+              <span class="insight__value" id="metric-orders">20</span>
+              <span class="insight__hint">Needs attention</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="dashboard-grid">
+        <div class="dashboard-grid__column dashboard-grid__column--sidebar">
+          <article class="card" id="pending-card">
+            <div class="card__header">
+              <div>
+                <div class="card__eyebrow">Approvals</div>
+                <h2 class="card__title">
+                  <i class="fa-solid fa-inbox" aria-hidden="true"></i>
+                  <span>Pending applications</span>
+                </h2>
+                <p class="card__subtitle">Review new restaurant sign-ups and approve them when ready.</p>
+              </div>
+              <span class="badge" id="pending-count">0</span>
+            </div>
+            <div class="card__body">
+              <div class="list" id="pending-list"><div class="muted">No pending applications.</div></div>
+            </div>
+          </article>
+          <article class="card collapsible" data-section="directory">
+            <div class="card__header">
+              <div>
+                <div class="card__eyebrow">Directory</div>
+                <h2 class="card__title">
+                  <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+                  <span>Restaurant directory</span>
+                </h2>
+                <p class="card__subtitle">Browse and search restaurants. Select a record to review or update its details.</p>
+              </div>
+              <button class="card__toggle" type="button" aria-expanded="true">
+                <span class="card__toggle-icon" aria-hidden="true">▾</span>
+                <span class="card__toggle-label">Collapse</span>
+              </button>
+            </div>
+            <div class="card__body">
+              <div class="toolbar">
+                <div class="input-wrapper" style="flex: 1 1 auto;">
+                  <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                  <input type="search" id="filter" placeholder="Filter by name, city or PLZ">
+                </div>
+                <button class="btn btn--icon" title="Clear filter" id="btn-clear-filter" type="button">
+                  <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                  <span class="sr-only">Clear filter</span>
+                </button>
+              </div>
+              <div class="list" id="restaurant-list"><div class="list-item is-selected">
+        <div class="meta-row" style="justify-content: space-between;">
+          <h3>BD Food</h3>
+          <span class="badge badge--online">
+            Online
+          </span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">ID RST-251020-TC3NQH</span>
+          <span class="pill">Created 09/10/2025, 19:14:40</span>
+          
+        </div>
+        <div class="meta-row">
+          <span>mercatorstrasse 166, Duisburg</span>
+          <span>PLZ 47051</span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">Menu 2</span>
+          <span class="pill">Hours 7</span>
+          <span class="pill">PLZ 7</span>
+        </div>
+      </div><div class="list-item">
+        <div class="meta-row" style="justify-content: space-between;">
+          <h3>Falafel Friends</h3>
+          <span class="badge badge--online">
+            Online
+          </span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">ID RST-251020-PKDTOP</span>
+          <span class="pill">Created 18/10/2025, 18:53:07</span>
+          
+        </div>
+        <div class="meta-row">
+          <span>Food St 5</span>
+          <span>PLZ 10405</span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">Menu 10</span>
+          <span class="pill">Hours 7</span>
+          <span class="pill">PLZ 2</span>
+        </div>
+      </div><div class="list-item">
+        <div class="meta-row" style="justify-content: space-between;">
+          <h3>Pasta Palace</h3>
+          <span class="badge badge--online">
+            Online
+          </span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">ID RST-251020-8PULAK</span>
+          <span class="pill">Created 18/10/2025, 18:53:06</span>
+          
+        </div>
+        <div class="meta-row">
+          <span>Food St 1</span>
+          <span>PLZ 10115</span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">Menu 10</span>
+          <span class="pill">Hours 7</span>
+          <span class="pill">PLZ 2</span>
+        </div>
+      </div><div class="list-item">
+        <div class="meta-row" style="justify-content: space-between;">
+          <h3>Pho Place</h3>
+          <span class="badge badge--online">
+            Online
+          </span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">ID RST-251020-GD0390</span>
+          <span class="pill">Created 18/10/2025, 18:53:08</span>
+          
+        </div>
+        <div class="meta-row">
+          <span>Food St 8</span>
+          <span>PLZ 10969</span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">Menu 10</span>
+          <span class="pill">Hours 7</span>
+          <span class="pill">PLZ 2</span>
+        </div>
+      </div><div class="list-item">
+        <div class="meta-row" style="justify-content: space-between;">
+          <h3>Pizza Piazza</h3>
+          <span class="badge badge--online">
+            Online
+          </span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">ID RST-251020-SV7NLP</span>
+          <span class="pill">Created 18/10/2025, 18:53:08</span>
+          
+        </div>
+        <div class="meta-row">
+          <span>Food St 10</span>
+          <span>PLZ 13353</span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">Menu 10</span>
+          <span class="pill">Hours 7</span>
+          <span class="pill">PLZ 2</span>
+        </div>
+      </div><div class="list-item">
+        <div class="meta-row" style="justify-content: space-between;">
+          <h3>Pizza1</h3>
+          <span class="badge badge--online">
+            Online
+          </span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">ID RST-251020-CV0B3I</span>
+          <span class="pill">Created 09/10/2025, 22:27:32</span>
+          
+        </div>
+        <div class="meta-row">
+          <span>mercatorstrasse 166</span>
+          <span>PLZ 47051</span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">Menu 1</span>
+          <span class="pill">Hours 7</span>
+          <span class="pill">PLZ 7</span>
+        </div>
+      </div><div class="list-item">
+        <div class="meta-row" style="justify-content: space-between;">
+          <h3>Pizza2</h3>
+          <span class="badge badge--online">
+            Online
+          </span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">ID RST-251020-509TKS</span>
+          <span class="pill">Created 09/10/2025, 22:29:39</span>
+          
+        </div>
+        <div class="meta-row">
+          <span>mercatorstrasse 166</span>
+          <span>PLZ 47051</span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">Menu 0</span>
+          <span class="pill">Hours 0</span>
+          <span class="pill">PLZ 0</span>
+        </div>
+      </div><div class="list-item">
+        <div class="meta-row" style="justify-content: space-between;">
+          <h3>Pizza3</h3>
+          <span class="badge badge--online">
+            Online
+          </span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">ID RST-251020-A29K5I</span>
+          <span class="pill">Created 09/10/2025, 22:30:25</span>
+          
+        </div>
+        <div class="meta-row">
+          <span>mercatorstrasse 166</span>
+          <span>PLZ 47051</span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">Menu 0</span>
+          <span class="pill">Hours 0</span>
+          <span class="pill">PLZ 0</span>
+        </div>
+      </div><div class="list-item">
+        <div class="meta-row" style="justify-content: space-between;">
+          <h3>Salad Studio</h3>
+          <span class="badge badge--online">
+            Online
+          </span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">ID RST-251020-3TVDYZ</span>
+          <span class="pill">Created 18/10/2025, 18:53:08</span>
+          
+        </div>
+        <div class="meta-row">
+          <span>Food St 9</span>
+          <span>PLZ 12045</span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">Menu 10</span>
+          <span class="pill">Hours 7</span>
+          <span class="pill">PLZ 2</span>
+        </div>
+      </div><div class="list-item">
+        <div class="meta-row" style="justify-content: space-between;">
+          <h3>Sushi Spot</h3>
+          <span class="badge badge--online">
+            Online
+          </span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">ID RST-251020-9RDLZJ</span>
+          <span class="pill">Created 18/10/2025, 18:53:07</span>
+          
+        </div>
+        <div class="meta-row">
+          <span>Food St 4</span>
+          <span>PLZ 10243</span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">Menu 10</span>
+          <span class="pill">Hours 7</span>
+          <span class="pill">PLZ 2</span>
+        </div>
+      </div><div class="list-item">
+        <div class="meta-row" style="justify-content: space-between;">
+          <h3>Taco Town</h3>
+          <span class="badge badge--online">
+            Online
+          </span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">ID RST-251020-N282DP</span>
+          <span class="pill">Created 18/10/2025, 18:53:08</span>
+          
+        </div>
+        <div class="meta-row">
+          <span>Food St 7</span>
+          <span>PLZ 10785</span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">Menu 10</span>
+          <span class="pill">Hours 7</span>
+          <span class="pill">PLZ 2</span>
+        </div>
+      </div><div class="list-item">
+        <div class="meta-row" style="justify-content: space-between;">
+          <h3>Waffle Works</h3>
+          <span class="badge badge--online">
+            Online
+          </span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">ID RST-251020-70V17Q</span>
+          <span class="pill">Created 18/10/2025, 18:53:07</span>
+          
+        </div>
+        <div class="meta-row">
+          <span>Food St 6</span>
+          <span>PLZ 10557</span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">Menu 10</span>
+          <span class="pill">Hours 7</span>
+          <span class="pill">PLZ 2</span>
+        </div>
+      </div></div>
+            </div>
+          </article>
+
+          <article class="card collapsible" data-section="voucher-create">
+            <div class="card__header">
+              <div>
+                <div class="card__eyebrow">Incentives</div>
+                <h2 class="card__title">
+                  <i class="fa-solid fa-ticket-simple" aria-hidden="true"></i>
+                  <span>Create voucher</span>
+                </h2>
+                <p class="card__subtitle">Generate a new voucher code for marketing campaigns or goodwill.</p>
+              </div>
+              <button class="card__toggle" type="button" aria-expanded="true">
+                <span class="card__toggle-icon" aria-hidden="true">▾</span>
+                <span class="card__toggle-label">Collapse</span>
+              </button>
+            </div>
+            <div class="card__body quick-actions">
+              <div class="quick-actions__row">
+                <div class="input-wrapper" style="flex: 1 1 100%;">
+                  <i class="fa-solid fa-tag" aria-hidden="true"></i>
+                  <input id="voucherCode" type="text" placeholder="e.g. SAVE-2025">
+                </div>
+                <button class="btn btn--ghost" id="btnGenCode" type="button">
+                  <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>
+                  <span>Generate</span>
+                </button>
+              </div>
+              <div class="quick-actions__row">
+                <div class="input-wrapper" style="flex: 1 1 100%;">
+                  <i class="fa-solid fa-euro-sign" aria-hidden="true"></i>
+                  <input id="voucherAmount" type="text" placeholder="Amount (€), e.g. 2,50">
+                </div>
+                <button class="btn btn--primary" id="btnCreateVoucher" type="button">
+                  <i class="fa-solid fa-circle-plus" aria-hidden="true"></i>
+                  <span>Create</span>
+                </button>
+              </div>
+              <small id="voucherMsg" class="muted"></small>
+            </div>
+          </article>
+
+          <article class="card collapsible" data-section="vouchers">
+            <div class="card__header">
+              <div>
+                <div class="card__eyebrow">Vouchers</div>
+                <h2 class="card__title">
+                  <i class="fa-solid fa-gift" aria-hidden="true"></i>
+                  <span>Existing vouchers</span>
+                </h2>
+                <p class="card__subtitle">Monitor balances and status. Reactivate codes when needed.</p>
+              </div>
+              <button class="card__toggle" type="button" aria-expanded="true">
+                <span class="card__toggle-icon" aria-hidden="true">▾</span>
+                <span class="card__toggle-label">Collapse</span>
+              </button>
+            </div>
+            <div class="card__body">
+              <div id="voucher-list" class="voucher-list"><h3 style="margin: 12px 0px 4px;">Active vouchers</h3><div class="voucher-item"><div class="voucher-item__head"><div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;"><strong>02XM-0JGL</strong></div><span class="badge badge--online">Active</span></div><div class="voucher-summary">Remaining <strong>500.00 €</strong> of 500.00 € · Used 0.00 €</div><div class="voucher-item__meta"><span class="pill">Created 20/10/2025, 17:40:42</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--danger"><i class="fa-solid fa-trash" aria-hidden="true"></i><span>Delete voucher</span></button></div><div class="voucher-history"><span class="voucher-history__empty">No redemptions yet.</span></div></div><div class="voucher-item"><div class="voucher-item__head"><div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;"><strong>02I1-08EP</strong></div><span class="badge badge--online">Active</span></div><div class="voucher-summary">Remaining <strong>956.34 €</strong> of 1000.00 € · Used 43.66 €</div><div class="voucher-item__meta"><span class="pill">Created 19/10/2025, 17:51:05</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--danger"><i class="fa-solid fa-trash" aria-hidden="true"></i><span>Delete voucher</span></button></div><div class="voucher-history"><div class="voucher-history__entry">
+              <span>ORD-251020-QX5QB8</span>
+              <span>43.66 € · 19/10/2025, 19:51:42</span>
+            </div></div></div><div class="voucher-item"><div class="voucher-item__head"><div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;"><strong>0CKX-0JZU</strong></div><span class="badge badge--online">Active</span></div><div class="voucher-summary">Remaining <strong>15.68 €</strong> of 100.00 € · Used 84.32 €</div><div class="voucher-item__meta"><span class="pill">Created 19/10/2025, 16:59:05</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--danger"><i class="fa-solid fa-trash" aria-hidden="true"></i><span>Delete voucher</span></button></div><div class="voucher-history"><div class="voucher-history__entry">
+              <span>ORD-251020-3CVH38</span>
+              <span>84.32 € · 19/10/2025, 18:59:53</span>
+            </div></div></div><div class="voucher-item"><div class="voucher-item__head"><div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;"><strong>0KJW-0MWK</strong></div><span class="badge badge--online">Active</span></div><div class="voucher-summary">Remaining <strong>36.69 €</strong> of 100.00 € · Used 63.31 €</div><div class="voucher-item__meta"><span class="pill">Created 19/10/2025, 16:32:59</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--danger"><i class="fa-solid fa-trash" aria-hidden="true"></i><span>Delete voucher</span></button></div><div class="voucher-history"><div class="voucher-history__entry">
+              <span>ORD-251020-G2A1ZA</span>
+              <span>63.31 € · 19/10/2025, 18:33:23</span>
+            </div></div></div><div class="voucher-item"><div class="voucher-item__head"><div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;"><strong>0CUL-0XZK</strong></div><span class="badge badge--online">Active</span></div><div class="voucher-summary">Remaining <strong>7.02 €</strong> of 50.00 € · Used 42.98 €</div><div class="voucher-item__meta"><span class="pill">Created 18/10/2025, 19:19:24</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--danger"><i class="fa-solid fa-trash" aria-hidden="true"></i><span>Delete voucher</span></button></div><div class="voucher-history"><div class="voucher-history__entry">
+              <span>ORD-251020-Y888CD</span>
+              <span>42.98 € · 18/10/2025, 21:19:53</span>
+            </div></div></div><div class="voucher-item"><div class="voucher-item__head"><div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;"><strong>07C4-09TM</strong></div><span class="badge badge--online">Active</span></div><div class="voucher-summary">Remaining <strong>22.00 €</strong> of 22.00 € · Used 0.00 €</div><div class="voucher-item__meta"><span class="pill">Created 18/10/2025, 19:18:03</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--danger"><i class="fa-solid fa-trash" aria-hidden="true"></i><span>Delete voucher</span></button></div><div class="voucher-history"><span class="voucher-history__empty">No redemptions yet.</span></div></div><div class="voucher-item"><div class="voucher-item__head"><div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;"><strong>0NO7-03MJ</strong></div><span class="badge badge--online">Active</span></div><div class="voucher-summary">Remaining <strong>20.67 €</strong> of 44.00 € · Used 23.33 €</div><div class="voucher-item__meta"><span class="pill">Created 18/10/2025, 17:18:13</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--danger"><i class="fa-solid fa-trash" aria-hidden="true"></i><span>Delete voucher</span></button></div><div class="voucher-history"><div class="voucher-history__entry">
+              <span>ORD-251020-NP4XK9</span>
+              <span>23.33 € · 18/10/2025, 21:00:14</span>
+            </div></div></div><div class="voucher-item"><div class="voucher-item__head"><div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;"><strong>0VUE-00PI</strong></div><span class="badge badge--online">Active</span></div><div class="voucher-summary">Remaining <strong>30.00 €</strong> of 30.00 € · Used 0.00 €</div><div class="voucher-item__meta"><span class="pill">Created 18/10/2025, 17:13:10</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--danger"><i class="fa-solid fa-trash" aria-hidden="true"></i><span>Delete voucher</span></button></div><div class="voucher-history"><span class="voucher-history__empty">No redemptions yet.</span></div></div><div class="voucher-item"><div class="voucher-item__head"><div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;"><strong>09Y8-0OIA</strong></div><span class="badge badge--online">Active</span></div><div class="voucher-summary">Remaining <strong>20.00 €</strong> of 20.00 € · Used 0.00 €</div><div class="voucher-item__meta"><span class="pill">Created 18/10/2025, 17:06:55</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--danger"><i class="fa-solid fa-trash" aria-hidden="true"></i><span>Delete voucher</span></button></div><div class="voucher-history"><span class="voucher-history__empty">No redemptions yet.</span></div></div><div class="voucher-item"><div class="voucher-item__head"><div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;"><strong>LOYAL15</strong><span class="muted">Loyal customer credit</span></div><span class="badge badge--online">Active</span></div><div class="voucher-summary">Remaining <strong>15.00 €</strong> of 15.00 € · Used 0.00 €</div><div class="voucher-item__meta"><span class="pill">Created 18/10/2025, 16:54:28</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--danger"><i class="fa-solid fa-trash" aria-hidden="true"></i><span>Delete voucher</span></button></div><div class="voucher-history"><span class="voucher-history__empty">No redemptions yet.</span></div></div><div class="voucher-item"><div class="voucher-item__head"><div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;"><strong>FREESHIP</strong><span class="muted">Free delivery credit</span></div><span class="badge badge--online">Active</span></div><div class="voucher-summary">Remaining <strong>5.00 €</strong> of 5.00 € · Used 0.00 €</div><div class="voucher-item__meta"><span class="pill">Created 18/10/2025, 16:54:28</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--danger"><i class="fa-solid fa-trash" aria-hidden="true"></i><span>Delete voucher</span></button></div><div class="voucher-history"><span class="voucher-history__empty">No redemptions yet.</span></div></div></div>
+            </div>
+          </article>
+
+          <article class="card collapsible is-collapsed" data-section="deleted-restaurants">
+            <div class="card__header">
+              <div>
+                <div class="card__eyebrow">Archive</div>
+                <h2 class="card__title">
+                  <i class="fa-solid fa-box-archive" aria-hidden="true"></i>
+                  <span>Deleted restaurants</span>
+                </h2>
+                <p class="card__subtitle">Recently removed partners kept for audit purposes.</p>
+              </div>
+              <button class="card__toggle" type="button" aria-expanded="false">
+                <span class="card__toggle-icon" aria-hidden="true">▾</span>
+                <span class="card__toggle-label">Expand</span>
+              </button>
+            </div>
+            <div class="card__body" style="display: grid; gap: 12px;">
+              <div class="toolbar">
+                <div class="input-wrapper" style="flex: 1 1 auto;">
+                  <i class="fa-solid fa-archive" aria-hidden="true"></i>
+                  <input type="search" id="deleted-filter" placeholder="Search archived ID or name">
+                </div>
+                <button class="btn btn--ghost" type="button" id="btn-deleted-search">
+                  <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                  <span>Search</span>
+                </button>
+                <button class="btn btn--danger" type="button" id="btn-deleted-clear">
+                  <i class="fa-solid fa-eraser" aria-hidden="true"></i>
+                  <span>Clear</span>
+                </button>
+              </div>
+              <div id="deleted-restaurants" class="list list--compact"><div class="muted">No archived restaurants.</div></div>
+            </div>
+          </article>
+        </div>
+
+        <div class="dashboard-grid__column dashboard-grid__column--main">
+          <article class="card collapsible is-collapsed" id="detail-card" data-section="details">
+            <div class="card__header">
+              <div class="detail-header">
+                <img id="detail-image" class="avatar" alt="Restaurant logo" src="./Lieferspatz — Admin Control Center_files/baggio-pizzaria-moema.jpg">
+                <div class="stack" style="gap: 6px;">
+                  <h2 class="card__title">
+                    <i class="fa-solid fa-utensils" aria-hidden="true"></i>
+                    <span id="detail-name">BD Food</span>
+                  </h2>
+                  <div class="meta-row" id="detail-meta">
+      <span class="pill">ID RST-251020-TC3NQH</span>
+      <span>mercatorstrasse 166, Duisburg</span>
+      <span>PLZ 47051</span>
+      <span>Online</span>
+      <span>2 menu items</span>
+    </div>
+                </div>
+              </div>
+              <button class="card__toggle" type="button" aria-expanded="false">
+                <span class="card__toggle-icon" aria-hidden="true">▾</span>
+                <span class="card__toggle-label">Expand</span>
+              </button>
+            </div>
+            <div class="card__body">
+              <form id="form-edit">
+                <div class="detail-grid">
+                  <label>
+                    <span>Name</span>
+                    <input id="edit-name" type="text" required="">
+                  </label>
+                  <label>
+                    <span>Login email</span>
+                    <input id="edit-email" type="email" placeholder="owner@example.com">
+                  </label>
+                  <label>
+                    <span>Street</span>
+                    <input id="edit-street" type="text" required="">
+                  </label>
+                  <label>
+                    <span>City</span>
+                    <input id="edit-city" type="text">
+                  </label>
+                  <label>
+                    <span>Postal code</span>
+                    <input id="edit-postal" type="text" pattern="\d{5}" required="">
+                  </label>
+                  <label>
+                    <span>Min. order (€)</span>
+                    <input id="edit-min-order" type="number" min="0" step="0.01">
+                  </label>
+                  <label>
+                    <span>Delivery fee (€)</span>
+                    <input id="edit-delivery-fee" type="number" min="0" step="0.01">
+                  </label>
+                  <label>
+                    <span>Prep time (min)</span>
+                    <input id="edit-prep-time" type="number" min="0" step="1">
+                  </label>
+                  <label>
+                    <span>Busy until (ISO)</span>
+                    <input id="edit-busy-until" type="text" placeholder="2025-09-14T20:00:00Z">
+                  </label>
+                  <label>
+                    <span>Image URL</span>
+                    <input id="edit-image" type="url" placeholder="https://">
+                  </label>
+                </div>
+
+                <label>
+                  <span>Description</span>
+                  <textarea id="edit-description" rows="3"></textarea>
+                </label>
+
+                <div class="detail-grid">
+                  <label>
+                    <span>Owner name</span>
+                    <input id="edit-owner-name" type="text">
+                  </label>
+                  <label>
+                    <span>Owner email</span>
+                    <input id="edit-owner-email" type="email">
+                  </label>
+                  <label>
+                    <span>Owner phone</span>
+                    <input id="edit-owner-phone" type="tel">
+                  </label>
+                  <label>
+                    <span>Internal notes</span>
+                    <input id="edit-notes" type="text" placeholder="Visible to admin only">
+                  </label>
+                </div>
+
+                <div class="detail-grid">
+                  <label>
+                    <span>Delivery PLZ (comma separated)</span>
+                    <input id="edit-delivery-zips" type="text" placeholder="10115, 10117, 10119">
+                  </label>
+                  <label>
+                    <span>Opening hours (weekday 0-6 HH:MM HH:MM per line, use 24:00 for midnight)</span>
+                    <textarea id="edit-hours" rows="4" placeholder="0 11:00 22:00
+5 17:00 01:00"></textarea>
+                  </label>
+                  <label>
+                    <span>New password (optional)</span>
+                    <input id="edit-password" type="text" placeholder="Leave blank to keep current">
+                  </label>
+                  <div class="stack" style="gap: 10px;">
+                    <label class="inline">
+                      <input id="edit-online" type="checkbox">
+                      <span>Restaurant is online</span>
+                    </label>
+                    <label class="inline">
+                      <input id="edit-demo" type="checkbox">
+                      <span>Demo restaurant</span>
+                    </label>
+                    <label class="inline">
+                      <input id="edit-approved" type="checkbox">
+                      <span>Approved (owner can log in)</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="detail-actions">
+                  <div class="stack" style="gap: 6px;">
+                    <div class="muted">Changes are saved instantly; editors see updates immediately.</div>
+                    <div class="muted" id="detail-status">No busy status</div>
+                  </div>
+                  <div class="toolbar">
+                    <button class="btn btn--ghost" type="button" id="btn-impersonate">
+                      <i class="fa-solid fa-up-right-from-square" aria-hidden="true"></i>
+                      <span>Open owner dashboard</span>
+                    </button>
+                    <button class="btn btn--danger" type="button" id="btn-delete">
+                      <i class="fa-solid fa-trash" aria-hidden="true"></i>
+                      <span>Delete</span>
+                    </button>
+                    <button class="btn btn--primary" type="submit" id="btn-save">
+                      <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i>
+                      <span>Save changes</span>
+                    </button>
+                  </div>
+                </div>
+              </form>
+
+              <div class="detail-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+                <section class="detail-section">
+                  <h3 class="section-heading">
+                    <i class="fa-solid fa-clipboard-list" aria-hidden="true"></i>
+                    <span>Menu items</span>
+                  </h3>
+                  <ul id="detail-menu"><li><strong>Pakisthani Biriyani</strong> — 19.99 €</li><li><strong>Pizza Brokolie</strong> — 20.33 €</li></ul>
+                </section>
+                <section class="detail-section">
+                  <h3 class="section-heading">
+                    <i class="fa-solid fa-clock" aria-hidden="true"></i>
+                    <span>Opening hours</span>
+                  </h3>
+                  <ul id="detail-hours"><li>Mon: 00:00 – 24:00</li><li>Tue: 00:00 – 24:00</li><li>Wed: 00:00 – 24:00</li><li>Thu: 00:00 – 24:00</li><li>Fri: 00:00 – 24:00</li><li>Sat: 00:00 – 24:00</li><li>Sun: 00:00 – 24:00</li></ul>
+                </section>
+                <section class="detail-section">
+                  <h3 class="section-heading">
+                    <i class="fa-solid fa-route" aria-hidden="true"></i>
+                    <span>Delivery PLZ</span>
+                  </h3>
+                  <div id="detail-zips" class="chips"><span class="pill">47051</span><span class="pill">47052</span><span class="pill">47053</span><span class="pill">47054</span><span class="pill">47055</span><span class="pill">47056</span><span class="pill">47057</span></div>
+                </section>
+              </div>
+            </div>
+          </article>
+
+          <article class="card" id="create-card">
+            <div class="card__header">
+              <div>
+                <div class="card__eyebrow">Provisioning</div>
+                <h2 class="card__title">
+                  <i class="fa-solid fa-user-plus" aria-hidden="true"></i>
+                  <span>Create restaurant owner</span>
+                </h2>
+                <p class="card__subtitle">Onboard a new partner restaurant and provide credentials immediately.</p>
+              </div>
+              <button class="btn btn--primary btn--wide" type="button" id="btn-create-toggle" aria-expanded="false">
+                <span class="create-btn-icon" aria-hidden="true">＋</span>
+                <span class="create-btn-text">Create restaurant</span>
+              </button>
+            </div>
+            <div class="card__body hidden" id="create-form-wrap">
+              <form id="form-create">
+                <div class="detail-grid">
+                  <label>
+                    <span>Name</span>
+                    <input id="create-name" type="text" required="">
+                  </label>
+                  <label>
+                    <span>Login email</span>
+                    <input id="create-login-email" type="email" required="">
+                  </label>
+                  <label>
+                    <span>Street</span>
+                    <input id="create-street" type="text" required="">
+                  </label>
+                  <label>
+                    <span>City</span>
+                    <input id="create-city" type="text">
+                  </label>
+                  <label>
+                    <span>Postal code</span>
+                    <input id="create-postal" type="text" pattern="\d{5}" required="">
+                  </label>
+                </div>
+                <label>
+                  <span>Description</span>
+                  <textarea id="create-description" rows="3" required=""></textarea>
+                </label>
+                <div class="detail-grid">
+                  <label>
+                    <span>Password</span>
+                    <input id="create-password" type="text" minlength="4" required="">
+                  </label>
+                  <label>
+                    <span>Image URL</span>
+                    <input id="create-image" type="url" placeholder="https://">
+                  </label>
+                  <label>
+                    <span>Min. order (€)</span>
+                    <input id="create-min-order" type="number" min="0" step="0.01" value="0">
+                  </label>
+                  <label>
+                    <span>Delivery fee (€)</span>
+                    <input id="create-delivery-fee" type="number" min="0" step="0.01" value="0">
+                  </label>
+                </div>
+                <div class="detail-grid">
+                  <label>
+                    <span>Opening hours (weekday 0-6 HH:MM HH:MM per line, use 24:00 for midnight)</span>
+                    <textarea id="create-hours" rows="3" placeholder="0 11:00 22:00"></textarea>
+                  </label>
+                  <label>
+                    <span>Delivery PLZ (comma separated)</span>
+                    <input id="create-zips" type="text">
+                  </label>
+                  <label>
+                    <span>Owner email</span>
+                    <input id="create-owner-email" type="email">
+                  </label>
+                  <label>
+                    <span>Owner phone</span>
+                    <input id="create-owner-phone" type="tel">
+                  </label>
+                </div>
+                <label>
+                  <span>Internal notes</span>
+                  <input id="create-notes" type="text">
+                </label>
+                <div class="stack" style="gap: 10px;">
+                  <label class="inline">
+                    <input id="create-approved" type="checkbox" checked>
+                    <span>Approved immediately</span>
+                  </label>
+                </div>
+                <div class="toolbar" style="justify-content: flex-end;">
+                  <button class="btn btn--primary" type="submit" id="btn-create">
+                    <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                    <span>Create restaurant</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </article>
+
+          <article class="card collapsible is-collapsed" data-section="orders">
+            <div class="card__header">
+              <div>
+                <div class="card__eyebrow">Operations</div>
+                <h2 class="card__title">
+                  <i class="fa-solid fa-receipt" aria-hidden="true"></i>
+                  <span>Recent orders</span>
+                </h2>
+                <p class="card__subtitle">Latest customer checkouts with amount, payment, and fulfilment status.</p>
+              </div>
+              <button class="card__toggle" type="button" aria-expanded="false">
+                <span class="card__toggle-icon" aria-hidden="true">▾</span>
+                <span class="card__toggle-label">Expand</span>
+              </button>
+            </div>
+            <div class="card__body">
+              <div class="toolbar" style="gap: 8px;">
+                <div class="input-wrapper" style="flex: 1 1 auto;">
+                  <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                  <input type="search" id="order-search" placeholder="Search order or restaurant id">
+                </div>
+                <button class="btn btn--ghost" type="button" id="btn-refresh-orders">
+                  <i class="fa-solid fa-sync" aria-hidden="true"></i>
+                  <span>Refresh orders</span>
+                </button>
+              </div>
+              <div id="admin-orders" class="admin-order-list"><div class="admin-order-card"><div class="admin-order-card__header"><div class="admin-order-card__title">Order ORD-251020-QX5QB8</div><div class="admin-order-card__badges"><span class="admin-order-card__badge admin-order-card__badge--status">in_zubereitung</span><span class="admin-order-card__badge admin-order-card__badge--paid">Payment: paid</span></div></div><div class="admin-order-card__meta"><span>Placed 19/10/2025, 19:51:42</span><span>Restaurant RST-251020-TC3NQH</span><span>Customer 10</span><span>0.00 €</span><span>Voucher 02I1-08EP</span></div><div class="admin-order-card__actions"><button type="button" class="btn btn--ghost">Pause</button><button type="button" class="btn btn--ghost">Complete</button><button type="button" class="btn btn--ghost">Remove from admin</button><button type="button" class="btn btn--danger">Purge for users</button></div><button class="admin-order-card__toggle" type="button">Show details</button><div class="admin-order-card__items" hidden=""><div class="admin-order-card__item"><span>2 × Pizza Brokolie</span><span class="mono">40.66 €</span></div><div class="admin-order-card__summary">Subtotal 40.66 € · Delivery 3.00 € · Voucher -43.66 € (02I1-08EP) · Total 0.00 €</div></div></div><div class="admin-order-card"><div class="admin-order-card__header"><div class="admin-order-card__title">Order ORD-251020-3CVH38</div><div class="admin-order-card__badges"><span class="admin-order-card__badge admin-order-card__badge--status">in_zubereitung</span><span class="admin-order-card__badge admin-order-card__badge--paid">Payment: paid</span></div></div><div class="admin-order-card__meta"><span>Placed 19/10/2025, 18:59:53</span><span>Restaurant RST-251020-TC3NQH</span><span>Customer 10</span><span>0.00 €</span><span>Voucher 0CKX-0JZU</span></div><div class="admin-order-card__actions"><button type="button" class="btn btn--ghost">Pause</button><button type="button" class="btn btn--ghost">Complete</button><button type="button" class="btn btn--ghost">Remove from admin</button><button type="button" class="btn btn--danger">Purge for users</button></div><button class="admin-order-card__toggle" type="button">Show details</button><div class="admin-order-card__items" hidden=""><div class="admin-order-card__item"><span>4 × Pizza Brokolie</span><span class="mono">81.32 €</span></div><div class="admin-order-card__summary">Subtotal 81.32 € · Delivery 3.00 € · Voucher -84.32 € (0CKX-0JZU) · Total 0.00 €</div></div></div><div class="admin-order-card"><div class="admin-order-card__header"><div class="admin-order-card__title">Order ORD-251020-G2A1ZA</div><div class="admin-order-card__badges"><span class="admin-order-card__badge admin-order-card__badge--status">abgeschlossen</span><span class="admin-order-card__badge admin-order-card__badge--paid">Payment: paid</span></div></div><div class="admin-order-card__meta"><span>Placed 19/10/2025, 18:33:23</span><span>Restaurant RST-251020-TC3NQH</span><span>Customer 10</span><span>0.00 €</span><span>Voucher 0KJW-0MWK</span></div><div class="admin-order-card__actions"><button type="button" class="btn btn--ghost" disabled="">Pause</button><button type="button" class="btn btn--ghost" disabled="">Complete</button><button type="button" class="btn btn--ghost">Remove from admin</button><button type="button" class="btn btn--danger">Purge for users</button></div><button class="admin-order-card__toggle" type="button">Show details</button><div class="admin-order-card__items" hidden=""><div class="admin-order-card__item"><span>2 × Pakisthani Biriyani</span><span class="mono">39.98 €</span></div><div class="admin-order-card__item"><span>1 × Pizza Brokolie</span><span class="mono">20.33 €</span></div><div class="admin-order-card__summary">Subtotal 60.31 € · Delivery 3.00 € · Voucher -63.31 € (0KJW-0MWK) · Total 0.00 €</div></div></div><div class="admin-order-card"><div class="admin-order-card__header"><div class="admin-order-card__title">Order ORD-251020-NP4XK9</div><div class="admin-order-card__badges"><span class="admin-order-card__badge admin-order-card__badge--status">storniert</span><span class="admin-order-card__badge admin-order-card__badge--paid">Payment: paid</span></div></div><div class="admin-order-card__meta"><span>Placed 18/10/2025, 21:00:14</span><span>Restaurant RST-251020-TC3NQH</span><span>Customer 10</span><span>0.00 €</span><span>Voucher 0NO7-03MJ</span></div><div class="admin-order-card__actions"><button type="button" class="btn btn--ghost" disabled="">Pause</button><button type="button" class="btn btn--ghost" disabled="">Complete</button><button type="button" class="btn btn--ghost">Remove from admin</button><button type="button" class="btn btn--danger">Purge for users</button></div><button class="admin-order-card__toggle" type="button">Show details</button><div class="admin-order-card__items" hidden=""><div class="admin-order-card__item"><span>1 × Pizza Brokolie</span><span class="mono">20.33 €</span></div><div class="admin-order-card__summary">Subtotal 20.33 € · Delivery 3.00 € · Voucher -23.33 € (0NO7-03MJ) · Total 0.00 €</div></div></div><div class="admin-order-card"><div class="admin-order-card__header"><div class="admin-order-card__title">Order ORD-251020-51ZF3F</div><div class="admin-order-card__badges"><span class="admin-order-card__badge admin-order-card__badge--status">abgeschlossen</span><span class="admin-order-card__badge admin-order-card__badge--paid">Payment: pending</span></div></div><div class="admin-order-card__meta"><span>Placed 18/10/2025, 18:58:01</span><span>Restaurant RST-251020-8PULAK</span><span>Customer 5</span><span>40.60 €</span></div><div class="admin-order-card__actions"><button type="button" class="btn btn--ghost" disabled="">Pause</button><button type="button" class="btn btn--ghost" disabled="">Complete</button><button type="button" class="btn btn--ghost">Remove from admin</button><button type="button" class="btn btn--danger">Purge for users</button></div><button class="admin-order-card__toggle" type="button">Show details</button><div class="admin-order-card__items" hidden=""><div class="admin-order-card__item"><span>1 × Margherita</span><span class="mono">8.90 €</span></div><div class="admin-order-card__item"><span>2 × Funghi</span><span class="mono">19.80 €</span></div><div class="admin-order-card__item"><span>1 × Carbonara</span><span class="mono">11.90 €</span></div><div class="admin-order-card__summary">Subtotal 40.60 € · Delivery 0.00 € · Voucher 0.00 € · Total 40.60 €</div></div></div><div class="admin-order-card"><div class="admin-order-card__header"><div class="admin-order-card__title">Order ORD-251020-XFISOH</div><div class="admin-order-card__badges"><span class="admin-order-card__badge admin-order-card__badge--status">abgeschlossen</span><span class="admin-order-card__badge admin-order-card__badge--paid">Payment: pending</span></div></div><div class="admin-order-card__meta"><span>Placed 18/10/2025, 18:58:01</span><span>Restaurant RST-251020-8PULAK</span><span>Customer 5</span><span>39.60 €</span></div><div class="admin-order-card__actions"><button type="button" class="btn btn--ghost" disabled="">Pause</button><button type="button" class="btn btn--ghost" disabled="">Complete</button><button type="button" class="btn btn--ghost">Remove from admin</button><button type="button" class="btn btn--danger">Purge for users</button></div><button class="admin-order-card__toggle" type="button">Show details</button><div class="admin-order-card__items" hidden=""><div class="admin-order-card__item"><span>2 × Margherita</span><span class="mono">17.80 €</span></div><div class="admin-order-card__item"><span>1 × Funghi</span><span class="mono">9.90 €</span></div><div class="admin-order-card__item"><span>1 × Carbonara</span><span class="mono">11.90 €</span></div><div class="admin-order-card__summary">Subtotal 39.60 € · Delivery 0.00 € · Voucher 0.00 € · Total 39.60 €</div></div></div><div class="admin-order-card"><div class="admin-order-card__header"><div class="admin-order-card__title">Order ORD-251020-549Y0U</div><div class="admin-order-card__badges"><span class="admin-order-card__badge admin-order-card__badge--status">abgeschlossen</span><span class="admin-order-card__badge admin-order-card__badge--paid">Payment: paid</span></div></div><div class="admin-order-card__meta"><span>Placed 18/10/2025, 18:58:01</span><span>Restaurant RST-251020-GD0390</span><span>Customer 6</span><span>30.70 €</span></div><div class="admin-order-card__actions"><button type="button" class="btn btn--ghost" disabled="">Pause</button><button type="button" class="btn btn--ghost" disabled="">Complete</button><button type="button" class="btn btn--ghost">Remove from admin</button><button type="button" class="btn btn--danger">Purge for users</button></div><button class="admin-order-card__toggle" type="button">Show details</button><div class="admin-order-card__items" hidden=""><div class="admin-order-card__item"><span>1 × Margherita</span><span class="mono">8.90 €</span></div><div class="admin-order-card__item"><span>1 × Funghi</span><span class="mono">9.90 €</span></div><div class="admin-order-card__item"><span>1 × Carbonara</span><span class="mono">11.90 €</span></div><div class="admin-order-card__summary">Subtotal 30.70 € · Delivery 0.00 € · Voucher 0.00 € · Total 30.70 €</div></div></div><div class="admin-order-card"><div class="admin-order-card__header"><div class="admin-order-card__title">Order ORD-251020-FRDRDE</div><div class="admin-order-card__badges"><span class="admin-order-card__badge admin-order-card__badge--status">abgeschlossen</span><span class="admin-order-card__badge admin-order-card__badge--paid">Payment: paid</span></div></div><div class="admin-order-card__meta"><span>Placed 18/10/2025, 18:58:01</span><span>Restaurant RST-251020-8PULAK</span><span>Customer 6</span><span>40.60 €</span></div><div class="admin-order-card__actions"><button type="button" class="btn btn--ghost" disabled="">Pause</button><button type="button" class="btn btn--ghost" disabled="">Complete</button><button type="button" class="btn btn--ghost">Remove from admin</button><button type="button" class="btn btn--danger">Purge for users</button></div><button class="admin-order-card__toggle" type="button">Show details</button><div class="admin-order-card__items" hidden=""><div class="admin-order-card__item"><span>1 × Margherita</span><span class="mono">8.90 €</span></div><div class="admin-order-card__item"><span>2 × Funghi</span><span class="mono">19.80 €</span></div><div class="admin-order-card__item"><span>1 × Carbonara</span><span class="mono">11.90 €</span></div><div class="admin-order-card__summary">Subtotal 40.60 € · Delivery 0.00 € · Voucher 0.00 € · Total 40.60 €</div></div></div><div class="admin-order-card"><div class="admin-order-card__header"><div class="admin-order-card__title">Order ORD-251020-A71RIR</div><div class="admin-order-card__badges"><span class="admin-order-card__badge admin-order-card__badge--status">abgeschlossen</span><span class="admin-order-card__badge admin-order-card__badge--paid">Payment: paid</span></div></div><div class="admin-order-card__meta"><span>Placed 18/10/2025, 18:58:01</span><span>Restaurant RST-251020-TC3NQH</span><span>Customer 7</span><span>40.32 €</span></div><div class="admin-order-card__actions"><button type="button" class="btn btn--ghost" disabled="">Pause</button><button type="button" class="btn btn--ghost" disabled="">Complete</button><button type="button" class="btn btn--ghost">Remove from admin</button><button type="button" class="btn btn--danger">Purge for users</button></div><button class="admin-order-card__toggle" type="button">Show details</button><div class="admin-order-card__items" hidden=""><div class="admin-order-card__item"><span>1 × Pakisthani Biriyani</span><span class="mono">19.99 €</span></div><div class="admin-order-card__item"><span>1 × Pizza Brokolie</span><span class="mono">20.33 €</span></div><div class="admin-order-card__summary">Subtotal 40.32 € · Delivery 0.00 € · Voucher 0.00 € · Total 40.32 €</div></div></div><div class="admin-order-card"><div class="admin-order-card__header"><div class="admin-order-card__title">Order ORD-251020-G7B7KR</div><div class="admin-order-card__badges"><span class="admin-order-card__badge admin-order-card__badge--status">abgeschlossen</span><span class="admin-order-card__badge admin-order-card__badge--paid">Payment: paid</span></div></div><div class="admin-order-card__meta"><span>Placed 18/10/2025, 18:58:01</span><span>Restaurant RST-251020-TC3NQH</span><span>Customer 8</span><span>80.64 €</span></div><div class="admin-order-card__actions"><button type="button" class="btn btn--ghost" disabled="">Pause</button><button type="button" class="btn btn--ghost" disabled="">Complete</button><button type="button" class="btn btn--ghost">Remove from admin</button><button type="button" class="btn btn--danger">Purge for users</button></div><button class="admin-order-card__toggle" type="button">Show details</button><div class="admin-order-card__items" hidden=""><div class="admin-order-card__item"><span>2 × Pakisthani Biriyani</span><span class="mono">39.98 €</span></div><div class="admin-order-card__item"><span>2 × Pizza Brokolie</span><span class="mono">40.66 €</span></div><div class="admin-order-card__summary">Subtotal 80.64 € · Delivery 0.00 € · Voucher 0.00 € · Total 80.64 €</div></div></div><div class="admin-order-card"><div class="admin-order-card__header"><div class="admin-order-card__title">Order ORD-251020-J2UI5A</div><div class="admin-order-card__badges"><span class="admin-order-card__badge admin-order-card__badge--status">abgeschlossen</span><span class="admin-order-card__badge admin-order-card__badge--paid">Payment: pending</span></div></div><div class="admin-order-card__meta"><span>Placed 18/10/2025, 18:58:01</span><span>Restaurant RST-251020-TC3NQH</span><span>Customer 8</span><span>60.31 €</span></div><div class="admin-order-card__actions"><button type="button" class="btn btn--ghost" disabled="">Pause</button><button type="button" class="btn btn--ghost" disabled="">Complete</button><button type="button" class="btn btn--ghost">Remove from admin</button><button type="button" class="btn btn--danger">Purge for users</button></div><button class="admin-order-card__toggle" type="button">Show details</button><div class="admin-order-card__items" hidden=""><div class="admin-order-card__item"><span>2 × Pakisthani Biriyani</span><span class="mono">39.98 €</span></div><div class="admin-order-card__item"><span>1 × Pizza Brokolie</span><span class="mono">20.33 €</span></div><div class="admin-order-card__summary">Subtotal 60.31 € · Delivery 0.00 € · Voucher 0.00 € · Total 60.31 €</div></div></div><div class="admin-order-card"><div class="admin-order-card__header"><div class="admin-order-card__title">Order ORD-251020-KA924B</div><div class="admin-order-card__badges"><span class="admin-order-card__badge admin-order-card__badge--status">abgeschlossen</span><span class="admin-order-card__badge admin-order-card__badge--paid">Payment: paid</span></div></div><div class="admin-order-card__meta"><span>Placed 18/10/2025, 18:58:01</span><span>Restaurant RST-251020-TC3NQH</span><span>Customer 9</span><span>60.65 €</span></div><div class="admin-order-card__actions"><button type="button" class="btn btn--ghost" disabled="">Pause</button><button type="button" class="btn btn--ghost" disabled="">Complete</button><button type="button" class="btn btn--ghost">Remove from admin</button><button type="button" class="btn btn--danger">Purge for users</button></div><button class="admin-order-card__toggle" type="button">Show details</button><div class="admin-order-card__items" hidden=""><div class="admin-order-card__item"><span>1 × Pakisthani Biriyani</span><span class="mono">19.99 €</span></div><div class="admin-order-card__item"><span>2 × Pizza Brokolie</span><span class="mono">40.66 €</span></div><div class="admin-order-card__summary">Subtotal 60.65 € · Delivery 0.00 € · Voucher 0.00 € · Total 60.65 €</div></div></div><div class="admin-order-card"><div class="admin-order-card__header"><div class="admin-order-card__title">Order ORD-251020-PK6458</div><div class="admin-order-card__badges"><span class="admin-order-card__badge admin-order-card__badge--status">abgeschlossen</span><span class="admin-order-card__badge admin-order-card__badge--paid">Payment: pending</span></div></div><div class="admin-order-card__meta"><span>Placed 18/10/2025, 18:58:01</span><span>Restaurant RST-251020-TC3NQH</span><span>Customer 9</span><span>80.64 €</span></div><div class="admin-order-card__actions"><button type="button" class="btn btn--ghost" disabled="">Pause</button><button type="button" class="btn btn--ghost" disabled="">Complete</button><button type="button" class="btn btn--ghost">Remove from admin</button><button type="button" class="btn btn--danger">Purge for users</button></div><button class="admin-order-card__toggle" type="button">Show details</button><div class="admin-order-card__items" hidden=""><div class="admin-order-card__item"><span>2 × Pakisthani Biriyani</span><span class="mono">39.98 €</span></div><div class="admin-order-card__item"><span>2 × Pizza Brokolie</span><span class="mono">40.66 €</span></div><div class="admin-order-card__summary">Subtotal 80.64 € · Delivery 0.00 € · Voucher 0.00 € · Total 80.64 €</div></div></div><div class="admin-order-card"><div class="admin-order-card__header"><div class="admin-order-card__title">Order ORD-251020-NIADTQ</div><div class="admin-order-card__badges"><span class="admin-order-card__badge admin-order-card__badge--status">abgeschlossen</span><span class="admin-order-card__badge admin-order-card__badge--paid">Payment: paid</span></div></div><div class="admin-order-card__meta"><span>Placed 18/10/2025, 18:58:01</span><span>Restaurant RST-251020-TC3NQH</span><span>Customer 1</span><span>9.99 €</span></div><div class="admin-order-card__actions"><button type="button" class="btn btn--ghost" disabled="">Pause</button><button type="button" class="btn btn--ghost" disabled="">Complete</button><button type="button" class="btn btn--ghost">Remove from admin</button><button type="button" class="btn btn--danger">Purge for users</button></div><button class="admin-order-card__toggle" type="button">Show details</button><div class="admin-order-card__items" hidden=""><div class="admin-order-card__item"><span>1 × Pakisthani Biriyani</span><span class="mono">19.99 €</span></div><div class="admin-order-card__summary">Subtotal 19.99 € · Delivery 0.00 € · Voucher -10.00 € · Total 9.99 €</div></div></div><div class="admin-order-card"><div class="admin-order-card__header"><div class="admin-order-card__title">Order ORD-251020-ET5PPZ</div><div class="admin-order-card__badges"><span class="admin-order-card__badge admin-order-card__badge--status">abgeschlossen</span><span class="admin-order-card__badge admin-order-card__badge--paid">Payment: pending</span></div></div><div class="admin-order-card__meta"><span>Placed 18/10/2025, 18:58:00</span><span>Restaurant RST-251020-N282DP</span><span>Customer 1</span><span>40.60 €</span></div><div class="admin-order-card__actions"><button type="button" class="btn btn--ghost" disabled="">Pause</button><button type="button" class="btn btn--ghost" disabled="">Complete</button><button type="button" class="btn btn--ghost">Remove from admin</button><button type="button" class="btn btn--danger">Purge for users</button></div><button class="admin-order-card__toggle" type="button">Show details</button><div class="admin-order-card__items" hidden=""><div class="admin-order-card__item"><span>1 × Margherita</span><span class="mono">8.90 €</span></div><div class="admin-order-card__item"><span>2 × Funghi</span><span class="mono">19.80 €</span></div><div class="admin-order-card__item"><span>1 × Carbonara</span><span class="mono">11.90 €</span></div><div class="admin-order-card__summary">Subtotal 40.60 € · Delivery 0.00 € · Voucher 0.00 € · Total 40.60 €</div></div></div><div class="admin-order-card"><div class="admin-order-card__header"><div class="admin-order-card__title">Order ORD-251020-SXSSB4</div><div class="admin-order-card__badges"><span class="admin-order-card__badge admin-order-card__badge--status">abgeschlossen</span><span class="admin-order-card__badge admin-order-card__badge--paid">Payment: pending</span></div></div><div class="admin-order-card__meta"><span>Placed 18/10/2025, 18:58:00</span><span>Restaurant RST-251020-N282DP</span><span>Customer 1</span><span>51.50 €</span></div><div class="admin-order-card__actions"><button type="button" class="btn btn--ghost" disabled="">Pause</button><button type="button" class="btn btn--ghost" disabled="">Complete</button><button type="button" class="btn btn--ghost">Remove from admin</button><button type="button" class="btn btn--danger">Purge for users</button></div><button class="admin-order-card__toggle" type="button">Show details</button><div class="admin-order-card__items" hidden=""><div class="admin-order-card__item"><span>2 × Margherita</span><span class="mono">17.80 €</span></div><div class="admin-order-card__item"><span>1 × Funghi</span><span class="mono">9.90 €</span></div><div class="admin-order-card__item"><span>2 × Carbonara</span><span class="mono">23.80 €</span></div><div class="admin-order-card__summary">Subtotal 51.50 € · Delivery 0.00 € · Voucher 0.00 € · Total 51.50 €</div></div></div><div class="admin-order-card"><div class="admin-order-card__header"><div class="admin-order-card__title">Order ORD-251020-O0THHK</div><div class="admin-order-card__badges"><span class="admin-order-card__badge admin-order-card__badge--status">abgeschlossen</span><span class="admin-order-card__badge admin-order-card__badge--paid">Payment: pending</span></div></div><div class="admin-order-card__meta"><span>Placed 18/10/2025, 18:58:00</span><span>Restaurant RST-251020-N282DP</span><span>Customer 2</span><span>40.60 €</span></div><div class="admin-order-card__actions"><button type="button" class="btn btn--ghost" disabled="">Pause</button><button type="button" class="btn btn--ghost" disabled="">Complete</button><button type="button" class="btn btn--ghost">Remove from admin</button><button type="button" class="btn btn--danger">Purge for users</button></div><button class="admin-order-card__toggle" type="button">Show details</button><div class="admin-order-card__items" hidden=""><div class="admin-order-card__item"><span>1 × Margherita</span><span class="mono">8.90 €</span></div><div class="admin-order-card__item"><span>2 × Funghi</span><span class="mono">19.80 €</span></div><div class="admin-order-card__item"><span>1 × Carbonara</span><span class="mono">11.90 €</span></div><div class="admin-order-card__summary">Subtotal 40.60 € · Delivery 0.00 € · Voucher 0.00 € · Total 40.60 €</div></div></div><div class="admin-order-card"><div class="admin-order-card__header"><div class="admin-order-card__title">Order ORD-251020-TNAJSX</div><div class="admin-order-card__badges"><span class="admin-order-card__badge admin-order-card__badge--status">abgeschlossen</span><span class="admin-order-card__badge admin-order-card__badge--paid">Payment: pending</span></div></div><div class="admin-order-card__meta"><span>Placed 18/10/2025, 18:58:00</span><span>Restaurant RST-251020-N282DP</span><span>Customer 2</span><span>61.40 €</span></div><div class="admin-order-card__actions"><button type="button" class="btn btn--ghost" disabled="">Pause</button><button type="button" class="btn btn--ghost" disabled="">Complete</button><button type="button" class="btn btn--ghost">Remove from admin</button><button type="button" class="btn btn--danger">Purge for users</button></div><button class="admin-order-card__toggle" type="button">Show details</button><div class="admin-order-card__items" hidden=""><div class="admin-order-card__item"><span>2 × Margherita</span><span class="mono">17.80 €</span></div><div class="admin-order-card__item"><span>2 × Funghi</span><span class="mono">19.80 €</span></div><div class="admin-order-card__item"><span>2 × Carbonara</span><span class="mono">23.80 €</span></div><div class="admin-order-card__summary">Subtotal 61.40 € · Delivery 0.00 € · Voucher 0.00 € · Total 61.40 €</div></div></div><div class="admin-order-card"><div class="admin-order-card__header"><div class="admin-order-card__title">Order ORD-251020-RYIMX5</div><div class="admin-order-card__badges"><span class="admin-order-card__badge admin-order-card__badge--status">abgeschlossen</span><span class="admin-order-card__badge admin-order-card__badge--paid">Payment: paid</span></div></div><div class="admin-order-card__meta"><span>Placed 18/10/2025, 18:58:00</span><span>Restaurant RST-251020-8PULAK</span><span>Customer 4</span><span>30.70 €</span></div><div class="admin-order-card__actions"><button type="button" class="btn btn--ghost" disabled="">Pause</button><button type="button" class="btn btn--ghost" disabled="">Complete</button><button type="button" class="btn btn--ghost">Remove from admin</button><button type="button" class="btn btn--danger">Purge for users</button></div><button class="admin-order-card__toggle" type="button">Show details</button><div class="admin-order-card__items" hidden=""><div class="admin-order-card__item"><span>1 × Margherita</span><span class="mono">8.90 €</span></div><div class="admin-order-card__item"><span>1 × Funghi</span><span class="mono">9.90 €</span></div><div class="admin-order-card__item"><span>1 × Carbonara</span><span class="mono">11.90 €</span></div><div class="admin-order-card__summary">Subtotal 30.70 € · Delivery 0.00 € · Voucher 0.00 € · Total 30.70 €</div></div></div><div class="admin-order-card"><div class="admin-order-card__header"><div class="admin-order-card__title">Order ORD-251020-66EW78</div><div class="admin-order-card__badges"><span class="admin-order-card__badge admin-order-card__badge--status">abgeschlossen</span><span class="admin-order-card__badge admin-order-card__badge--paid">Payment: paid</span></div></div><div class="admin-order-card__meta"><span>Placed 18/10/2025, 18:58:00</span><span>Restaurant RST-251020-N282DP</span><span>Customer 4</span><span>30.70 €</span></div><div class="admin-order-card__actions"><button type="button" class="btn btn--ghost" disabled="">Pause</button><button type="button" class="btn btn--ghost" disabled="">Complete</button><button type="button" class="btn btn--ghost">Remove from admin</button><button type="button" class="btn btn--danger">Purge for users</button></div><button class="admin-order-card__toggle" type="button">Show details</button><div class="admin-order-card__items" hidden=""><div class="admin-order-card__item"><span>1 × Margherita</span><span class="mono">8.90 €</span></div><div class="admin-order-card__item"><span>1 × Funghi</span><span class="mono">9.90 €</span></div><div class="admin-order-card__item"><span>1 × Carbonara</span><span class="mono">11.90 €</span></div><div class="admin-order-card__summary">Subtotal 30.70 € · Delivery 0.00 € · Voucher 0.00 € · Total 30.70 €</div></div></div></div>
+            </div>
+          </article>
+
+          <article class="card collapsible" data-section="gdpr">
+            <div class="card__header">
+              <div>
+                <div class="card__eyebrow">Compliance</div>
+                <h2 class="card__title">
+                  <i class="fa-solid fa-user-shield" aria-hidden="true"></i>
+                  <span>GDPR requests</span>
+                </h2>
+                <p class="card__subtitle">Log data export or deletion requests and track their resolution.</p>
+              </div>
+              <button class="card__toggle" type="button" aria-expanded="true">
+                <span class="card__toggle-icon" aria-hidden="true">▾</span>
+                <span class="card__toggle-label">Collapse</span>
+              </button>
+            </div>
+            <div class="card__body" style="display: grid; gap: 16px;">
+              <div class="toolbar" style="justify-content: space-between; align-items: center;">
+                <span class="highlight-pill">
+                  <i class="fa-solid fa-circle-dot" aria-hidden="true"></i>
+                  <span id="gdpr-open-count">0 open</span>
+                </span>
+                <div class="toolbar" style="flex-wrap: nowrap; gap: 10px;">
+                  <div class="input-wrapper" style="width: 180px;">
+                    <i class="fa-solid fa-filter" aria-hidden="true"></i>
+                    <select id="gdpr-status-filter">
+                      <option value="all">All statuses</option>
+                      <option value="open">Open</option>
+                      <option value="in_progress">In progress</option>
+                      <option value="completed">Completed</option>
+                      <option value="rejected">Rejected</option>
+                    </select>
+                  </div>
+                  <button class="btn btn--ghost" type="button" id="btn-gdpr-refresh">
+                    <i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i>
+                    <span>Refresh</span>
+                  </button>
+                </div>
+              </div>
+              <form id="form-gdpr-create" class="grid" style="gap: 12px;">
+                <div style="display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-users" aria-hidden="true"></i>
+                    <select id="gdpr-requester-type" required="">
+                      <option value="customer">Customer</option>
+                      <option value="restaurant">Restaurant</option>
+                      <option value="platform">Platform</option>
+                    </select>
+                  </div>
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-file-signature" aria-hidden="true"></i>
+                    <select id="gdpr-request-type" required="">
+                      <option value="export">Data export</option>
+                      <option value="deletion">Deletion</option>
+                    </select>
+                  </div>
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                    <input id="gdpr-email" type="email" placeholder="Email (optional)">
+                  </div>
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-id-card" aria-hidden="true"></i>
+                    <input id="gdpr-subject-id" type="text" placeholder="Internal ID (optional)">
+                  </div>
+                </div>
+                <div class="input-wrapper">
+                  <i class="fa-solid fa-note-sticky" aria-hidden="true"></i>
+                  <textarea id="gdpr-notes" rows="2" placeholder="Context or customer message"></textarea>
+                </div>
+                <div class="toolbar" style="justify-content: flex-end;">
+                  <button class="btn btn--primary" type="submit">
+                    <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                    <span>Log request</span>
+                  </button>
+                </div>
+                <small id="gdpr-message" class="muted"></small>
+              </form>
+              <div class="list" id="gdpr-list"><div class="muted">No GDPR requests for the selected filter.</div></div>
+            </div>
+          </article>
+
+          <article class="card collapsible" data-section="invoice-archive">
+            <div class="card__header">
+              <div>
+                <div class="card__eyebrow">Finance</div>
+                <h2 class="card__title">
+                  <i class="fa-solid fa-file-invoice-dollar" aria-hidden="true"></i>
+                  <span>Invoice archive</span>
+                </h2>
+                <p class="card__subtitle">Review and export monthly summaries or individual order receipts.</p>
+              </div>
+              <button class="card__toggle" type="button" aria-expanded="true">
+                <span class="card__toggle-icon" aria-hidden="true">▾</span>
+                <span class="card__toggle-label">Collapse</span>
+              </button>
+            </div>
+            <div class="card__body" style="display: grid; gap: 16px;">
+              <div class="toolbar" style="justify-content: flex-end;">
+                <button class="btn btn--ghost" type="button" id="btn-invoice-refresh">
+                  <i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i>
+                  <span>Refresh</span>
+                </button>
+                <button class="btn btn--primary" type="button" id="btn-download-month">
+                  <i class="fa-solid fa-download" aria-hidden="true"></i>
+                  <span>Download month</span>
+                </button>
+              </div>
+              <div class="grid" style="gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+                <section class="detail-section">
+                  <h3 class="section-heading">
+                    <i class="fa-solid fa-calendar-days" aria-hidden="true"></i>
+                    <span>Months</span>
+                  </h3>
+                  <div id="invoice-months" class="list list--compact"><div class="list-item is-selected"><div class="meta-row" style="justify-content: space-between;"><strong>2025-10</strong><span class="pill">21 orders</span></div><div class="meta-row">Total 739.55 €<span>Payout 490.36 €</span></div></div></div>
+                </section>
+                <section class="detail-section">
+                  <h3 class="section-heading">
+                    <i class="fa-solid fa-receipt" aria-hidden="true"></i>
+                    <span>Receipts</span>
+                  </h3>
+                  <div id="invoice-orders" class="list list--compact"><div class="list-item"><div class="meta-row" style="justify-content: space-between;"><strong>ORD-251020-QX5QB8</strong><span class="pill">0.00 €</span></div><div class="meta-row">BD Food<span>19/10/2025, 19:51:42</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--ghost"><i class="fa-solid fa-download" aria-hidden="true"></i><span>Receipt</span></button></div></div><div class="list-item"><div class="meta-row" style="justify-content: space-between;"><strong>ORD-251020-3CVH38</strong><span class="pill">0.00 €</span></div><div class="meta-row">BD Food<span>19/10/2025, 18:59:53</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--ghost"><i class="fa-solid fa-download" aria-hidden="true"></i><span>Receipt</span></button></div></div><div class="list-item"><div class="meta-row" style="justify-content: space-between;"><strong>ORD-251020-G2A1ZA</strong><span class="pill">0.00 €</span></div><div class="meta-row">BD Food<span>19/10/2025, 18:33:23</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--ghost"><i class="fa-solid fa-download" aria-hidden="true"></i><span>Receipt</span></button></div></div><div class="list-item"><div class="meta-row" style="justify-content: space-between;"><strong>ORD-251020-Y888CD</strong><span class="pill">0.00 €</span></div><div class="meta-row">BD Food<span>18/10/2025, 21:19:53</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--ghost"><i class="fa-solid fa-download" aria-hidden="true"></i><span>Receipt</span></button></div></div><div class="list-item"><div class="meta-row" style="justify-content: space-between;"><strong>ORD-251020-NP4XK9</strong><span class="pill">0.00 €</span></div><div class="meta-row">BD Food<span>18/10/2025, 21:00:14</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--ghost"><i class="fa-solid fa-download" aria-hidden="true"></i><span>Receipt</span></button></div></div><div class="list-item"><div class="meta-row" style="justify-content: space-between;"><strong>ORD-251020-51ZF3F</strong><span class="pill">40.60 €</span></div><div class="meta-row">Pasta Palace<span>18/10/2025, 18:58:01</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--ghost"><i class="fa-solid fa-download" aria-hidden="true"></i><span>Receipt</span></button></div></div><div class="list-item"><div class="meta-row" style="justify-content: space-between;"><strong>ORD-251020-XFISOH</strong><span class="pill">39.60 €</span></div><div class="meta-row">Pasta Palace<span>18/10/2025, 18:58:01</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--ghost"><i class="fa-solid fa-download" aria-hidden="true"></i><span>Receipt</span></button></div></div><div class="list-item"><div class="meta-row" style="justify-content: space-between;"><strong>ORD-251020-549Y0U</strong><span class="pill">30.70 €</span></div><div class="meta-row">Pho Place<span>18/10/2025, 18:58:01</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--ghost"><i class="fa-solid fa-download" aria-hidden="true"></i><span>Receipt</span></button></div></div><div class="list-item"><div class="meta-row" style="justify-content: space-between;"><strong>ORD-251020-FRDRDE</strong><span class="pill">40.60 €</span></div><div class="meta-row">Pasta Palace<span>18/10/2025, 18:58:01</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--ghost"><i class="fa-solid fa-download" aria-hidden="true"></i><span>Receipt</span></button></div></div><div class="list-item"><div class="meta-row" style="justify-content: space-between;"><strong>ORD-251020-A71RIR</strong><span class="pill">40.32 €</span></div><div class="meta-row">BD Food<span>18/10/2025, 18:58:01</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--ghost"><i class="fa-solid fa-download" aria-hidden="true"></i><span>Receipt</span></button></div></div><div class="list-item"><div class="meta-row" style="justify-content: space-between;"><strong>ORD-251020-G7B7KR</strong><span class="pill">80.64 €</span></div><div class="meta-row">BD Food<span>18/10/2025, 18:58:01</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--ghost"><i class="fa-solid fa-download" aria-hidden="true"></i><span>Receipt</span></button></div></div><div class="list-item"><div class="meta-row" style="justify-content: space-between;"><strong>ORD-251020-J2UI5A</strong><span class="pill">60.31 €</span></div><div class="meta-row">BD Food<span>18/10/2025, 18:58:01</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--ghost"><i class="fa-solid fa-download" aria-hidden="true"></i><span>Receipt</span></button></div></div><div class="list-item"><div class="meta-row" style="justify-content: space-between;"><strong>ORD-251020-KA924B</strong><span class="pill">60.65 €</span></div><div class="meta-row">BD Food<span>18/10/2025, 18:58:01</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--ghost"><i class="fa-solid fa-download" aria-hidden="true"></i><span>Receipt</span></button></div></div><div class="list-item"><div class="meta-row" style="justify-content: space-between;"><strong>ORD-251020-PK6458</strong><span class="pill">80.64 €</span></div><div class="meta-row">BD Food<span>18/10/2025, 18:58:01</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--ghost"><i class="fa-solid fa-download" aria-hidden="true"></i><span>Receipt</span></button></div></div><div class="list-item"><div class="meta-row" style="justify-content: space-between;"><strong>ORD-251020-NIADTQ</strong><span class="pill">9.99 €</span></div><div class="meta-row">BD Food<span>18/10/2025, 18:58:01</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--ghost"><i class="fa-solid fa-download" aria-hidden="true"></i><span>Receipt</span></button></div></div><div class="list-item"><div class="meta-row" style="justify-content: space-between;"><strong>ORD-251020-ET5PPZ</strong><span class="pill">40.60 €</span></div><div class="meta-row">Taco Town<span>18/10/2025, 18:58:00</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--ghost"><i class="fa-solid fa-download" aria-hidden="true"></i><span>Receipt</span></button></div></div><div class="list-item"><div class="meta-row" style="justify-content: space-between;"><strong>ORD-251020-SXSSB4</strong><span class="pill">51.50 €</span></div><div class="meta-row">Taco Town<span>18/10/2025, 18:58:00</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--ghost"><i class="fa-solid fa-download" aria-hidden="true"></i><span>Receipt</span></button></div></div><div class="list-item"><div class="meta-row" style="justify-content: space-between;"><strong>ORD-251020-O0THHK</strong><span class="pill">40.60 €</span></div><div class="meta-row">Taco Town<span>18/10/2025, 18:58:00</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--ghost"><i class="fa-solid fa-download" aria-hidden="true"></i><span>Receipt</span></button></div></div><div class="list-item"><div class="meta-row" style="justify-content: space-between;"><strong>ORD-251020-TNAJSX</strong><span class="pill">61.40 €</span></div><div class="meta-row">Taco Town<span>18/10/2025, 18:58:00</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--ghost"><i class="fa-solid fa-download" aria-hidden="true"></i><span>Receipt</span></button></div></div><div class="list-item"><div class="meta-row" style="justify-content: space-between;"><strong>ORD-251020-RYIMX5</strong><span class="pill">30.70 €</span></div><div class="meta-row">Pasta Palace<span>18/10/2025, 18:58:00</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--ghost"><i class="fa-solid fa-download" aria-hidden="true"></i><span>Receipt</span></button></div></div><div class="list-item"><div class="meta-row" style="justify-content: space-between;"><strong>ORD-251020-66EW78</strong><span class="pill">30.70 €</span></div><div class="meta-row">Taco Town<span>18/10/2025, 18:58:00</span></div><div class="toolbar" style="justify-content: flex-start;"><button type="button" class="btn btn--ghost"><i class="fa-solid fa-download" aria-hidden="true"></i><span>Receipt</span></button></div></div></div>
+                </section>
+              </div>
+            </div>
+          </article>
+
+          <article class="card collapsible" data-section="deleted-orders">
+            <div class="card__header">
+              <div>
+                <div class="card__eyebrow">Audit trail</div>
+                <h2 class="card__title">
+                  <i class="fa-solid fa-trash-arrow-up" aria-hidden="true"></i>
+                  <span>Deleted orders</span>
+                </h2>
+                <p class="card__subtitle">Keep a transparent record of order removals and the responsible admin.</p>
+              </div>
+              <button class="card__toggle" type="button" aria-expanded="true">
+                <span class="card__toggle-icon" aria-hidden="true">▾</span>
+                <span class="card__toggle-label">Collapse</span>
+              </button>
+            </div>
+            <div class="card__body" style="display: grid; gap: 12px;">
+              <div class="input-wrapper">
+                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                <input type="search" id="deleted-orders-filter" placeholder="Search order ID, restaurant or admin">
+              </div>
+              <div id="deleted-orders" class="list list--compact"><div class="muted">No deleted orders recorded.</div></div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </section>
+    
+  </main>
+
+  <div id="toasts"></div>
+
+<script>
+(() => {
+  // --- constants / utils ---
+  const ADMIN_TOKEN_KEY = "admin_token";
+  const ADMIN_SUBJECT_KEY = "admin_subject";
+  const OWNER_TOKEN_KEY = "token";
+  const OWNER_SUBJECT_KEY = "subject";
+  const AUTO_REFRESH_MS = 15000;
+  const ADMIN_TOKEN = "dev-admin"; // must match backend ADMIN_TOKEN
+  const API_BASE = (window.API_BASE && String(window.API_BASE)) || "http://127.0.0.1:8000";
+  const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const qs = (sel) => document.querySelector(sel);
+  const qsa = (sel) => Array.from(document.querySelectorAll(sel));
+
+  // --- dom refs ---
+  const loginView = qs("#login-view");
+  const dashboardView = qs("#dashboard-view");
+  const listEl = qs("#restaurant-list");
+  const pendingListEl = qs("#pending-list");
+  const pendingCountEl = qs("#pending-count");
+  const filterInput = qs("#filter");
+  const clearFilterBtn = qs("#btn-clear-filter");
+  const lastRefreshEl = qs("#last-refresh");
+  const whoamiEl = qs("#whoami");
+  const detailCard = qs("#detail-card");
+  const detailName = qs("#detail-name");
+  const detailMeta = qs("#detail-meta");
+  const detailStatus = qs("#detail-status");
+  const detailImage = qs("#detail-image");
+  const detailMenu = qs("#detail-menu");
+  const detailHours = qs("#detail-hours");
+  const detailZips = qs("#detail-zips");
+  const toastRoot = qs("#toasts");
+  const voucherListEl = qs("#voucher-list");
+  const adminOrdersEl = qs("#admin-orders");
+  const refreshOrdersBtn = qs("#btn-refresh-orders");
+  const deletedListEl = qs("#deleted-restaurants");
+  const deletedFilterInput = qs("#deleted-filter");
+  const deletedSearchBtn = qs("#btn-deleted-search");
+  const deletedClearBtn = qs("#btn-deleted-clear");
+  const orderSearchInput = qs("#order-search");
+  const gdprListEl = qs("#gdpr-list");
+  const gdprForm = qs("#form-gdpr-create");
+  const gdprStatusFilter = qs("#gdpr-status-filter");
+  const gdprOpenCountEl = qs("#gdpr-open-count");
+  const gdprMessageEl = qs("#gdpr-message");
+  const gdprRefreshBtn = qs("#btn-gdpr-refresh");
+  const invoiceMonthsEl = qs("#invoice-months");
+  const invoiceOrdersEl = qs("#invoice-orders");
+  const invoiceDownloadBtn = qs("#btn-download-month");
+  const invoiceRefreshBtn = qs("#btn-invoice-refresh");
+  const deletedOrdersListEl = qs("#deleted-orders");
+  const deletedOrdersFilterInput = qs("#deleted-orders-filter");
+  const metricRestaurantsEl = qs("#metric-restaurants");
+  const metricOnlineEl = qs("#metric-online");
+  const metricVouchersEl = qs("#metric-vouchers");
+  const metricOrdersEl = qs("#metric-orders");
+  const collapsibleCards = qsa(".collapsible");
+  const createFormWrap = qs("#create-form-wrap");
+  const createToggleBtn = qs("#btn-create-toggle");
+  const createToggleText = createToggleBtn ? createToggleBtn.querySelector(".create-btn-text") : null;
+  const createToggleIcon = createToggleBtn ? createToggleBtn.querySelector(".create-btn-icon") : null;
+
+  const editFields = {
+    name: qs("#edit-name"),
+    email: qs("#edit-email"),
+    street: qs("#edit-street"),
+    city: qs("#edit-city"),
+    postal: qs("#edit-postal"),
+    minOrder: qs("#edit-min-order"),
+    deliveryFee: qs("#edit-delivery-fee"),
+    prepTime: qs("#edit-prep-time"),
+    busyUntil: qs("#edit-busy-until"),
+    image: qs("#edit-image"),
+    description: qs("#edit-description"),
+    ownerName: qs("#edit-owner-name"),
+    ownerEmail: qs("#edit-owner-email"),
+    ownerPhone: qs("#edit-owner-phone"),
+    notes: qs("#edit-notes"),
+    deliveryZips: qs("#edit-delivery-zips"),
+    hours: qs("#edit-hours"),
+    password: qs("#edit-password"),
+    online: qs("#edit-online"),
+    demo: qs("#edit-demo"),
+    approved: qs("#edit-approved"),
+  };
+
+  const createFields = {
+    name: qs("#create-name"),
+    loginEmail: qs("#create-login-email"),
+    street: qs("#create-street"),
+    city: qs("#create-city"),
+    postal: qs("#create-postal"),
+    description: qs("#create-description"),
+    password: qs("#create-password"),
+    image: qs("#create-image"),
+    minOrder: qs("#create-min-order"),
+    deliveryFee: qs("#create-delivery-fee"),
+    hours: qs("#create-hours"),
+    zips: qs("#create-zips"),
+    ownerEmail: qs("#create-owner-email"),
+    ownerPhone: qs("#create-owner-phone"),
+    notes: qs("#create-notes"),
+    approved: qs("#create-approved"),
+  };
+
+  // --- state ---
+  const state = {
+    token: localStorage.getItem(ADMIN_TOKEN_KEY) || "",
+    subject: localStorage.getItem(ADMIN_SUBJECT_KEY) || "",
+    restaurants: [],
+    filtered: [],
+    selectedId: null,
+    detailDirty: false,
+    autoRefresh: true,
+    refreshTimer: null,
+    vouchers: [],
+    orders: [],
+    deletedRestaurants: [],
+    deletedFilter: "",
+    orderQuery: "",
+    gdprRequests: [],
+    gdprStatusFilter: "all",
+    deletedOrders: [],
+    deletedOrderFilter: "",
+    invoiceMonths: [],
+    invoiceOrders: [],
+    selectedInvoiceMonth: null,
+  };
+
+  const COLLAPSE_STORAGE_KEY = "admin_collapsed_sections_v1";
+  let collapsedSections = new Set();
+  try {
+    const stored = JSON.parse(localStorage.getItem(COLLAPSE_STORAGE_KEY) || "[]");
+    if (Array.isArray(stored)) collapsedSections = new Set(stored);
+  } catch { collapsedSections = new Set(); }
+
+  // --- helpers ---
+  const persistCollapsed = () => {
+    try {
+      localStorage.setItem(COLLAPSE_STORAGE_KEY, JSON.stringify(Array.from(collapsedSections)));
+    } catch {}
+  };
+
+  function setupCollapsibles() {
+    collapsibleCards.forEach((card) => {
+      const toggle = card.querySelector(".card__toggle");
+      if (!toggle) return;
+      const label = toggle.querySelector(".card__toggle-label");
+      const sectionId = card.dataset.section;
+
+      if (sectionId && collapsedSections.has(sectionId)) {
+        card.classList.add("is-collapsed");
+        toggle.setAttribute("aria-expanded", "false");
+        if (label) label.textContent = "Expand";
+      } else {
+        toggle.setAttribute("aria-expanded", "true");
+        if (label) label.textContent = "Collapse";
+      }
+
+      toggle.addEventListener("click", () => {
+        const collapsed = card.classList.toggle("is-collapsed");
+        toggle.setAttribute("aria-expanded", String(!collapsed));
+        if (label) label.textContent = collapsed ? "Expand" : "Collapse";
+        if (!sectionId) return;
+        if (collapsed) collapsedSections.add(sectionId);
+        else collapsedSections.delete(sectionId);
+        persistCollapsed();
+      });
+    });
+  }
+
+  function setCreateFormVisible(visible) {
+    if (!createFormWrap || !createToggleBtn) return;
+    createFormWrap.classList.toggle("hidden", !visible);
+    createToggleBtn.setAttribute("aria-expanded", String(visible));
+    if (createToggleText) createToggleText.textContent = visible ? "Hide form" : "Create restaurant";
+    if (createToggleIcon) createToggleIcon.textContent = visible ? "−" : "＋";
+    if (visible) {
+      setTimeout(() => {
+        const firstField = createFields.name;
+        if (firstField && typeof firstField.focus === "function") {
+          try { firstField.focus(); } catch {}
+        }
+      }, 0);
+    }
+  }
+
+  function decodeJwtPayload(token) {
+    if (!token) return null;
+    const part = token.split(".")[1] || "";
+    if (!part) return null;
+    const normalized = part.replace(/-/g, "+").replace(/_/g, "/");
+    const pad = normalized.length % 4;
+    const padded = normalized + (pad ? "=".repeat(4 - pad) : "");
+    try { return JSON.parse(atob(padded)); } catch { return null; }
+  }
+
+  function saveAdminToken(jwt) {
+    if (!jwt) {
+      localStorage.removeItem(ADMIN_TOKEN_KEY);
+      localStorage.removeItem(ADMIN_SUBJECT_KEY);
+      state.token = "";
+      state.subject = "";
+      return;
+    }
+    const payload = decodeJwtPayload(jwt);
+    state.token = jwt;
+    state.subject = payload?.sub || "";
+    localStorage.setItem(ADMIN_TOKEN_KEY, jwt);
+    localStorage.setItem(ADMIN_SUBJECT_KEY, state.subject);
+  }
+
+  function storeOwnerToken(jwt) {
+    if (!jwt) return;
+    localStorage.setItem(OWNER_TOKEN_KEY, jwt);
+    const payload = decodeJwtPayload(jwt);
+    if (payload?.sub) localStorage.setItem(OWNER_SUBJECT_KEY, payload.sub);
+  }
+
+  function euroToCents(input) {
+    if (input == null) return null;
+    const normalized = String(input).trim().replace(/\s+/g, "").replace(",", ".");
+    if (!normalized) return null;
+    const n = Number(normalized);
+    if (!Number.isFinite(n) || n < 0) return null;
+    return Math.round(n * 100);
+  }
+  async function apiRequest(path, { method = "GET", json, headers = {}, signal, raw = false } = {}) {
+    const isAdmin = path.startsWith("/api/admin");
+    const isLogin = path === "/api/admin/login";
+    const url = path.startsWith("http") ? path : ((window.API_BASE || "http://127.0.0.1:8000") + path);
+    const defaultHeaders = {
+      Accept: raw ? "*/*" : "application/json",
+      ...(json ? { "Content-Type": "application/json" } : {}),
+      ...(state.token ? { Authorization: "Bearer " + state.token } : {}),
+      ...(isAdmin && !isLogin ? { "X-Admin-Token": ADMIN_TOKEN } : {}),
+    };
+
+    const res = await fetch(url, {
+      method,
+      headers: { ...defaultHeaders, ...headers },
+      body: json ? JSON.stringify(json) : undefined,
+      signal,
+    });
+
+    let data = null;
+    if (!raw || !res.ok) {
+      try { data = await res.json(); } catch {}
+    }
+
+    if (res.status === 401) {
+      // drop token and bounce to login UI
+      saveAdminToken("");
+      updateVisibility();
+      throw new Error((data && (data.detail || data.message || data.msg)) || "Unauthorised. Please sign in again.");
+    }
+    if (!res.ok) {
+      const message = (data && (data.detail || data.message || data.msg)) || res.statusText || "Request failed";
+      const err = new Error(message);
+      err.status = res.status;
+      err.data = data;
+      throw err;
+    }
+    if (raw) return res;
+    return data;
+  }
+
+  async function downloadAdminFile(path, filename, { accept = "application/pdf" } = {}) {
+    try {
+      const res = await apiRequest(path, { headers: { Accept: accept }, raw: true });
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      showToast("Download started", "ok");
+    } catch (err) {
+      showToast(err.message || "Download failed", "err");
+    }
+  }
+
+  function showToast(message, type = "ok", detail) {
+    const el = document.createElement("div");
+    el.className = "toast " + (type === "err" ? "toast--err" : "toast--ok");
+    el.textContent = message;
+    if (detail) {
+      const small = document.createElement("small");
+      small.textContent = detail;
+      el.appendChild(small);
+    }
+    toastRoot.appendChild(el);
+    setTimeout(() => el.remove(), 3500);
+  }
+
+  function updateVisibility() {
+    const authed = Boolean(state.token);
+    loginView.classList.toggle("hidden", authed);
+    dashboardView.classList.toggle("hidden", !authed);
+    if (authed) whoamiEl.textContent = state.subject || "admin";
+  }
+
+  const formatMoney = (cents) => (Number(cents || 0) / 100).toFixed(2) + " €";
+  function formatDateIso(value) {
+    if (!value) return "–";
+    try {
+      const d = new Date(value);
+      return Number.isNaN(d.getTime()) ? value : d.toLocaleString();
+    } catch { return value; }
+  }
+  function parseMoneyToCents(value) {
+    if (value == null || value === "") return null;
+    const num = Number(value);
+    return Number.isNaN(num) ? null : Math.round(num * 100);
+  }
+  function parseHours(text) {
+    if (!text) return [];
+    return text.split(/\n+/).map((l) => l.trim()).filter(Boolean).map((line) => {
+      const parts = line.split(/\s+/);
+      if (parts.length !== 3) throw new Error("Invalid opening hour line: " + line);
+      const weekday = Number(parts[0]);
+      if (!Number.isInteger(weekday) || weekday < 0 || weekday > 6) throw new Error("Weekday must be 0-6: " + line);
+      return { weekday, open_time: parts[1], close_time: parts[2] };
+    });
+  }
+  const parseZips = (text) => (!text ? [] : text.split(/[,\s]+/).map((s) => s.trim()).filter(Boolean));
+  const booleanFromDb = (val) => {
+    if (typeof val === "boolean") return val;
+    if (typeof val === "number") return val !== 0;
+    if (typeof val === "string") {
+      const normalized = val.trim().toLowerCase();
+      return ["1", "true", "yes", "on"].includes(normalized);
+    }
+    return false;
+  };
+
+  // --- renderers ---
+  function renderMetrics() {
+    if (metricRestaurantsEl) {
+      metricRestaurantsEl.textContent = String(state.restaurants.length || 0);
+    }
+    if (metricOnlineEl) {
+      const onlineCount = state.restaurants.reduce((acc, entry) => {
+        const flag = entry?.restaurant?.is_online;
+        return acc + (booleanFromDb(flag) ? 1 : 0);
+      }, 0);
+      metricOnlineEl.textContent = String(onlineCount);
+    }
+    if (metricVouchersEl) {
+      const active = state.vouchers.filter((v) => booleanFromDb(v?.is_active) && Number(v?.balance_cents ?? 0) > 0);
+      const outstanding = active.reduce((acc, v) => acc + Number(v.balance_cents || 0), 0);
+      metricVouchersEl.textContent = `${active.length} · ${formatMoney(outstanding)}`;
+    }
+    if (metricOrdersEl) {
+      const closedStatuses = new Set(["delivered", "completed", "cancelled", "refunded"]);
+      const openCount = state.orders.filter((order) => {
+        const status = String(order?.status || "").toLowerCase();
+        return !status || !closedStatuses.has(status);
+      }).length;
+      metricOrdersEl.textContent = String(openCount);
+    }
+  }
+
+  function renderList() {
+    const term = (filterInput.value || "").trim().toLowerCase();
+    const rows = !term
+      ? state.restaurants
+      : state.restaurants.filter(({ restaurant }) => {
+          const haystack = [
+            restaurant.public_id,
+            restaurant.name,
+            restaurant.city,
+            restaurant.postal_code,
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+          return haystack.includes(term);
+        });
+    state.filtered = rows;
+    renderMetrics();
+    listEl.innerHTML = "";
+    if (!rows.length) {
+      const empty = document.createElement("div");
+      empty.className = "muted";
+      empty.textContent = "No restaurants match the filter.";
+      listEl.appendChild(empty);
+      return;
+    }
+    rows.forEach(({ restaurant, menu, opening_hours, delivery_zips }) => {
+      const item = document.createElement("div");
+      item.className = "list-item" + (restaurant.id === state.selectedId ? " is-selected" : "");
+      item.innerHTML = `
+        <div class="meta-row" style="justify-content: space-between;">
+          <h3>${restaurant.name}</h3>
+          <span class="badge ${restaurant.is_online ? "badge--online" : "badge--offline"}">
+            ${restaurant.is_online ? "Online" : "Offline"}
+          </span>
+          ${restaurant.is_approved ? "" : '<span class="badge badge--offline">Pending</span>'}
+        </div>
+        <div class="meta-row">
+          <span class="pill">ID ${restaurant.public_id || "–"}</span>
+          <span class="pill">Created ${formatDateIso(restaurant.created_at)}</span>
+          ${restaurant.email ? `<span class="pill">${restaurant.email}</span>` : ""}
+          ${restaurant.is_demo ? '<span class="pill">Demo</span>' : ''}
+        </div>
+        <div class="meta-row">
+          <span>${restaurant.street || ""}${restaurant.city ? ", " + restaurant.city : ""}</span>
+          <span>PLZ ${restaurant.postal_code || "–"}</span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">Menu ${menu.length}</span>
+          <span class="pill">Hours ${opening_hours.length}</span>
+          <span class="pill">PLZ ${delivery_zips.length}</span>
+        </div>
+      `;
+      item.addEventListener("click", () => {
+        state.selectedId = restaurant.id;
+        state.detailDirty = false;
+        renderList();
+        renderDetail();
+      });
+      listEl.appendChild(item);
+    });
+  }
+
+  function renderPendingApplications() {
+    if (!pendingListEl || !pendingCountEl) return;
+    const pending = state.restaurants.filter(({ restaurant }) => !booleanFromDb(restaurant?.is_approved));
+    pendingCountEl.textContent = String(pending.length || 0);
+    pendingListEl.innerHTML = "";
+    if (!pending.length) {
+      const empty = document.createElement("div");
+      empty.className = "muted";
+      empty.textContent = "No pending applications.";
+      pendingListEl.appendChild(empty);
+      return;
+    }
+    pending.forEach(({ restaurant }) => {
+      const item = document.createElement("div");
+      item.className = "list-item";
+      item.innerHTML = `
+        <div class="meta-row" style="justify-content: space-between;">
+          <h3>${restaurant.name}</h3>
+          <span class="badge badge--offline">Pending</span>
+        </div>
+        <div class="meta-row">
+          <span class="pill">ID ${restaurant.public_id || "–"}</span>
+          <span>${restaurant.email || "No email provided"}</span>
+        </div>
+        <div class="muted">Submitted ${formatDateIso(restaurant.created_at)}</div>
+      `;
+      item.addEventListener("click", () => {
+        state.selectedId = restaurant.id;
+        state.detailDirty = false;
+        renderList();
+        renderDetail();
+      });
+      const actions = document.createElement("div");
+      actions.className = "meta-row";
+      actions.style.justifyContent = "flex-end";
+      const approveBtn = document.createElement("button");
+      approveBtn.className = "btn btn--primary btn--sm";
+      approveBtn.innerHTML = '<i class="fa-solid fa-circle-check" aria-hidden="true"></i><span>Approve</span>';
+      approveBtn.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+        approveRestaurant(restaurant.id, approveBtn);
+      });
+      actions.appendChild(approveBtn);
+      item.appendChild(actions);
+      pendingListEl.appendChild(item);
+    });
+  }
+
+  const fillHoursTextarea = (hours) => (!hours?.length ? "" : hours.map((oh) => `${oh.weekday} ${oh.open_time} ${oh.close_time}`).join("\n"));
+  const fillDeliveryZips = (zips) => (!zips?.length ? "" : zips.map((dz) => dz.postal_code).join(", "));
+
+  function renderVouchers() {
+    if (!voucherListEl) return;
+    voucherListEl.innerHTML = "";
+    if (!state.vouchers.length) {
+      const empty = document.createElement("p");
+      empty.className = "muted";
+      empty.textContent = "No vouchers yet.";
+      voucherListEl.appendChild(empty);
+      renderMetrics();
+      return;
+    }
+    const groups = [
+      {
+        key: "active",
+        title: "Active vouchers",
+        items: state.vouchers.filter((v) => booleanFromDb(v?.is_active) && Number(v?.balance_cents ?? 0) > 0),
+      },
+      {
+        key: "inactive",
+        title: "Inactive or spent",
+        items: state.vouchers.filter((v) => !(booleanFromDb(v?.is_active) && Number(v?.balance_cents ?? 0) > 0)),
+      },
+    ];
+
+    const makeMeta = (text) => {
+      const span = document.createElement("span");
+      span.className = "pill";
+      span.textContent = text;
+      return span;
+    };
+
+    groups.forEach((group) => {
+      if (!group.items.length) return;
+      const header = document.createElement("h3");
+      header.textContent = group.title;
+      header.style.margin = "12px 0 4px";
+      voucherListEl.appendChild(header);
+
+      group.items.forEach((v) => {
+        const balance = Number(v?.balance_cents ?? 0);
+        const initial = Number(v?.initial_balance_cents ?? 0);
+        const spent = Number(v?.spent_cents ?? (initial - balance));
+        const activeFlag = booleanFromDb(v?.is_active);
+        const isUsable = activeFlag && balance > 0;
+        const statusText = isUsable ? "Active" : (!activeFlag ? "Inactive" : "Inactive (used)");
+        const item = document.createElement("div");
+        item.className = "voucher-item" + (isUsable ? "" : " is-invalid");
+
+        const head = document.createElement("div");
+        head.className = "voucher-item__head";
+
+        const titleWrap = document.createElement("div");
+        titleWrap.style.display = "flex";
+        titleWrap.style.gap = "6px";
+        titleWrap.style.alignItems = "center";
+        titleWrap.style.flexWrap = "wrap";
+
+        const codeEl = document.createElement("strong");
+        codeEl.textContent = v.code;
+        titleWrap.appendChild(codeEl);
+
+        if (v.label) {
+          const labelEl = document.createElement("span");
+          labelEl.className = "muted";
+          labelEl.textContent = v.label;
+          titleWrap.appendChild(labelEl);
+        }
+
+        const badge = document.createElement("span");
+        badge.className = "badge " + (isUsable ? "badge--online" : "badge--offline");
+        badge.textContent = statusText;
+
+        head.appendChild(titleWrap);
+        head.appendChild(badge);
+        item.appendChild(head);
+
+        const summary = document.createElement("div");
+        summary.className = "voucher-summary";
+        summary.innerHTML = `Remaining <strong>${formatMoney(balance)}</strong> of ${formatMoney(initial)} · Used ${formatMoney(spent)}`;
+        item.appendChild(summary);
+
+        const meta = document.createElement("div");
+        meta.className = "voucher-item__meta";
+        meta.appendChild(makeMeta(`Created ${formatDateIso(v.created_at)}`));
+        if (v.valid_until) {
+          meta.appendChild(makeMeta(`Valid until ${formatDateIso(v.valid_until)}`));
+        }
+        if (v.max_redemptions != null) {
+          meta.appendChild(makeMeta(`Max redemptions ${v.max_redemptions}`));
+        }
+        item.appendChild(meta);
+
+        const actions = document.createElement("div");
+        actions.className = "toolbar";
+        actions.style.justifyContent = "flex-start";
+        const deleteBtn = document.createElement("button");
+        deleteBtn.type = "button";
+        deleteBtn.className = "btn btn--danger";
+        deleteBtn.innerHTML = '<i class="fa-solid fa-trash" aria-hidden="true"></i><span>Delete voucher</span>';
+        deleteBtn.addEventListener("click", () => handleVoucherDelete(v));
+        actions.appendChild(deleteBtn);
+        item.appendChild(actions);
+
+        if (!isUsable && balance > 0 && !activeFlag) {
+          const reactivateBtn = document.createElement("button");
+          reactivateBtn.className = "voucher-item__action";
+          reactivateBtn.textContent = "Mark active";
+          reactivateBtn.addEventListener("click", async () => {
+            try {
+              await apiRequest(`/api/admin/vouchers/${v.id}`, {
+                method: "PATCH",
+                json: { is_active: true },
+              });
+              showToast(`Voucher ${v.code} reactivated`);
+              await refreshVouchers({ silent: true });
+            } catch (err) {
+              showToast(err.message || "Failed to activate voucher", "err");
+            }
+          });
+          item.appendChild(reactivateBtn);
+        }
+
+        const history = document.createElement("div");
+        history.className = "voucher-history";
+        if (Array.isArray(v.redemptions) && v.redemptions.length) {
+          v.redemptions.forEach((redemption) => {
+            const entry = document.createElement("div");
+            entry.className = "voucher-history__entry";
+            entry.innerHTML = `
+              <span>${redemption.order_public_id || `Order #${redemption.order_id}`}</span>
+              <span>${formatMoney(redemption.amount_cents)} · ${formatDateIso(redemption.redeemed_at)}</span>
+            `;
+            history.appendChild(entry);
+          });
+        } else {
+          const emptyHistory = document.createElement("span");
+          emptyHistory.className = "voucher-history__empty";
+          emptyHistory.textContent = "No redemptions yet.";
+          history.appendChild(emptyHistory);
+        }
+        item.appendChild(history);
+
+        voucherListEl.appendChild(item);
+      });
+    });
+    renderMetrics();
+  }
+
+  function renderDeletedRestaurants() {
+    if (!deletedListEl) return;
+    const term = (state.deletedFilter || "").trim().toLowerCase();
+    const rows = !term
+      ? state.deletedRestaurants
+      : state.deletedRestaurants.filter((entry) => {
+          const haystack = [entry.restaurant_public_id, entry.name, entry.deleted_by, entry.reason]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+          return haystack.includes(term);
+        });
+
+    deletedListEl.innerHTML = "";
+    if (!rows.length) {
+      const empty = document.createElement("div");
+      empty.className = "muted";
+      empty.textContent = "No archived restaurants.";
+      deletedListEl.appendChild(empty);
+      return;
+    }
+
+    rows.forEach((entry) => {
+      const extra = entry.extra || {};
+      const item = document.createElement("div");
+      item.className = "list-item";
+
+      const header = document.createElement("div");
+      header.className = "meta-row";
+      header.style.justifyContent = "space-between";
+
+      const nameEl = document.createElement("strong");
+      nameEl.textContent = entry.name;
+      header.appendChild(nameEl);
+
+      const idEl = document.createElement("span");
+      idEl.className = "pill";
+      idEl.textContent = entry.restaurant_public_id || "–";
+      header.appendChild(idEl);
+      item.appendChild(header);
+
+      const metaRow = document.createElement("div");
+      metaRow.className = "meta-row";
+      const deletedAt = document.createElement("span");
+      deletedAt.textContent = `Deleted ${formatDateIso(entry.deleted_at)}`;
+      metaRow.appendChild(deletedAt);
+      if (entry.deleted_by) {
+        const byEl = document.createElement("span");
+        byEl.className = "pill";
+        byEl.textContent = `By ${entry.deleted_by}`;
+        metaRow.appendChild(byEl);
+      }
+      if (extra.deleted_with_force) {
+        const forceEl = document.createElement("span");
+        forceEl.className = "pill";
+        forceEl.textContent = "Force delete";
+        metaRow.appendChild(forceEl);
+      }
+      item.appendChild(metaRow);
+
+      const locality = document.createElement("div");
+      locality.className = "meta-row";
+      if (extra.city) {
+        const cityEl = document.createElement("span");
+        cityEl.textContent = extra.city;
+        locality.appendChild(cityEl);
+      }
+      if (extra.postal_code) {
+        const postalEl = document.createElement("span");
+        postalEl.textContent = `PLZ ${extra.postal_code}`;
+        locality.appendChild(postalEl);
+      }
+      if (locality.children.length) item.appendChild(locality);
+
+      if (entry.reason) {
+        const reasonEl = document.createElement("div");
+        reasonEl.className = "muted";
+        reasonEl.textContent = `Reason: ${entry.reason}`;
+        item.appendChild(reasonEl);
+      }
+
+      const actions = document.createElement("div");
+      actions.className = "toolbar";
+      actions.style.justifyContent = "flex-start";
+      const deleteBtn = document.createElement("button");
+      deleteBtn.type = "button";
+      deleteBtn.className = "btn btn--danger";
+      deleteBtn.innerHTML = '<i class="fa-solid fa-trash" aria-hidden="true"></i><span>Delete record</span>';
+      deleteBtn.addEventListener("click", () => handleArchivedRestaurantDelete(entry));
+      actions.appendChild(deleteBtn);
+      item.appendChild(actions);
+
+      deletedListEl.appendChild(item);
+    });
+  }
+
+  function renderDeletedOrders() {
+    if (!deletedOrdersListEl) return;
+    const term = (state.deletedOrderFilter || "").trim().toLowerCase();
+    const rows = !term
+      ? state.deletedOrders
+      : state.deletedOrders.filter((entry) => {
+          const details = entry.details || {};
+          const haystack = [
+            entry.order_public_id,
+            entry.order_id,
+            entry.restaurant_public_id,
+            entry.restaurant_name,
+            entry.deleted_by,
+            entry.reason,
+            details.status_before,
+            details.status_after,
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+          return haystack.includes(term);
+        });
+
+    deletedOrdersListEl.innerHTML = "";
+    if (!rows.length) {
+      const empty = document.createElement("div");
+      empty.className = "muted";
+      empty.textContent = "No deleted orders recorded.";
+      deletedOrdersListEl.appendChild(empty);
+      return;
+    }
+
+    rows.forEach((entry) => {
+      const details = entry.details || {};
+      const item = document.createElement("div");
+      item.className = "list-item";
+
+      const header = document.createElement("div");
+      header.className = "meta-row";
+      header.style.justifyContent = "space-between";
+      const title = document.createElement("strong");
+      title.textContent = `Order ${entry.order_public_id || entry.order_id}`;
+      header.appendChild(title);
+      const actionBadge = document.createElement("span");
+      actionBadge.className = "pill";
+      actionBadge.textContent = (details.action || "delete").replace(/_/g, " ");
+      header.appendChild(actionBadge);
+      item.appendChild(header);
+
+      const meta = document.createElement("div");
+      meta.className = "meta-row";
+      const deletedAt = document.createElement("span");
+      deletedAt.textContent = `Deleted ${formatDateIso(entry.deleted_at)}`;
+      meta.appendChild(deletedAt);
+      if (entry.deleted_by) {
+        const by = document.createElement("span");
+        by.className = "pill";
+        by.textContent = `By ${entry.deleted_by}`;
+        meta.appendChild(by);
+      }
+      item.appendChild(meta);
+
+      if (entry.reason) {
+        const reason = document.createElement("div");
+        reason.className = "muted";
+        reason.textContent = `Reason: ${entry.reason}`;
+        item.appendChild(reason);
+      }
+
+      const restMeta = document.createElement("div");
+      restMeta.className = "meta-row";
+      if (entry.restaurant_name) {
+        const restName = document.createElement("span");
+        restName.textContent = entry.restaurant_name;
+        restMeta.appendChild(restName);
+      }
+      if (entry.restaurant_public_id) {
+        const restId = document.createElement("span");
+        restId.textContent = entry.restaurant_public_id;
+        restMeta.appendChild(restId);
+      }
+      if (restMeta.children.length) item.appendChild(restMeta);
+
+      const statusRow = document.createElement("div");
+      statusRow.className = "meta-row";
+      if (details.status_before) {
+        const before = document.createElement("span");
+        before.textContent = `Status: ${details.status_before} → ${details.status_after || entry.status}`;
+        statusRow.appendChild(before);
+      }
+      if (details.total_cents != null) {
+        const total = document.createElement("span");
+        total.textContent = `Total ${(Number(details.total_cents) / 100).toFixed(2)} €`;
+        statusRow.appendChild(total);
+      }
+      if (statusRow.children.length) item.appendChild(statusRow);
+
+      deletedOrdersListEl.appendChild(item);
+    });
+  }
+
+  function renderGdprRequests() {
+    if (!gdprListEl) return;
+    const openCount = state.gdprRequests.filter((req) => !["completed", "rejected"].includes(req.status)).length;
+    if (gdprOpenCountEl) {
+      gdprOpenCountEl.textContent = `${openCount} open`;
+    }
+    const statusFilter = state.gdprStatusFilter;
+    const rows = statusFilter === "all"
+      ? state.gdprRequests
+      : state.gdprRequests.filter((req) => req.status === statusFilter);
+
+    gdprListEl.innerHTML = "";
+    if (!rows.length) {
+      const empty = document.createElement("div");
+      empty.className = "muted";
+      empty.textContent = "No GDPR requests for the selected filter.";
+      gdprListEl.appendChild(empty);
+      return;
+    }
+
+    rows.forEach((req) => {
+      const item = document.createElement("div");
+      item.className = "list-item";
+
+      const header = document.createElement("div");
+      header.className = "meta-row";
+      header.style.justifyContent = "space-between";
+      const title = document.createElement("strong");
+      title.textContent = `${req.request_type === "deletion" ? "Deletion" : "Export"} request`;
+      header.appendChild(title);
+
+      const badge = document.createElement("span");
+      badge.className = "badge";
+      if (req.status === "completed") badge.classList.add("badge--online");
+      if (req.status === "rejected") badge.classList.add("badge--offline");
+      badge.textContent = ({
+        open: "Open",
+        in_progress: "In progress",
+        completed: "Completed",
+        rejected: "Rejected",
+      }[req.status]) || req.status;
+      header.appendChild(badge);
+      item.appendChild(header);
+
+      const subjectRow = document.createElement("div");
+      subjectRow.className = "meta-row";
+      const subjectPieces = [];
+      subjectPieces.push(req.requester_type ? req.requester_type.replace(/_/g, " ") : "subject");
+      if (req.requester_email) subjectPieces.push(req.requester_email);
+      if (req.requester_id != null) subjectPieces.push(`#${req.requester_id}`);
+      subjectRow.appendChild(document.createTextNode(subjectPieces.join(" · ")));
+      item.appendChild(subjectRow);
+
+      const timingRow = document.createElement("div");
+      timingRow.className = "meta-row";
+      timingRow.appendChild(document.createTextNode(`Created ${formatDateIso(req.created_at)}`));
+      if (req.processed_at) {
+        const processed = document.createElement("span");
+        processed.textContent = `Processed ${formatDateIso(req.processed_at)}`;
+        timingRow.appendChild(processed);
+      }
+      item.appendChild(timingRow);
+
+      if (req.details) {
+        const details = document.createElement("div");
+        details.className = "muted";
+        details.textContent = req.details;
+        item.appendChild(details);
+      }
+
+      if (req.resolution_notes) {
+        const resolution = document.createElement("div");
+        resolution.className = "muted";
+        resolution.textContent = `Resolution: ${req.resolution_notes}`;
+        item.appendChild(resolution);
+      }
+
+      const actions = document.createElement("div");
+      actions.className = "toolbar";
+      actions.style.gap = "8px";
+      actions.style.flexWrap = "wrap";
+
+      if (req.status === "open") {
+        const startBtn = document.createElement("button");
+        startBtn.type = "button";
+        startBtn.className = "btn btn--ghost";
+        startBtn.innerHTML = '<i class="fa-solid fa-play" aria-hidden="true"></i><span>Start</span>';
+        startBtn.addEventListener("click", () => handleGdprStatusChange(req, "in_progress"));
+        actions.appendChild(startBtn);
+      }
+
+      if (["open", "in_progress"].includes(req.status)) {
+        const completeBtn = document.createElement("button");
+        completeBtn.type = "button";
+        completeBtn.className = "btn btn--primary";
+        completeBtn.innerHTML = '<i class="fa-solid fa-circle-check" aria-hidden="true"></i><span>Complete</span>';
+        completeBtn.addEventListener("click", () => handleGdprStatusChange(req, "completed"));
+        actions.appendChild(completeBtn);
+      }
+
+      if (req.status !== "rejected" && req.status !== "completed") {
+        const rejectBtn = document.createElement("button");
+        rejectBtn.type = "button";
+        rejectBtn.className = "btn btn--danger";
+        rejectBtn.innerHTML = '<i class="fa-solid fa-ban" aria-hidden="true"></i><span>Reject</span>';
+        rejectBtn.addEventListener("click", () => handleGdprStatusChange(req, "rejected"));
+        actions.appendChild(rejectBtn);
+      }
+
+      if (actions.children.length) {
+        item.appendChild(actions);
+      }
+
+      gdprListEl.appendChild(item);
+    });
+  }
+
+  function renderInvoiceArchive() {
+    if (invoiceMonthsEl) {
+      invoiceMonthsEl.innerHTML = "";
+      if (!state.invoiceMonths.length) {
+        const empty = document.createElement("div");
+        empty.className = "muted";
+        empty.textContent = "No invoice history yet.";
+        invoiceMonthsEl.appendChild(empty);
+      } else {
+        state.invoiceMonths.forEach((month) => {
+          const item = document.createElement("div");
+          item.className = "list-item" + (month.month === state.selectedInvoiceMonth ? " is-selected" : "");
+          const heading = document.createElement("div");
+          heading.className = "meta-row";
+          heading.style.justifyContent = "space-between";
+          const label = document.createElement("strong");
+          label.textContent = month.month;
+          heading.appendChild(label);
+          const count = document.createElement("span");
+          count.className = "pill";
+          count.textContent = `${month.order_count} orders`;
+          heading.appendChild(count);
+          item.appendChild(heading);
+
+          const totals = document.createElement("div");
+          totals.className = "meta-row";
+          totals.appendChild(document.createTextNode(`Total ${formatMoney(month.total_cents)}`));
+          const net = document.createElement("span");
+          net.textContent = `Payout ${formatMoney(month.payout_rest_cents)}`;
+          totals.appendChild(net);
+          item.appendChild(totals);
+
+          item.addEventListener("click", () => {
+            if (state.selectedInvoiceMonth !== month.month) {
+              state.selectedInvoiceMonth = month.month;
+              renderInvoiceArchive();
+              refreshInvoiceOrders({ month: month.month, silent: true });
+            }
+          });
+
+          invoiceMonthsEl.appendChild(item);
+        });
+      }
+    }
+
+    if (invoiceOrdersEl) {
+      invoiceOrdersEl.innerHTML = "";
+      if (!state.selectedInvoiceMonth) {
+        const hint = document.createElement("div");
+        hint.className = "muted";
+        hint.textContent = "Select a month to view receipts.";
+        invoiceOrdersEl.appendChild(hint);
+      } else if (!state.invoiceOrders.length) {
+        const empty = document.createElement("div");
+        empty.className = "muted";
+        empty.textContent = "No orders for the selected month.";
+        invoiceOrdersEl.appendChild(empty);
+      } else {
+        state.invoiceOrders.forEach((order) => {
+          const item = document.createElement("div");
+          item.className = "list-item";
+
+          const header = document.createElement("div");
+          header.className = "meta-row";
+          header.style.justifyContent = "space-between";
+          const label = document.createElement("strong");
+          label.textContent = order.order_public_id || `Order #${order.order_id}`;
+          header.appendChild(label);
+          const total = document.createElement("span");
+          total.className = "pill";
+          total.textContent = formatMoney(order.total_cents);
+          header.appendChild(total);
+          item.appendChild(header);
+
+          const info = document.createElement("div");
+          info.className = "meta-row";
+          if (order.restaurant_name) {
+            info.appendChild(document.createTextNode(order.restaurant_name));
+          }
+          const created = document.createElement("span");
+          created.textContent = formatDateIso(order.created_at);
+          info.appendChild(created);
+          item.appendChild(info);
+
+          const actions = document.createElement("div");
+          actions.className = "toolbar";
+          actions.style.justifyContent = "flex-start";
+          const downloadBtn = document.createElement("button");
+          downloadBtn.type = "button";
+          downloadBtn.className = "btn btn--ghost";
+          downloadBtn.innerHTML = '<i class="fa-solid fa-download" aria-hidden="true"></i><span>Receipt</span>';
+          downloadBtn.addEventListener("click", () =>
+            downloadAdminFile(
+              `/api/admin/invoices/orders/${order.order_id}/receipt?format=pdf`,
+              `receipt_${order.order_public_id || order.order_id}.pdf`
+            )
+          );
+          actions.appendChild(downloadBtn);
+          item.appendChild(actions);
+
+          invoiceOrdersEl.appendChild(item);
+        });
+      }
+    }
+
+    if (invoiceDownloadBtn) {
+      invoiceDownloadBtn.disabled = !state.selectedInvoiceMonth || !state.invoiceOrders.length;
+    }
+  }
+
+  async function handleGdprStatusChange(request, status) {
+    const updates = { status };
+    const userLabel = state.subject || "admin";
+    if (status === "in_progress") {
+      updates.processed_by = userLabel;
+    }
+    if (status === "completed" || status === "rejected") {
+      const noteInput = prompt(
+        status === "completed" ? "Add resolution notes (optional)" : "Why was this request rejected?",
+        request.resolution_notes || ""
+      );
+      if (noteInput === null) return;
+      updates.processed_by = userLabel;
+      updates.resolution_notes = noteInput.trim() || null;
+    }
+    try {
+      await apiRequest(`/api/admin/gdpr/requests/${request.id}`, { method: "PATCH", json: updates });
+      await refreshGdprRequests({ silent: true });
+      showToast(`Request marked ${status.replace("_", " ")}`);
+    } catch (err) {
+      showToast(err.message || "Failed to update request", "err");
+    }
+  }
+
+  async function refreshGdprRequests({ silent = false } = {}) {
+    if (!state.token) return;
+    try {
+      const data = await apiRequest("/api/admin/gdpr/requests");
+      state.gdprRequests = Array.isArray(data) ? data : [];
+      renderGdprRequests();
+    } catch (err) {
+      if (!silent) showToast(err.message || "Failed to load GDPR requests", "err");
+    }
+  }
+
+  async function refreshDeletedOrders({ silent = false } = {}) {
+    if (!state.token) return;
+    try {
+      const data = await apiRequest("/api/admin/orders/deleted");
+      state.deletedOrders = Array.isArray(data) ? data : [];
+      renderDeletedOrders();
+    } catch (err) {
+      if (!silent) showToast(err.message || "Failed to load deleted orders", "err");
+    }
+  }
+
+  async function refreshInvoiceMonths({ silent = false } = {}) {
+    if (!state.token) return;
+    try {
+      const data = await apiRequest("/api/admin/invoices/monthly");
+      state.invoiceMonths = Array.isArray(data) ? data : [];
+      if (!state.selectedInvoiceMonth && state.invoiceMonths.length) {
+        state.selectedInvoiceMonth = state.invoiceMonths[0].month;
+      } else if (
+        state.selectedInvoiceMonth &&
+        !state.invoiceMonths.some((entry) => entry.month === state.selectedInvoiceMonth)
+      ) {
+        state.selectedInvoiceMonth = state.invoiceMonths[0]?.month || null;
+      }
+      renderInvoiceArchive();
+      if (state.selectedInvoiceMonth) {
+        await refreshInvoiceOrders({ month: state.selectedInvoiceMonth, silent: true, render: false });
+        renderInvoiceArchive();
+      } else {
+        state.invoiceOrders = [];
+        renderInvoiceArchive();
+      }
+    } catch (err) {
+      if (!silent) showToast(err.message || "Failed to load invoice archive", "err");
+    }
+  }
+
+  async function refreshInvoiceOrders({ month, silent = false, render = true } = {}) {
+    if (!state.token) return;
+    const target = month || state.selectedInvoiceMonth;
+    if (!target) return;
+    try {
+      const data = await apiRequest(`/api/admin/invoices/monthly/${target}`);
+      state.invoiceOrders = Array.isArray(data) ? data : [];
+      if (render) renderInvoiceArchive();
+    } catch (err) {
+      if (!silent) showToast(err.message || "Failed to load receipts", "err");
+    }
+  }
+
+  function renderAdminOrders() {
+    if (!adminOrdersEl) return;
+    adminOrdersEl.innerHTML = "";
+    const term = (state.orderQuery || "").trim().toLowerCase();
+    const rows = !term
+      ? state.orders
+      : state.orders.filter((order) => {
+          const haystack = [
+            order.public_id,
+            order.restaurant_public_id,
+            order.restaurant_id,
+            order.customer_id,
+            order.voucher_code,
+          ]
+            .filter((value) => value != null)
+            .map((value) => String(value).toLowerCase())
+            .join(" ");
+          return haystack.includes(term);
+        });
+
+    if (!rows.length) {
+      const empty = document.createElement("p");
+      empty.className = "muted";
+      empty.textContent = "No orders yet.";
+      adminOrdersEl.appendChild(empty);
+      renderMetrics();
+      return;
+    }
+
+    rows.forEach((order) => {
+      const card = document.createElement("div");
+      card.className = "admin-order-card";
+      const orderLabel = order.public_id || `#${order.id}`;
+
+      const header = document.createElement("div");
+      header.className = "admin-order-card__header";
+
+      const title = document.createElement("div");
+      title.className = "admin-order-card__title";
+      title.textContent = `Order ${orderLabel}`;
+
+      const badges = document.createElement("div");
+      badges.className = "admin-order-card__badges";
+      const statusBadge = document.createElement("span");
+      statusBadge.className = "admin-order-card__badge admin-order-card__badge--status";
+      statusBadge.textContent = order.status;
+      const paymentBadge = document.createElement("span");
+      paymentBadge.className = "admin-order-card__badge admin-order-card__badge--paid";
+      paymentBadge.textContent = `Payment: ${order.payment_status}`;
+      badges.append(statusBadge, paymentBadge);
+
+      header.append(title, badges);
+      card.appendChild(header);
+
+      const meta = document.createElement("div");
+      meta.className = "admin-order-card__meta";
+      meta.append(
+        (() => { const span = document.createElement("span"); span.textContent = `Placed ${formatDateIso(order.created_at)}`; return span; })(),
+        (() => { const span = document.createElement("span"); span.textContent = `Restaurant ${order.restaurant_public_id || order.restaurant_id}`; return span; })(),
+        (() => { const span = document.createElement("span"); span.textContent = `Customer ${order.customer_id}`; return span; })(),
+        (() => { const span = document.createElement("span"); span.textContent = formatMoney(order.total_cents); return span; })(),
+      );
+      if (order.voucher_code) {
+        const voucherSpan = document.createElement("span");
+        voucherSpan.textContent = `Voucher ${order.voucher_code}`;
+        meta.appendChild(voucherSpan);
+      }
+      card.appendChild(meta);
+
+      const details = document.createElement("div");
+      details.className = "admin-order-card__items";
+      details.hidden = true;
+      order.items.forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "admin-order-card__item";
+        const label = document.createElement("span");
+        label.textContent = `${item.quantity} × ${item.name}`;
+        const value = document.createElement("span");
+        value.className = "mono";
+        value.textContent = formatMoney(item.price_cents * item.quantity);
+        row.append(label, value);
+        details.appendChild(row);
+      });
+
+      const summary = document.createElement("div");
+      summary.className = "admin-order-card__summary";
+      const voucherText = order.voucher_amount_cents
+        ? `Voucher -${formatMoney(order.voucher_amount_cents)}${order.voucher_code ? ` (${order.voucher_code})` : ""}`
+        : `Voucher ${formatMoney(0)}`;
+      summary.textContent = `Subtotal ${formatMoney(order.subtotal_cents)} · Delivery ${formatMoney(order.shipping_cents)} · ${voucherText} · Total ${formatMoney(order.total_cents)}`;
+      details.appendChild(summary);
+
+      const actions = document.createElement("div");
+      actions.className = "admin-order-card__actions";
+      const actionButtons = [];
+      const setBusy = (busy) => {
+        actionButtons.forEach((btn) => {
+          if (busy) {
+            btn.dataset.prevDisabled = btn.disabled ? "1" : "";
+            btn.disabled = true;
+          } else {
+            const wasDisabled = btn.dataset.prevDisabled === "1";
+            delete btn.dataset.prevDisabled;
+            btn.disabled = wasDisabled;
+          }
+        });
+      };
+      const makeActionButton = (label, className = "btn btn--ghost") => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = className;
+        btn.textContent = label;
+        actionButtons.push(btn);
+        actions.appendChild(btn);
+        return btn;
+      };
+      const executeAction = async (endpoint, successMessage, options = {}) => {
+        setBusy(true);
+        try {
+          await apiRequest(endpoint, { method: "POST", ...options });
+          if (successMessage) showToast(successMessage);
+          await refreshAdminOrders({ silent: true });
+          await refreshDeletedOrders({ silent: true });
+        } catch (err) {
+          showToast(err.message || "Order action failed", "err");
+          setBusy(false);
+        }
+      };
+
+      const blockedStatuses = new Set(["abgeschlossen", "storniert", "deleted_by_admin", "purged_by_admin"]);
+
+      const pauseBtn = makeActionButton(order.status === "paused_by_admin" ? "Paused" : "Pause");
+      pauseBtn.disabled = order.status === "paused_by_admin" || blockedStatuses.has(order.status);
+      pauseBtn.addEventListener("click", () => {
+        executeAction(`/api/admin/orders/${order.id}/pause`, `Order ${orderLabel} paused`);
+      });
+
+      const completeBtn = makeActionButton("Complete");
+      completeBtn.disabled = blockedStatuses.has(order.status);
+      completeBtn.addEventListener("click", () => {
+        executeAction(`/api/admin/orders/${order.id}/complete`, `Order ${orderLabel} marked complete`);
+      });
+
+      const deleteBtn = makeActionButton("Remove from admin");
+      deleteBtn.addEventListener("click", () => {
+        if (!confirm(`Remove order ${orderLabel} from the admin dashboard?`)) return;
+        const reasonPrompt = prompt(`Reason for removing ${orderLabel}?`);
+        if (reasonPrompt === null) return;
+        const reason = reasonPrompt.trim();
+        if (!reason) {
+          showToast("Reason is required to remove an order.", "err");
+          return;
+        }
+        const actorPrompt = prompt("Who is authorising this removal?", state.subject || "admin");
+        if (actorPrompt === null) return;
+        const deletedBy = (actorPrompt || "").trim() || state.subject || "admin";
+        executeAction(
+          `/api/admin/orders/${order.id}/delete`,
+          `Order ${orderLabel} removed from admin dashboard`,
+          { json: { reason, deleted_by: deletedBy } },
+        );
+      });
+
+      const purgeBtn = makeActionButton("Purge for users", "btn btn--danger");
+      purgeBtn.addEventListener("click", () => {
+        const reasonPrompt = prompt(`Provide the escalation reason for purging ${orderLabel}:`);
+        if (reasonPrompt === null) return;
+        const reason = reasonPrompt.trim();
+        if (!reason) {
+          showToast("Reason is required to purge an order.", "err");
+          return;
+        }
+        const actorPrompt = prompt("Who approved this purge?", state.subject || "admin");
+        if (actorPrompt === null) return;
+        const deletedBy = (actorPrompt || "").trim() || state.subject || "admin";
+        const password = prompt("Enter admin password to remove this order for customer and restaurant:");
+        if (password === null) return;
+        if (!password.trim()) {
+          showToast("Password is required", "err");
+          return;
+        }
+        executeAction(
+          `/api/admin/orders/${order.id}/purge`,
+          `Order ${orderLabel} purged for customer and restaurant`,
+          { json: { password: password.trim(), reason, deleted_by: deletedBy } },
+        );
+      });
+
+      card.appendChild(actions);
+
+      const toggle = document.createElement("button");
+      toggle.className = "admin-order-card__toggle";
+      toggle.type = "button";
+      toggle.textContent = "Show details";
+      toggle.addEventListener("click", () => {
+        details.hidden = !details.hidden;
+        toggle.textContent = details.hidden ? "Show details" : "Hide details";
+      });
+
+      card.appendChild(toggle);
+      card.appendChild(details);
+
+      adminOrdersEl.appendChild(card);
+    });
+    renderMetrics();
+  }
+
+  function renderDetail() {
+    const detail = state.restaurants.find((r) => r.restaurant.id === state.selectedId);
+    if (!detail) { detailCard.classList.add("hidden"); return; }
+    const { restaurant, menu, opening_hours, delivery_zips } = detail;
+    const extra = restaurant.extra || {};
+
+    detailCard.classList.remove("hidden");
+    detailName.textContent = restaurant.name;
+    detailMeta.innerHTML = `
+      <span class="pill">ID ${restaurant.public_id || "–"}</span>
+      <span>${restaurant.street || "–"}${restaurant.city ? ", " + restaurant.city : ""}</span>
+      <span>PLZ ${restaurant.postal_code || "–"}</span>
+      <span>${restaurant.is_online ? "Online" : "Offline"}</span>
+      <span>${menu.length} menu items</span>
+    `;
+    if (restaurant.email) {
+      const emailSpan = document.createElement("span");
+      emailSpan.className = "pill";
+      emailSpan.textContent = restaurant.email;
+      detailMeta.appendChild(emailSpan);
+    }
+    const statusBits = [];
+    if (restaurant.busy_until) statusBits.push("Busy until " + formatDateIso(restaurant.busy_until));
+    statusBits.push(restaurant.is_approved ? "Approved" : "Awaiting approval");
+    detailStatus.textContent = statusBits.join(" · ");
+    detailImage.src = restaurant.image_url || "https://via.placeholder.com/128x128.png?text=Restaurant";
+
+    editFields.name.value = restaurant.name || "";
+    editFields.email.value = restaurant.email || "";
+    editFields.street.value = restaurant.street || "";
+    editFields.city.value = restaurant.city || "";
+    editFields.postal.value = restaurant.postal_code || "";
+    editFields.minOrder.value = restaurant.min_order_cents != null ? (restaurant.min_order_cents / 100).toFixed(2) : "";
+    editFields.deliveryFee.value = restaurant.delivery_fee_cents != null ? (restaurant.delivery_fee_cents / 100).toFixed(2) : "";
+    editFields.prepTime.value = restaurant.prep_time_min ?? "";
+    editFields.busyUntil.value = restaurant.busy_until || "";
+    editFields.image.value = restaurant.image_url || "";
+    editFields.description.value = restaurant.description || "";
+    editFields.ownerName.value = extra.owner_name || "";
+    editFields.ownerEmail.value = extra.owner_email || "";
+    editFields.ownerPhone.value = extra.owner_phone || "";
+    editFields.notes.value = extra.internal_notes || "";
+    editFields.deliveryZips.value = fillDeliveryZips(delivery_zips);
+    editFields.hours.value = fillHoursTextarea(opening_hours);
+    editFields.password.value = "";
+    editFields.online.checked = !!restaurant.is_online;
+    editFields.demo.checked = !!restaurant.is_demo;
+    editFields.approved.checked = !!restaurant.is_approved;
+
+    detailMenu.innerHTML = "";
+    if (menu.length) {
+      menu.forEach((item) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<strong>${item.name}</strong> — ${formatMoney(item.price_cents)}`;
+        detailMenu.appendChild(li);
+      });
+    } else {
+      const li = document.createElement("li");
+      li.textContent = "No menu items yet.";
+      detailMenu.appendChild(li);
+    }
+
+    detailHours.innerHTML = "";
+    if (opening_hours.length) {
+      opening_hours
+        .slice()
+        .sort((a, b) => a.weekday - b.weekday || a.open_time.localeCompare(b.open_time))
+        .forEach((oh) => {
+          const li = document.createElement("li");
+          li.textContent = `${weekdays[oh.weekday] || oh.weekday}: ${oh.open_time} – ${oh.close_time}`;
+          detailHours.appendChild(li);
+        });
+    } else {
+      const li = document.createElement("li");
+      li.textContent = "No opening hours defined.";
+      detailHours.appendChild(li);
+    }
+
+    detailZips.innerHTML = "";
+    if (delivery_zips.length) {
+      delivery_zips.forEach((dz) => {
+        const span = document.createElement("span");
+        span.className = "pill";
+        span.textContent = dz.postal_code;
+        detailZips.appendChild(span);
+      });
+    } else {
+      const span = document.createElement("span");
+      span.className = "muted";
+      span.textContent = "No postal codes registered.";
+      detailZips.appendChild(span);
+    }
+
+    state.detailDirty = false;
+  }
+
+  // --- data flow ---
+  qsa("#form-edit input, #form-edit textarea").forEach((el) => el.addEventListener("input", () => (state.detailDirty = true)));
+
+  async function refreshRestaurants({ silent = false } = {}) {
+    if (!state.token) return;
+    try {
+      const data = await apiRequest("/api/admin/restaurants");
+      state.restaurants = data;
+      if (!state.selectedId && data.length) {
+        state.selectedId = data[0].restaurant.id;
+      } else if (state.selectedId && !data.some((i) => i.restaurant.id === state.selectedId)) {
+        state.selectedId = data.length ? data[0].restaurant.id : null;
+      }
+      renderList();
+      renderPendingApplications();
+      if (!state.detailDirty) renderDetail();
+      lastRefreshEl.textContent = new Date().toLocaleTimeString();
+      refreshVouchers({ silent: true }).catch(() => {});
+      refreshDeletedRestaurants({ silent: true }).catch(() => {});
+      if (!silent) showToast("Data refreshed");
+    } catch (err) {
+      showToast(err.message || "Refresh failed", "err");
+    }
+  }
+
+  async function refreshVouchers({ silent = false } = {}) {
+    if (!state.token) return;
+    try {
+      const data = await apiRequest("/api/admin/vouchers");
+      state.vouchers = Array.isArray(data)
+        ? data
+            .slice()
+            .sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0))
+        : [];
+      renderVouchers();
+    } catch (err) {
+      if (!silent) {
+        showToast(err.message || "Failed to load vouchers", "err");
+      }
+    }
+  }
+
+  async function handleVoucherDelete(voucher) {
+    if (!voucher?.id) return;
+    if (!confirm(`Delete voucher ${voucher.code}?`)) return;
+    try {
+      await apiRequest(`/api/admin/vouchers/${voucher.id}`, { method: "DELETE" });
+      showToast(`Voucher ${voucher.code} deleted`, "ok");
+      await refreshVouchers({ silent: true });
+    } catch (err) {
+      if (err.status === 409) {
+        const force = confirm("Voucher has related usage. Force delete anyway?");
+        if (!force) {
+          showToast(err.message || "Voucher delete aborted", "err");
+          return;
+        }
+        try {
+          await apiRequest(`/api/admin/vouchers/${voucher.id}?force=true`, { method: "DELETE" });
+          showToast(`Voucher ${voucher.code} deleted`, "ok");
+          await refreshVouchers({ silent: true });
+        } catch (errForce) {
+          showToast(errForce.message || "Force delete failed", "err");
+        }
+      } else {
+        showToast(err.message || "Failed to delete voucher", "err");
+      }
+    }
+  }
+
+  async function refreshDeletedRestaurants({ silent = false, query } = {}) {
+    if (!state.token) return;
+    try {
+      const term = query !== undefined ? query : state.deletedFilter;
+      const endpoint = term
+        ? `/api/admin/restaurants/deleted?q=${encodeURIComponent(term)}`
+        : "/api/admin/restaurants/deleted";
+      const data = await apiRequest(endpoint);
+      state.deletedRestaurants = Array.isArray(data) ? data : [];
+      renderDeletedRestaurants();
+    } catch (err) {
+      if (!silent) {
+        showToast(err.message || "Failed to load archived restaurants", "err");
+      }
+    }
+  }
+
+  async function handleArchivedRestaurantDelete(entry) {
+    if (!entry?.id) return;
+    if (!confirm(`Delete archived record for ${entry.name}?`)) return;
+    try {
+      await apiRequest(`/api/admin/restaurants/deleted/${entry.id}`, { method: "DELETE" });
+      showToast("Archived record deleted", "ok");
+      await refreshDeletedRestaurants({ silent: true });
+    } catch (err) {
+      showToast(err.message || "Failed to delete archived record", "err");
+    }
+  }
+
+  async function refreshAdminOrders({ silent = false } = {}) {
+    if (!state.token) return;
+    try {
+      const data = await apiRequest("/api/admin/orders");
+      state.orders = Array.isArray(data) ? data : [];
+      renderAdminOrders();
+    } catch (err) {
+      if (!silent) showToast(err.message || "Failed to load orders", "err");
+    }
+  }
+
+  function startAutoRefresh() {
+    stopAutoRefresh();
+    if (!state.autoRefresh) return;
+    state.refreshTimer = setInterval(() => {
+      if (!state.token) return;
+      if (!state.detailDirty) refreshRestaurants({ silent: true });
+      refreshVouchers({ silent: true });
+      refreshAdminOrders({ silent: true });
+      refreshDeletedRestaurants({ silent: true });
+      refreshGdprRequests({ silent: true });
+      refreshDeletedOrders({ silent: true });
+      refreshInvoiceMonths({ silent: true });
+    }, AUTO_REFRESH_MS);
+  }
+  function stopAutoRefresh() {
+    if (state.refreshTimer) { clearInterval(state.refreshTimer); state.refreshTimer = null; }
+  }
+
+  // --- actions ---
+  async function approveRestaurant(rid, button) {
+    if (!state.token) return;
+    const btn = button;
+    const original = btn ? btn.innerHTML : "";
+    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i><span>Approving…</span>'; }
+    try {
+      await apiRequest(`/api/admin/restaurants/${rid}/approve`, { method: "POST" });
+      showToast("Restaurant approved", "ok");
+      await refreshRestaurants({ silent: true });
+    } catch (err) {
+      showToast(err.message || "Approval failed", "err");
+    } finally {
+      if (btn) { btn.disabled = false; btn.innerHTML = original || '<span>Approve</span>'; }
+    }
+  }
+
+  async function handleLogin(ev) {
+  ev.preventDefault();
+  const email = qs("#login-email").value.trim();
+  const password = qs("#login-password").value;
+  const btn = qs("#btn-login");
+  if (!email || !password) return;
+  btn.disabled = true;
+  btn.textContent = "Signing in…";
+  try {
+    // 1) Get JWT (unprotected endpoint)
+    const data = await apiRequest("/api/admin/login", {
+      method: "POST",
+      json: { email_or_name: email, password },
+    });
+    saveAdminToken(data.access_token);
+
+    // 2) Immediately probe a protected endpoint that uses X-Admin-Token
+    await apiRequest("/api/admin/restaurants");
+
+    // 3) Only now, switch UI + toast
+    updateVisibility();
+    showToast("Welcome back, admin!");
+    await Promise.all([
+      refreshRestaurants({ silent: true }),
+      refreshVouchers({ silent: true }),
+      refreshAdminOrders({ silent: true }),
+      refreshDeletedRestaurants({ silent: true }),
+      refreshGdprRequests({ silent: true }),
+      refreshDeletedOrders({ silent: true }),
+      refreshInvoiceMonths({ silent: true }),
+    ]);
+    startAutoRefresh();
+  } catch (err) {
+    // if probe fails (e.g., wrong ADMIN_TOKEN on server), show one clear error
+    saveAdminToken(""); // drop the JWT since we aren't actually “in”
+    updateVisibility();
+    showToast(err.message || "Login failed (admin auth)", "err");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Sign in";
+  }
+}
+
+
+  function handleLogout() {
+    saveAdminToken("");
+    stopAutoRefresh();
+    state.vouchers = [];
+    state.orders = [];
+    state.deletedRestaurants = [];
+    state.deletedOrders = [];
+    state.gdprRequests = [];
+    state.invoiceMonths = [];
+    state.invoiceOrders = [];
+    state.selectedInvoiceMonth = null;
+    renderVouchers();
+    renderAdminOrders();
+    renderDeletedRestaurants();
+    renderDeletedOrders();
+    renderGdprRequests();
+    renderInvoiceArchive();
+    updateVisibility();
+    showToast("Signed out");
+  }
+
+  function buildExtraPayload() {
+    const extra = {};
+    const t = (v) => v.value.trim();
+    if (t(editFields.ownerName)) extra.owner_name = t(editFields.ownerName);
+    if (t(editFields.ownerEmail)) extra.owner_email = t(editFields.ownerEmail);
+    if (t(editFields.ownerPhone)) extra.owner_phone = t(editFields.ownerPhone);
+    if (t(editFields.notes)) extra.internal_notes = t(editFields.notes);
+    return extra;
+  }
+
+  function buildUpdatePayload() {
+    const payload = {
+      name: editFields.name.value.trim(),
+      email: editFields.email.value.trim().toLowerCase() || null,
+      street: editFields.street.value.trim(),
+      city: editFields.city.value.trim() || null,
+      postal_code: editFields.postal.value.trim(),
+      description: editFields.description.value.trim(),
+      image_url: editFields.image.value.trim() || null,
+      is_online: editFields.online.checked,
+      is_demo: editFields.demo.checked,
+      busy_until: editFields.busyUntil.value.trim() || null,
+    };
+    const minOrder = parseMoneyToCents(editFields.minOrder.value);
+    const deliveryFee = parseMoneyToCents(editFields.deliveryFee.value);
+    const prepTime = editFields.prepTime.value ? Number(editFields.prepTime.value) : null;
+    if (minOrder != null) payload.min_order_cents = minOrder;
+    if (deliveryFee != null) payload.delivery_fee_cents = deliveryFee;
+    if (prepTime != null) payload.prep_time_min = prepTime;
+    payload.is_approved = !!editFields.approved.checked;
+
+    const extra = buildExtraPayload();
+    payload.extra = Object.keys(extra).length ? extra : {};
+    payload.delivery_zips = parseZips(editFields.deliveryZips.value);
+
+    const hours = parseHours(editFields.hours.value);
+    payload.opening_hours = hours;
+
+    if (editFields.password.value.trim()) payload.password = editFields.password.value.trim();
+    return payload;
+  }
+
+  async function handleSave(ev) {
+    ev.preventDefault();
+    if (!state.selectedId) return;
+    const btn = qs("#btn-save");
+    btn.disabled = true; btn.textContent = "Saving…";
+    try {
+      const payload = buildUpdatePayload();
+      await apiRequest(`/api/admin/restaurants/${state.selectedId}`, { method: "PATCH", json: payload });
+      state.detailDirty = false;
+      await refreshRestaurants({ silent: true });
+      showToast("Restaurant updated");
+    } catch (err) {
+      showToast(err.message || "Update failed", "err");
+    } finally {
+      btn.disabled = false; btn.textContent = "Save changes";
+    }
+  }
+
+  async function handleDelete() {
+    if (!state.selectedId) return;
+    const rid = state.selectedId;
+    const name = state.restaurants.find((r) => r.restaurant.id === rid)?.restaurant.name || "this restaurant";
+    if (!confirm(`Delete ${name}? This cannot be undone.`)) return;
+    const reasonInput = prompt("Provide a short reason for this deletion (visible in the audit trail):");
+    if (reasonInput === null) return;
+    const reason = reasonInput.trim();
+    if (!reason) {
+      showToast("Deletion aborted — reason is required for auditing.", "err");
+      return;
+    }
+    const actorInput = prompt("Who is performing this deletion?", state.subject || "admin");
+    if (actorInput === null) return;
+    const deletedBy = (actorInput || "").trim() || state.subject || "admin";
+    const btn = qs("#btn-delete");
+    btn.disabled = true; btn.textContent = "Deleting…";
+    try {
+      await apiRequest(`/api/admin/restaurants/${rid}`, { method: "DELETE", json: { reason, deleted_by: deletedBy } });
+      showToast("Restaurant deleted", "ok");
+      state.selectedId = null;
+      await refreshRestaurants({ silent: true });
+      await refreshDeletedRestaurants({ silent: true });
+    } catch (err) {
+      if (err.status === 409) {
+        const force = confirm("There are linked orders. Force deletion (removes orders, wallet data)?");
+        if (force) {
+          try {
+            await apiRequest(
+              `/api/admin/restaurants/${rid}?force=true`,
+              { method: "DELETE", json: { reason, deleted_by: deletedBy } },
+            );
+            showToast("Restaurant deleted with force", "ok");
+            state.selectedId = null;
+            await refreshRestaurants({ silent: true });
+            await refreshDeletedRestaurants({ silent: true });
+          } catch (err2) {
+            showToast(err2.message || "Force delete failed", "err");
+          }
+        } else {
+          showToast(err.message || "Delete aborted", "err");
+        }
+      } else {
+        showToast(err.message || "Delete failed", "err");
+      }
+    } finally {
+      btn.disabled = false; btn.textContent = "Delete";
+    }
+  }
+
+  async function handleImpersonate() {
+    if (!state.selectedId) return;
+    const btn = qs("#btn-impersonate");
+    btn.disabled = true; btn.textContent = "Preparing…";
+    try {
+      const data = await apiRequest(`/api/admin/restaurants/${state.selectedId}/impersonate`, { method: "POST" });
+      storeOwnerToken(data.access_token);
+      showToast("Owner session ready. Opening dashboard…");
+      window.open("restaurant-dashboard.html#profile", "_blank");
+    } catch (err) {
+      showToast(err.message || "Failed to impersonate", "err");
+    } finally {
+      btn.disabled = false; btn.textContent = "Open owner dashboard";
+    }
+  }
+
+  function buildCreatePayload() {
+    const payload = {
+      name: createFields.name.value.trim(),
+      email: createFields.loginEmail.value.trim().toLowerCase() || null,
+      street: createFields.street.value.trim(),
+      city: createFields.city.value.trim() || null,
+      postal_code: createFields.postal.value.trim(),
+      description: createFields.description.value.trim(),
+      password: createFields.password.value.trim(),
+      image_url: createFields.image.value.trim() || null,
+      min_order_cents: parseMoneyToCents(createFields.minOrder.value) || 0,
+      delivery_fee_cents: parseMoneyToCents(createFields.deliveryFee.value) || 0,
+      is_approved: !!(createFields.approved ? createFields.approved.checked : true),
+      extra: {},
+      delivery_zips: parseZips(createFields.zips.value),
+      opening_hours: [],
+    };
+    const ownerEmail = createFields.ownerEmail.value.trim();
+    const phone = createFields.ownerPhone.value.trim();
+    const notes = createFields.notes.value.trim();
+    if (ownerEmail) payload.extra.owner_email = ownerEmail;
+    if (phone) payload.extra.owner_phone = phone;
+    if (notes) payload.extra.internal_notes = notes;
+
+    const hoursText = createFields.hours.value;
+    if (hoursText.trim()) payload.opening_hours = parseHours(hoursText);
+
+    if (!Object.keys(payload.extra).length) delete payload.extra;
+    return payload;
+  }
+
+  function resetCreateForm() {
+    Object.values(createFields).forEach((el) => {
+      if (!el) return;
+      if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+        if (el.type === "checkbox") el.checked = true;
+        else el.value = "";
+      }
+    });
+    createFields.minOrder.value = "0";
+    createFields.deliveryFee.value = "0";
+  }
+
+  async function handleCreate(ev) {
+    ev.preventDefault();
+    const btn = qs("#btn-create");
+    if (!state.token) return;
+    btn.disabled = true; btn.textContent = "Creating…";
+    try {
+      const payload = buildCreatePayload();
+      if (!payload.name || !payload.email || !payload.street || !payload.postal_code || !payload.password || !payload.description) {
+        throw new Error("Please complete all required fields.");
+      }
+      await apiRequest("/api/admin/restaurants", { method: "POST", json: payload });
+      showToast("Restaurant created");
+      resetCreateForm();
+      await refreshRestaurants({ silent: true });
+    } catch (err) {
+      showToast(err.message || "Create failed", "err");
+    } finally {
+      btn.disabled = false; btn.textContent = "Create restaurant";
+    }
+  }
+
+  async function handleGdprSubmit(ev) {
+    ev.preventDefault();
+    if (!state.token || !gdprForm) return;
+    const requesterTypeEl = gdprForm.querySelector("#gdpr-requester-type");
+    const requestTypeEl = gdprForm.querySelector("#gdpr-request-type");
+    const emailEl = gdprForm.querySelector("#gdpr-email");
+    const subjectIdEl = gdprForm.querySelector("#gdpr-subject-id");
+    const notesEl = gdprForm.querySelector("#gdpr-notes");
+    const submitBtn = gdprForm.querySelector('button[type="submit"]');
+    const originalLabel = submitBtn ? submitBtn.innerHTML : "";
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.innerHTML = '<i class="fa-solid fa-hourglass-half" aria-hidden="true"></i><span>Logging…</span>'; }
+    if (gdprMessageEl) { gdprMessageEl.textContent = ""; gdprMessageEl.style.color = ""; }
+
+    const requesterType = requesterTypeEl?.value || "customer";
+    const requestType = requestTypeEl?.value || "export";
+    const email = emailEl?.value.trim();
+    const subjectIdRaw = subjectIdEl?.value.trim();
+    let requesterId = null;
+    let notes = notesEl?.value.trim() || "";
+    if (subjectIdRaw) {
+      const parsed = Number(subjectIdRaw);
+      if (Number.isFinite(parsed)) requesterId = parsed;
+      else notes = notes ? `${notes}\nSubject ID: ${subjectIdRaw}` : `Subject ID: ${subjectIdRaw}`;
+    }
+
+    const payload = {
+      requester_type: requesterType,
+      request_type: requestType,
+      requester_email: email || null,
+      requester_id: requesterId,
+      details: notes || null,
+    };
+
+    try {
+      await apiRequest("/api/admin/gdpr/requests", { method: "POST", json: payload });
+      if (gdprMessageEl) {
+        gdprMessageEl.textContent = "Request logged.";
+        gdprMessageEl.style.color = "var(--brand-dark)";
+      }
+      gdprForm.reset();
+      if (requesterTypeEl) requesterTypeEl.value = "customer";
+      if (requestTypeEl) requestTypeEl.value = "export";
+      await refreshGdprRequests({ silent: true });
+    } catch (err) {
+      if (gdprMessageEl) {
+        gdprMessageEl.textContent = err.message || "Failed to log request";
+        gdprMessageEl.style.color = "crimson";
+      }
+      showToast(err.message || "Failed to log request", "err");
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalLabel || '<i class="fa-solid fa-plus" aria-hidden="true"></i><span>Log request</span>';
+      }
+    }
+  }
+
+  function handleInvoiceDownload() {
+    if (!state.selectedInvoiceMonth) return;
+    downloadAdminFile(
+      `/api/admin/invoices/monthly/${state.selectedInvoiceMonth}?format=pdf`,
+      `invoices_${state.selectedInvoiceMonth}.pdf`
+    );
+  }
+
+  function toggleAutoRefresh() {
+    state.autoRefresh = !state.autoRefresh;
+    const btn = qs("#btn-toggle-auto");
+    btn.textContent = state.autoRefresh ? "Pause Auto-refresh" : "Resume Auto-refresh";
+    if (state.autoRefresh) { startAutoRefresh(); showToast("Auto-refresh resumed"); }
+    else { stopAutoRefresh(); showToast("Auto-refresh paused", "ok", "Changes still save in real time."); }
+  }
+
+  setupCollapsibles();
+  if (collapsedSections.has("create-owner")) {
+    collapsedSections.delete("create-owner");
+    persistCollapsed();
+  }
+  setCreateFormVisible(false);
+  renderMetrics();
+
+  // --- voucher helpers & events ---
+  function randomCode() {
+    const part = () => Math.random().toString(36).toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 4);
+    return `${part()}-${part()}`;
+  }
+
+  const btnGenCode = document.getElementById("btnGenCode");
+  const btnCreateVoucher = document.getElementById("btnCreateVoucher");
+  const voucherCodeEl = document.getElementById("voucherCode");
+  const voucherAmountEl = document.getElementById("voucherAmount");
+  const voucherMsgEl = document.getElementById("voucherMsg");
+
+  if (btnGenCode) {
+    btnGenCode.addEventListener("click", () => {
+      voucherCodeEl.value = randomCode();
+    });
+  }
+
+  if (btnCreateVoucher) {
+    btnCreateVoucher.addEventListener("click", async () => {
+      const code = (voucherCodeEl.value || "").trim().toUpperCase();
+      const amountStr = (voucherAmountEl.value || "").trim();
+      const amountCents = euroToCents(amountStr);
+
+      voucherMsgEl.textContent = "";
+      voucherMsgEl.style.color = "";
+
+      if (!code) {
+        voucherMsgEl.textContent = "Please enter a code.";
+        voucherMsgEl.style.color = "crimson";
+        return;
+      }
+      if (amountCents == null || amountCents <= 0) {
+        voucherMsgEl.textContent = "Enter a positive amount (e.g. 10 or 12,50).";
+        voucherMsgEl.style.color = "crimson";
+        return;
+      }
+
+      btnCreateVoucher.disabled = true;
+      btnCreateVoucher.textContent = "Creating…";
+      try {
+        const payload = {
+          code,
+          initial_balance_cents: amountCents,
+          is_active: true,
+        };
+      const data = await apiRequest("/api/admin/vouchers", {
+        method: "POST",
+        json: payload,
+      });
+      voucherMsgEl.textContent = `Voucher created: ${data.code} worth ${(data.initial_balance_cents / 100).toFixed(2)} €`;
+      voucherMsgEl.style.color = "#4ade80";
+      voucherCodeEl.value = "";
+      voucherAmountEl.value = "";
+      await refreshVouchers({ silent: true });
+      } catch (e) {
+        console.error(e);
+        voucherMsgEl.textContent = e.message || "Failed to create voucher";
+        voucherMsgEl.style.color = "crimson";
+      } finally {
+        btnCreateVoucher.disabled = false;
+        btnCreateVoucher.textContent = "Create";
+      }
+    });
+  }
+  createToggleBtn?.addEventListener("click", () => {
+    if (!createFormWrap) return;
+    const shouldOpen = createFormWrap.classList.contains("hidden");
+    setCreateFormVisible(shouldOpen);
+  });
+  // --- bindings ---
+  qs("#form-login").addEventListener("submit", handleLogin);
+  qs("#btn-logout").addEventListener("click", handleLogout);
+  qs("#btn-refresh").addEventListener("click", () => refreshRestaurants({ silent: true }));
+  qs("#btn-toggle-auto").addEventListener("click", toggleAutoRefresh);
+  qs("#form-edit").addEventListener("submit", handleSave);
+  qs("#btn-delete").addEventListener("click", handleDelete);
+  qs("#btn-impersonate").addEventListener("click", handleImpersonate);
+  qs("#form-create").addEventListener("submit", handleCreate);
+  refreshOrdersBtn?.addEventListener("click", () => refreshAdminOrders({ silent: false }));
+  gdprForm?.addEventListener("submit", handleGdprSubmit);
+  gdprStatusFilter?.addEventListener("change", (ev) => {
+    state.gdprStatusFilter = ev.target.value || "all";
+    renderGdprRequests();
+  });
+  gdprRefreshBtn?.addEventListener("click", () => refreshGdprRequests({ silent: false }));
+  invoiceRefreshBtn?.addEventListener("click", () => refreshInvoiceMonths({ silent: false }));
+  invoiceDownloadBtn?.addEventListener("click", handleInvoiceDownload);
+  filterInput.addEventListener("input", renderList);
+  clearFilterBtn.addEventListener("click", () => { filterInput.value = ""; renderList(); });
+  deletedSearchBtn?.addEventListener("click", () => {
+    const term = deletedFilterInput ? deletedFilterInput.value.trim() : "";
+    state.deletedFilter = term;
+    refreshDeletedRestaurants({ silent: false, query: term });
+  });
+  deletedClearBtn?.addEventListener("click", () => {
+    if (deletedFilterInput) deletedFilterInput.value = "";
+    state.deletedFilter = "";
+    refreshDeletedRestaurants({ silent: false, query: "" });
+  });
+  deletedFilterInput?.addEventListener("input", (ev) => {
+    state.deletedFilter = ev.target.value || "";
+    renderDeletedRestaurants();
+  });
+  deletedOrdersFilterInput?.addEventListener("input", (ev) => {
+    state.deletedOrderFilter = ev.target.value || "";
+    renderDeletedOrders();
+  });
+  orderSearchInput?.addEventListener("input", (ev) => {
+    state.orderQuery = ev.target.value || "";
+    renderAdminOrders();
+  });
+  // --- init ---
+  renderVouchers();
+  renderDeletedRestaurants();
+  renderAdminOrders();
+  renderGdprRequests();
+  renderDeletedOrders();
+  renderInvoiceArchive();
+  updateVisibility();
+  if (state.token) {
+    Promise.allSettled([
+      refreshRestaurants({ silent: true }),
+      refreshVouchers({ silent: true }),
+      refreshAdminOrders({ silent: true }),
+      refreshDeletedRestaurants({ silent: true }),
+      refreshGdprRequests({ silent: true }),
+      refreshDeletedOrders({ silent: true }),
+      refreshInvoiceMonths({ silent: true }),
+    ]).finally(startAutoRefresh);
+  }
+})();
+</script>
+</html>

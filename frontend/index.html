@@ -1,0 +1,2528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Lieferspatz.de - Germany's favorite food delivery service. Order from thousands of restaurants near you.">
+  <title>Lieferspatz.de - Food Delivery</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    /* ============== CSS Variables ============== */
+    :root {
+      --brand: #ff8000; --brand-600: #ff8000; --brand-700: #e27000;
+      --border: #e5e7eb; --surface: #fff; --surface-2: #f8fafc; --danger: #d92d20;
+      --text: #333; --muted: #666; --ok: #16a34a;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.1), 0 5px 10px rgba(0,0,0,0.05);
+      --radius: 8px; --radius-lg: 12px;
+      --transition: all 0.2s ease;
+      --header-control-height: 24px;
+    }
+
+    /* ============== Base Styles ============== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background: #f5f5f5; color: var(--text); line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; border: none; background: none; }
+    img { max-width: 100%; }
+
+    /* ============== Header Styles ============== */
+    .topbar {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 10px 16px 16px;
+      background: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,.08);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .topbar-main {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: nowrap;
+    }
+    .brand-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--header-control-height);
+      height: var(--header-control-height);
+      border-radius: 14px;
+      border: none;
+      background: transparent;
+      color: var(--brand);
+      font-size: 20px;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+    .brand-button:hover,
+    .brand-button.is-active {
+      color: var(--brand-700);
+    }
+    .brand-button i { font-size: 20px; }
+    .brand-name {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: .2px;
+      color: var(--brand-700);
+      flex-shrink: 0;
+    }
+    .header-search {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f5f5f5;
+      padding: 0 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      transition: var(--transition);
+      flex: 0 1 280px;
+      min-width: 220px;
+      max-width: 320px;
+      height: var(--header-control-height);
+    }
+    .header-search:focus-within {
+      box-shadow: 0 0 0 3px rgba(255, 128, 0, 0.15);
+      border-color: var(--brand);
+    }
+    .header-search i { color: #888; }
+    .header-search input {
+      flex: 1 1 auto;
+      min-width: 0;
+      border: 0;
+      background: transparent;
+      font-size: 14px;
+      padding: 0;
+      outline: none;
+    }
+    .header-search select {
+      border: 0;
+      background: transparent;
+      font-size: 12px;
+      color: #333;
+      padding: 6px 4px;
+      border-radius: var(--radius);
+    }
+    .header-search button {
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: var(--brand);
+      color: #fff;
+      border: none;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .header-search button:hover { background: var(--brand-700); }
+    .location-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 12px;
+      border: none;
+      border-radius: 999px;
+      background: transparent;
+      height: var(--header-control-height);
+      font-size: 13px;
+      color: #555;
+      flex-shrink: 0;
+      max-width: 260px;
+      white-space: nowrap;
+    }
+    #current-location {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .delivery-options {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+      background: #fff;
+      height: var(--header-control-height);
+      flex-shrink: 0;
+    }
+    .delivery-options .seg {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      padding: 0 16px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 13px;
+      line-height: 1;
+      transition: var(--transition);
+      height: 100%;
+    }
+    .delivery-options .seg.active { 
+      background: var(--brand); color: #fff; 
+    }
+    .delivery-options .seg:not(.active):hover {
+      background: #fff7ed;
+    }
+    .lang-switch {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+      background: #fff;
+      height: var(--header-control-height);
+      flex-shrink: 0;
+    }
+    .lang {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0 10px;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      font-size: 12px;
+      transition: var(--transition);
+      height: 100%;
+    }
+    .lang.is-active { background: #ffefe0; color: var(--brand-700); font-weight: 700; }
+    .lang:not(.is-active):hover { background: #f5f5f5; }
+    .lang .flag { font-size: 16px; line-height: 1; }
+    .location { font-size: 12px; color: #555; white-space: nowrap; }
+    .header-right {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      white-space: nowrap;
+      margin-left: auto;
+      height: var(--header-control-height);
+    }
+    .menu-toggle {
+      border: 1px solid var(--border); background: #fff; color: #333; 
+      border-radius: 10px; width: var(--header-control-height); height: var(--header-control-height);
+      cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+    .menu-toggle:hover { border-color: var(--brand); }
+    .menu-toggle .fa-bars { font-size: 18px; }
+    .menu-panel {
+      position: absolute; right: 0; top: calc(var(--header-control-height) + 6px); width: min(320px, 92vw);
+      background: #fff; border: 1px solid var(--border); border-radius: 12px;
+      box-shadow: var(--shadow-lg); opacity: 0; visibility: hidden;
+      transform: translateY(-10px); transition: var(--transition);
+      z-index: 101;
+    }
+    .menu-panel.is-open { 
+      opacity: 1; visibility: visible; transform: translateY(0); 
+    }
+    .menu-inner { padding: 12px; }
+    .menu-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .auth-grid { display: flex; gap: 8px; flex-wrap: wrap; }
+    .menu-sep { border: 0; border-top: 1px solid #eee; margin: 10px 0; }
+    .menu-block { display: grid; gap: 8px; margin: 4px 0; }
+    .menu-block-title { font-size: 12px; color: #666; }
+    .menu-links { display: grid; gap: 6px; }
+    .menu-link {
+      display: flex; gap: 8px; align-items: center; text-decoration: none; 
+      color: #333; padding: 6px 8px; border-radius: 8px; transition: var(--transition);
+    }
+    .menu-link:hover { background: #fafafa; }
+
+    /* tighten old bits that moved */
+    .auth-bar { display: none; } /* the inline old auth bar is now inside the menu */
+
+    /* ============== Navs ============== */
+    .categories {
+      display: flex; gap: 8px; padding: 16px; background: #fff; 
+      overflow-x: auto; white-space: nowrap; border-bottom: 1px solid #eee; 
+      scrollbar-width: none; /* Firefox */
+    }
+    .categories--topbar {
+      padding: 4px 0 0;
+      background: transparent;
+      border-bottom: none;
+      margin: 0;
+      width: 100%;
+    }
+    .categories::-webkit-scrollbar { display: none; } /* Chrome, Safari, Edge */
+    .categories div {
+      display: flex; flex-direction: column; align-items: center; 
+      font-size: 12px; min-width: 20mm; cursor: pointer;
+      transition: var(--transition); padding: 2px; gap: 4px;
+    }
+    .categories div:hover { transform: translateY(-2px); }
+    .categories img {
+      width: 20mm; height: 20mm; object-fit: cover;
+      border-radius: 8px; box-shadow: var(--shadow-sm);
+    }
+    .categories div span {
+      font-weight: 600; text-align: center; color: var(--text);
+      max-width: 20mm; display: block; white-space: normal;
+      line-height: 1.2; word-break: break-word;
+    }
+    .primary-tabs {
+      display: flex; gap: 8px; padding: 10px 16px; background: #fff; 
+      border-bottom: 1px solid #eee; position: sticky; top: 56px; 
+      z-index: 90; overflow-x: auto; scrollbar-width: none;
+    }
+    .primary-tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      padding: 8px 12px; border-radius: 999px; border: 1px solid #eee; 
+      background: #fafafa; cursor: pointer; transition: var(--transition);
+      white-space: nowrap;
+    }
+    .tab:hover { background: #fff; }
+    .tab.is-active { border-color: var(--brand); color: var(--brand); }
+    .tab.tab--brand {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 0; border: none; background: transparent;
+      font-size: 20px; font-weight: 800; color: var(--brand);
+    }
+    .tab.tab--brand i { font-size: 22px; color: var(--brand); }
+    .tab.tab--brand span { letter-spacing: .3px; }
+    .tab.tab--brand.is-active { border: none; background: transparent; color: var(--brand); }
+    .tab.tab--brand:hover { background: transparent; border: none; opacity: 0.85; }
+    .tab.tab--brand:focus-visible {
+      outline: 2px solid rgba(255, 128, 0, 0.4);
+      outline-offset: 4px;
+    }
+    .topbar .primary-tabs {
+      padding: 0; background: transparent; border: none; position: static;
+      overflow: visible;
+    }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    /* ============== Layout ============== */
+    .container {
+      display: flex; max-width: 1200px; margin: 0 auto; 
+      padding: 16px; gap: 16px;
+    }
+    .sidebar {
+      width: 280px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: sticky;
+      top: 120px;
+      align-self: flex-start;
+    }
+    .filter-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+      display: grid;
+      gap: 14px;
+    }
+    .filter-card--summary {
+      padding: 20px;
+      background: linear-gradient(135deg, #fff7ed 0%, #fff0d9 100%);
+      border-color: rgba(255, 128, 0, 0.25);
+      box-shadow: 0 10px 25px rgba(255, 128, 0, 0.18);
+    }
+    .filter-summary {
+      display: grid;
+      gap: 4px;
+    }
+    .filter-summary__count {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--brand-700);
+    }
+    .filter-summary__hint {
+      font-size: 13px;
+      color: #8c4d17;
+    }
+    .filter-card__title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #5b6470;
+    }
+    .filter-card__title i {
+      color: var(--brand);
+      font-size: 16px;
+    }
+    .filter-card__caption {
+      font-size: 13px;
+      color: #6b7280;
+      line-height: 1.4;
+    }
+    .filter-chip-list {
+      display: grid;
+      gap: 10px;
+    }
+    .filter-chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .filter-chip {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      border-radius: 14px;
+    }
+    .filter-chip input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .filter-chip__body {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: inherit;
+      background: #f8fafc;
+      color: #3b4251;
+      font-size: 14px;
+      font-weight: 500;
+      transition: var(--transition);
+      min-width: 0;
+    }
+    .filter-chip__icon {
+      display: inline-flex;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #fff;
+      color: var(--brand);
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 0 1px rgba(255,128,0,0.25);
+      font-size: 13px;
+    }
+    .filter-chip__text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+      gap: 2px;
+    }
+    .filter-chip__title {
+      font-weight: 600;
+      color: #1f2937;
+      font-size: 13px;
+    }
+    .filter-chip__meta {
+      font-size: 12px;
+      color: #6b7280;
+      letter-spacing: 0.2px;
+    }
+    .filter-chip--inline .filter-chip__text {
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+    }
+    .filter-chip input:checked + .filter-chip__body {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #fff;
+      box-shadow: 0 12px 18px rgba(255,128,0,0.28);
+    }
+    .filter-chip input:checked + .filter-chip__body .filter-chip__icon {
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.35);
+    }
+    .filter-chip input:checked + .filter-chip__body .filter-chip__meta {
+      color: rgba(255,255,255,0.8);
+    }
+    .filter-chip__body:hover {
+      border-color: rgba(255, 128, 0, 0.35);
+      box-shadow: 0 6px 12px rgba(15, 23, 42, 0.08);
+    }
+    .filter-chip-group--segmented .filter-chip {
+      flex: 1 1 calc(50% - 10px);
+      min-width: 120px;
+    }
+    .filter-chip-group--segmented .filter-chip__body {
+      justify-content: center;
+      background: #fff;
+    }
+    .filter-chip--compact .filter-chip__body {
+      padding-block: 8px;
+    }
+    .rating-stars {
+      color: var(--brand);
+      font-size: 13px;
+      letter-spacing: 1px;
+    }
+    .content { flex: 1; min-width: 0; }
+    .search-sort { display: flex; gap: 16px; margin-bottom: 16px; }
+    .search-sort input {
+      flex: 1; padding: 12px 16px; border: 1px solid #ddd; 
+      border-radius: var(--radius); font-size: 14px; transition: var(--transition);
+    }
+    .search-sort input:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(255, 128, 0, 0.15);
+    }
+    .search-sort select {
+      padding: 12px 16px; border: 1px solid #ddd; 
+      border-radius: var(--radius); background: #fff; font-size: 14px;
+      cursor: pointer; transition: var(--transition);
+    }
+    .search-sort select:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(255, 128, 0, 0.15);
+    }
+    .tags {
+      display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap;
+    }
+    .tags span {
+      background: #f5f5f5; padding: 8px 16px; border-radius: 20px; 
+      font-size: 14px; cursor: pointer; transition: var(--transition);
+    }
+    .tags span:hover { background: #e5e5e5; }
+    .tags span.active { background: var(--brand); color: #fff; }
+    .section-title { font-size: 18px; margin: 16px 0; }
+    .deals {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+      gap: 16px; margin-bottom: 32px;
+    }
+    .card {
+      background: #fff; border-radius: var(--radius); overflow: hidden; 
+      box-shadow: var(--shadow-sm); transition: var(--transition);
+    }
+    .card:hover { 
+      transform: translateY(-4px); 
+      box-shadow: var(--shadow-md);
+    }
+    .card-image {
+      height: 150px; background: #f0f0f0; background-size: cover; 
+      background-position: center; position: relative;
+    }
+    .card-content { padding: 16px; }
+    .card-title { font-weight: 700; margin-bottom: 8px; }
+    .card-details {
+      display: flex; align-items: center; font-size: 14px; 
+      color: #666; margin-bottom: 8px; gap: 6px;
+    }
+    .card-rating { color: var(--brand); }
+    .card-delivery {
+      display: flex; justify-content: space-between; 
+      font-size: 14px; color: #666;
+    }
+    .free-delivery { color: #28a745; font-weight: 500; }
+    .local-heroes {
+      background: #fff; border-radius: var(--radius); padding: 24px; 
+      margin-bottom: 32px; box-shadow: var(--shadow-sm);
+    }
+    .local-heroes h2 { margin-bottom: 8px; }
+    .local-heroes p { color: #666; margin-bottom: 16px; }
+    .feedback-btn {
+      background: none; border: none; color: var(--brand); 
+      font-weight: 500; cursor: pointer; text-decoration: underline;
+    }
+
+    /* ============== ENHANCED Restaurant Cards ============== */
+    .rail {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 10px 0;
+    }
+
+    .r-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    /* Allow card to grow when expanded (inline menu) */
+    .r-card.is-expanded { height: auto; }
+
+    .r-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .r-card__thumb {
+      height: 180px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .r-card__thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .r-card:hover .r-card__thumb img {
+      transform: scale(1.05);
+    }
+
+    .r-card__tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: var(--brand);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      z-index: 2;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .r-card__favorite {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.9);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 2;
+      transition: all 0.2s ease;
+    }
+
+    .r-card__favorite:hover {
+      background: #fff;
+      transform: scale(1.1);
+    }
+
+    .r-card__favorite i {
+      color: #ccc;
+      transition: color 0.2s ease;
+    }
+
+    .r-card__favorite.active i,
+    .r-card__favorite:hover i {
+      color: #ff5a5f;
+    }
+
+    .r-card__body {
+      padding: 16px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .r-card__title {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0 0 8px 0;
+      color: #222;
+      line-height: 1.3;
+    }
+
+    .r-card__cuisine {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .r-card__info {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .r-card__rating {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .r-card__rating i {
+      color: var(--brand);
+      font-size: 12px;
+    }
+
+    .r-card__delivery-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #666;
+      font-size: 13px;
+    }
+
+    .r-card__delivery-info div {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .r-card__delivery-info i {
+      font-size: 12px;
+    }
+
+    .r-card__footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    /* Inline expanded menu inside card */
+    .r-card__expand { padding: 12px; border-top: 1px solid #f0f0f0; background: #fff; }
+    .r-mini-list { display: grid; gap: 10px; }
+    .r-mini-item { display: grid; grid-template-columns: 56px 1fr auto auto; gap: 8px; align-items: center; padding: 6px 0; }
+    .r-mini-thumb { width: 56px; height: 56px; border-radius: 8px; object-fit: cover; background:#f5f5f5; border:1px solid #eee; display:grid; place-items:center; font-size:20px; }
+    .r-mini-copy { display: grid; gap: 4px; }
+    .r-mini-name { font-weight: 700; font-size: 14px; }
+    .r-mini-meta { font-size: 12px; color: #666; }
+    .r-mini-price { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .r-mini-footer { display: flex; justify-content: flex-end; }
+
+    .r-card__min-order {
+      font-size: 13px;
+      color: #666;
+    }
+
+    .r-card__action {
+      background: var(--brand);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .r-card__action:hover {
+      background: var(--brand-700);
+      transform: translateY(-1px);
+    }
+
+    .r-card__badges {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      display: flex;
+      gap: 8px;
+      z-index: 2;
+    }
+
+    .r-card__badge {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #333;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .r-card__badge--green {
+      background: rgba(76, 175, 80, 0.15);
+      color: #2e7d32;
+    }
+
+    .r-card__badge--orange {
+      background: rgba(255, 152, 0, 0.15);
+      color: #ef6c00;
+    }
+
+    /* ============== Cart Drawer ============== */
+    .cart {
+      position: fixed; right: 0; top: 0; height: 100dvh; width: 360px; 
+      max-width: 90vw; background: #fff; border-left: 1px solid var(--border);
+      box-shadow: var(--shadow-lg); transform: translateX(100%); 
+      transition: transform 0.3s ease; z-index: 120; display: flex; 
+      flex-direction: column;
+    }
+    .cart.is-open { transform: none; }
+    .cart__head {
+      display: flex; align-items: center; gap: 8px; 
+      padding: 12px 14px; border-bottom: 1px solid var(--border); 
+      font-weight: 700; flex-shrink: 0;
+    }
+    .cart__body {
+      padding: 12px; display: grid; gap: 10px; 
+      overflow: auto; flex-grow: 1;
+    }
+    .cart__group {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px;
+      background: #fff;
+      display: grid;
+      gap: 8px;
+    }
+    .cart__group-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .cart__group-title { font-weight: 600; font-size: 14px; }
+    .cart__group-total { font-weight: 600; }
+    .cart__group-items { display: grid; gap: 6px; }
+    .cart__group-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+    .cart__group-warning {
+      font-size: 12px;
+      color: var(--danger);
+      margin-left: auto;
+    }
+    .cart__row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px; border-radius: var(--radius);
+      transition: var(--transition);
+    }
+    .cart__row:hover { background: #f9f9f9; }
+    .cart__row .q {
+      display: inline-flex; border: 1px solid var(--border); 
+      border-radius: var(--radius); overflow: hidden;
+    }
+    .cart__row .q button {
+      border: 0; background: #f7f7f7; padding: 6px 10px; 
+      cursor: pointer; transition: var(--transition);
+    }
+    .cart__row .q button:hover { background: #eee; }
+    .cart__row .q input {
+      width: 40px; text-align: center; border: 0; background: #fff;
+    }
+    .cart__foot {
+      border-top: 1px solid var(--border); background: #fff; 
+      padding: 12px; flex-shrink: 0;
+    }
+    .cart__foot .row { display: flex; align-items: center; gap: 8px; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: #444; }
+    .cart-toggle {
+      position: fixed; right: 16px; bottom: 16px; z-index: 110; 
+      border-radius: 999px; padding: 12px 16px; background: var(--brand); 
+      color: #fff; border: none; box-shadow: 0 12px 28px rgba(255,128,0,.25); 
+      display: flex; align-items: center; gap: 8px; transition: var(--transition);
+    }
+    .cart-toggle:hover { 
+      transform: translateY(-2px); 
+      box-shadow: 0 16px 32px rgba(255,128,0,.3);
+    }
+    .cart-badge {
+      background: #fff; color: var(--brand); border-radius: 999px; 
+      padding: 2px 8px; font-size: 12px; font-weight: 700;
+    }
+
+    /* ============== Modal (Auth + Address) ============== */
+    .modal {
+      position: fixed; inset: 0; display: none; place-items: center; 
+      background: rgba(0,0,0,.35); z-index: 130; padding: 16px;
+    }
+    .modal.is-open { display: grid; }
+    .sheet {
+      width: min(680px,94vw); background: #fff; 
+      border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); 
+      overflow: hidden; max-height: 90vh; overflow-y: auto;
+    }
+    .sheet__head {
+      display: flex; align-items: center; justify-content: space-between; 
+      padding: 12px 14px; border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; background: white; z-index: 1;
+    }
+    .sheet__title { font-weight: 800; }
+    .sheet__body { padding: 14px; display: grid; gap: 12px; }
+    .grid { display: grid; gap: 10px; }
+    .cols-2 { grid-template-columns: 1fr 1fr; }
+    .field { display: grid; gap: 6px; }
+    .field input, .field textarea, .field select {
+      border: 1px solid var(--border); border-radius: 10px; 
+      padding: 10px 12px; background: var(--surface-2);
+      transition: var(--transition);
+    }
+    .field input:focus, .field textarea:focus, .field select:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(255, 128, 0, 0.15);
+    }
+    .muted { color: var(--muted); font-size: 12px; }
+    .tabs-mini { display: flex; gap: 8px; }
+    .tabs-mini .tab {
+      border: 1px solid var(--border); background: #fff;
+      transition: var(--transition);
+    }
+    .tabs-mini .tab.is-active { border-color: var(--brand); color: var(--brand); }
+    .toast {
+      background: #fff; border: 1px solid var(--border); 
+      border-left: 4px solid var(--ok); border-radius: 10px; 
+      padding: 10px 12px; box-shadow: var(--shadow-md);
+      animation: slideIn 0.3s ease forwards;
+    }
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .toasts {
+      position: fixed; right: 16px; bottom: 16px; display: grid; 
+      gap: 10px; z-index: 200;
+    }
+    .hidden { display: none !important; }
+
+    /* ============== Footer ============== */
+    footer {
+      background: #333; color: #fff; padding: 40px 16px 16px;
+      margin-top: 40px;
+    }
+    .footer-links {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px; max-width: 1200px; margin: 0 auto;
+    }
+    .footer-column { display: grid; gap: 12px; }
+    .footer-column h4 { margin-bottom: 8px; color: #fff; }
+    .footer-column a {
+      color: #ccc; transition: var(--transition);
+    }
+    .footer-column a:hover { color: var(--brand); }
+    .footer-bottom {
+      max-width: 1200px; margin: 32px auto 0; padding-top: 16px;
+      border-top: 1px solid #444; display: flex; 
+      justify-content: space-between; align-items: center; 
+      font-size: 14px; color: #eee; flex-wrap: wrap; gap: 16px;
+    }
+    .cookie-preferences {
+      color: var(--brand); text-decoration: none; transition: var(--transition);
+    }
+    .cookie-preferences:hover { text-decoration: underline; }
+
+    /* ============== Responsive Design ============== */
+    @media (max-width: 960px) {
+      .topbar {
+        padding: 10px 12px 14px;
+      }
+      .topbar-main {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .header-search {
+        flex: 1 1 100%;
+        max-width: none;
+        order: 4;
+      }
+      .location-pill {
+        flex: 1 1 auto;
+        max-width: none;
+        order: 5;
+        justify-content: center;
+      }
+      .header-right {
+        order: 6;
+        margin-left: 0;
+        width: 100%;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+      .container { flex-direction: column; }
+      .sidebar {
+        width: 100%;
+        position: static;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .filter-card {
+        flex: 1 1 calc(50% - 12px);
+        min-width: 240px;
+      }
+      .filter-card--summary {
+        flex-basis: 100%;
+      }
+    }
+    @media (max-width: 700px) {
+      .rail {
+        grid-template-columns: 1fr;
+      }
+      .cols-2 { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .sidebar {
+        flex-direction: column;
+      }
+      .filter-card {
+        flex: 1 1 100%;
+      }
+    }
+    @media (max-width: 480px) {
+      .topbar { padding: 8px; }
+      .header-search { padding: 6px 8px; }
+      .delivery-options .seg { padding: 6px 10px; font-size: 12px; }
+      .lang { padding: 6px 8px; font-size: 12px; }
+      .primary-tabs { padding: 8px; }
+      .tab { padding: 6px 10px; font-size: 13px; }
+      .search-sort { flex-direction: column; }
+      .filter-card {
+        padding: 16px;
+      }
+    }
+
+    /* ============== Loading Animation ============== */
+    .skeleton {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+      border-radius: var(--radius);
+    }
+    @keyframes loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Restaurant detail view */
+    .restaurant-hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+      gap: 28px;
+      align-items: center;
+      padding: 32px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: linear-gradient(145deg, rgba(255, 208, 170, 0.18), rgba(255, 255, 255, 0.92));
+      box-shadow: var(--shadow-md);
+      border: 1px solid #f3ece6;
+    }
+    .restaurant-hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(255, 128, 0, 0.18), transparent 45%);
+      pointer-events: none;
+    }
+    .restaurant-hero__media {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+    .restaurant-hero__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .restaurant-hero__badge {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      background: rgba(15, 23, 42, 0.72);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-weight: 600;
+      backdrop-filter: blur(4px);
+    }
+    .restaurant-hero__info { position: relative; z-index: 1; display: grid; gap: 12px; }
+    .restaurant-hero__title { margin: 0; font-size: clamp(26px, 4vw, 36px); font-weight: 900; letter-spacing: -0.01em; color: #1f2937; }
+    .restaurant-hero__meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      color: #425466;
+      font-size: 14px;
+    }
+    .restaurant-hero__meta i { color: var(--brand); font-size: 13px; }
+    .restaurant-hero__desc { margin: 6px 0 0; color: #334155; line-height: 1.6; font-size: 15px; }
+    .restaurant-hero__chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+    .restaurant-hero__chip {
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #fb923c;
+      border: 1px solid rgba(255, 128, 0, 0.3);
+    }
+
+    .restaurant-menu-nav {
+      position: sticky;
+      top: 72px;
+      z-index: 15;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 12px 16px;
+      margin: 28px 0 12px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 14px;
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+      scrollbar-width: thin;
+    }
+    .restaurant-menu-nav::-webkit-scrollbar { height: 4px; }
+    .restaurant-menu-nav::-webkit-scrollbar-thumb { background: rgba(15, 23, 42, 0.18); border-radius: 999px; }
+    .restaurant-menu-nav__btn {
+      border: 0;
+      background: transparent;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: #475569;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .restaurant-menu-nav__btn:hover { background: rgba(255, 128, 0, 0.12); color: #ea580c; }
+    .restaurant-menu-nav__btn.is-active { background: var(--brand); color: #fff; box-shadow: 0 10px 20px rgba(249, 115, 22, 0.32); }
+
+    .menu-section { margin: 32px 0; display: grid; gap: 18px; }
+    .menu-section__header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+    .menu-section__title { margin: 0; font-size: 20px; font-weight: 800; color: #1f2937; }
+    .menu-section__count { font-size: 13px; color: #64748b; }
+    .menu-grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    .menu-card {
+      display: flex;
+      flex-direction: row;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.97), rgba(255, 244, 234, 0.92));
+      border-radius: 18px;
+      border: 1px solid rgba(229, 231, 235, 0.7);
+      overflow: hidden;
+      box-shadow: 0 18px 36px rgba(15, 23, 42, 0.16);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      position: relative;
+      min-height: 200px;
+      height: 200px;
+    }
+    .menu-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 44px rgba(15, 23, 42, 0.22);
+    }
+    .menu-card__body {
+      flex: 1;
+      display: grid;
+      gap: 10px;
+      padding: 18px 20px;
+      position: relative;
+      background: rgba(255, 255, 255, 0.94);
+    }
+    .menu-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .menu-card__title-group { display: grid; gap: 4px; }
+    .menu-card__title { margin: 0; font-size: 18px; font-weight: 800; color: #0f172a; letter-spacing: -0.01em; }
+    .menu-card__subtitle { font-size: 13px; color: #64748b; }
+    .menu-card__price-block { text-align: right; }
+    .menu-card__price {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+      background: rgba(15, 23, 42, 0.06);
+      padding: 6px 12px;
+      border-radius: 999px;
+    }
+    .menu-card__desc { font-size: 13px; line-height: 1.5; color: #475569; margin: 0; max-height: 54px; overflow: hidden; }
+    .menu-card__chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .menu-card__chip {
+      background: rgba(15, 23, 42, 0.06);
+      color: #475569;
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .menu-card__meta { display: flex; flex-wrap: wrap; gap: 8px; font-size: 12px; color: #64748b; }
+    .menu-card__meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.06);
+    }
+    .menu-card__actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .menu-card__hint {
+      font-size: 12px;
+      color: #64748b;
+    }
+    .menu-card--unavailable .menu-card__hint {
+      color: #b91c1c;
+    }
+    .menu-card__btn {
+      border: 0;
+      border-radius: 12px;
+      background: var(--brand);
+      color: #fff;
+      padding: 10px 18px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 24px rgba(249, 115, 22, 0.28);
+    }
+    .menu-card__btn:hover { background: var(--brand-700); transform: translateY(-1px); }
+    .menu-card__btn:disabled {
+      background: rgba(148, 163, 184, 0.35);
+      color: #64748b;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+    .menu-card--unavailable { opacity: 0.6; }
+    .menu-card__badge {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: rgba(15, 23, 42, 0.85);
+      color: #fff;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+    .menu-card__spice-badge {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translate(-50%, 0);
+      display: inline-flex;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(249, 115, 22, 0.9);
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.16);
+      z-index: 3;
+    }
+    .menu-card__spice-badge.is-mild { background: rgba(148, 163, 184, 0.85); }
+    .menu-card__spice-badge i { font-size: 15px; }
+    .menu-card__spice-badge img { width: 18px; height: 18px; }
+    .menu-card__spice-icon--mild { filter: grayscale(1) opacity(0.6); }
+    .menu-card__spice-icon--mild { color: #e2e8f0; }
+    .menu-card__ingredients { display: grid; gap: 6px; margin-top: 8px; }
+    .menu-card__ingredients-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .menu-card__ingredients-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .menu-card__ingredients-chip {
+      background: rgba(15, 23, 42, 0.06);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
+      color: #475569;
+    }
+    .menu-card__media {
+      width: 200px;
+      min-width: 200px;
+      position: relative;
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.15), rgba(255, 255, 255, 0.2));
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+    .menu-card__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+    .menu-card:hover .menu-card__media img { transform: scale(1.05); }
+    .menu-card__media-placeholder {
+      font-size: 40px;
+      color: #475569;
+    }
+    .menu-card__media-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      background: rgba(15, 23, 42, 0.45);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+      z-index: 2;
+    }
+    .menu-card__media-nav:hover { background: rgba(15, 23, 42, 0.65); transform: translateY(-50%) scale(1.05); }
+    .menu-card__media-nav--prev { left: 12px; }
+    .menu-card__media-nav--next { right: 12px; }
+    .menu-card__media-badges {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      display: grid;
+      gap: 6px;
+      justify-items: end;
+      z-index: 2;
+    }
+    .menu-card__price-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(6px);
+    }
+    .menu-card__media-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      background: rgba(15, 23, 42, 0.75);
+      color: #fff;
+      backdrop-filter: blur(6px);
+    }
+    .menu-card__diet-badges {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      display: flex;
+      gap: 8px;
+      z-index: 2;
+    }
+    .menu-card__diet-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #fff;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(6px);
+    }
+    .menu-card__diet-badge i { font-size: 12px; }
+    .menu-card__diet-icon { width: 32px; height: 32px; }
+    .menu-card__diet-badge--vegan { background: rgba(34, 197, 94, 0.85); }
+    .menu-card__diet-badge--halal { background: rgba(59, 130, 246, 0.85); }
+    .menu-card__diet-badge--gluten-free { background: rgba(16, 185, 129, 0.85); }
+    .menu-card__diet-badge--gluten { background: rgba(248, 113, 113, 0.85); }
+    .menu-card__btn-icon { width: 18px; height: 18px; }
+    .menu-card__details-wrapper { margin-top: auto; display: grid; gap: 8px; }
+    .menu-card__details-btn {
+      background: none;
+      border: 0;
+      color: var(--brand);
+      font-weight: 600;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      padding: 0;
+    }
+    .menu-card__details-btn:hover { text-decoration: underline; }
+    .menu-card__details {
+      display: none;
+      gap: 8px;
+      font-size: 13px;
+      color: #475569;
+      border-top: 1px dashed rgba(148, 163, 184, 0.4);
+      padding-top: 8px;
+    }
+    .menu-card__details.is-open { display: grid; }
+    .menu-card__details-row { display: grid; gap: 4px; }
+    .menu-card__details-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #94a3b8;
+    }
+    .menu-card__details-text { font-size: 13px; margin: 0; color: #475569; }
+    .menu-card__details-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .restaurant-cart-bar {
+      position: fixed;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #0f172a;
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 999px;
+      box-shadow: 0 18px 36px rgba(15, 23, 42, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 120;
+    }
+    .restaurant-cart-bar__label { font-weight: 600; font-size: 14px; }
+    .restaurant-cart-bar__cta {
+      border: 0;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      transition: all 0.2s ease;
+    }
+    .restaurant-cart-bar__cta:hover { background: rgba(255, 255, 255, 0.18); }
+    .restaurant-cart-bar__checkout {
+      background: var(--brand);
+      color: #0f172a;
+      box-shadow: 0 14px 28px rgba(249, 115, 22, 0.32);
+    }
+    .restaurant-cart-bar__checkout:hover { background: var(--brand-700); color: #fff; }
+    .restaurant-cart-bar__checkout:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .order-history {
+      display: grid;
+      gap: 16px;
+    }
+    .order-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: #fff;
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+      box-shadow: var(--shadow-sm);
+    }
+    .order-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .order-card__title {
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .order-card__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 12px;
+      color: #64748b;
+    }
+    .order-card__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .order-card__badge--status {
+      background: rgba(59, 130, 246, 0.16);
+      color: #1d4ed8;
+    }
+    .order-card__badge--paid {
+      background: rgba(34, 197, 94, 0.18);
+      color: #15803d;
+    }
+    .order-card__details {
+      border-top: 1px dashed rgba(148, 163, 184, 0.4);
+      padding-top: 10px;
+      display: grid;
+      gap: 8px;
+    }
+    .order-card__items {
+      display: grid;
+      gap: 6px;
+    }
+    .order-card__item {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 14px;
+    }
+    .order-card__summary {
+      font-size: 13px;
+      color: #475569;
+    }
+    .order-card__actions {
+      display: flex;
+      gap: 10px;
+    }
+    .order-card__toggle {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 6px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      background: #fff;
+      transition: var(--transition);
+    }
+    .order-card__toggle:hover { border-color: var(--brand); color: var(--brand); }
+
+    .checkout-sheet {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      display: grid;
+      place-items: center;
+    }
+    .checkout-sheet__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(2px);
+    }
+    .checkout-sheet__panel {
+      position: relative;
+      width: min(540px, 96vw);
+      max-height: min(90vh, 780px);
+      overflow: auto;
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px 24px 28px;
+      box-shadow: var(--shadow-lg);
+      display: grid;
+      gap: 18px;
+      outline: none;
+    }
+    .checkout-sheet__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .checkout-sheet__header h2 {
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .checkout-sheet__close {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--muted);
+      font-size: 22px;
+      line-height: 1;
+      transition: var(--transition);
+    }
+    .checkout-sheet__close:hover { background: #f8fafc; color: var(--brand); }
+    .checkout-form { display: grid; gap: 18px; }
+    .checkout-section { display: grid; gap: 12px; }
+    .checkout-section h3 { font-size: 16px; font-weight: 600; }
+    .checkout-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    .checkout-field { display: grid; gap: 6px; font-size: 14px; }
+    .checkout-field__label {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #94a3b8;
+    }
+    .checkout-field input,
+    .checkout-field textarea {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      font-size: 14px;
+      background: #fff;
+      transition: var(--transition);
+    }
+    .checkout-field input:focus,
+    .checkout-field textarea:focus {
+      outline: none;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(255, 128, 0, 0.18);
+    }
+    .checkout-field--wide { grid-column: 1 / -1; }
+    .checkout-checkbox {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .checkout-checkbox input { width: 16px; height: 16px; }
+    .checkout-payment-options {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+    .checkout-payment-option {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: #fff;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .checkout-payment-option input { margin: 0; }
+    .checkout-payment-option:hover,
+    .checkout-payment-option.is-selected {
+      border-color: var(--brand);
+      box-shadow: inset 0 0 0 1px rgba(255, 128, 0, 0.25);
+    }
+    .checkout-voucher__row { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+    .checkout-voucher__apply {
+      padding: 10px 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--brand);
+      background: rgba(255, 128, 0, 0.08);
+      color: var(--brand);
+      font-weight: 600;
+      transition: var(--transition);
+    }
+    .checkout-voucher__apply:hover { background: rgba(255, 128, 0, 0.16); }
+    .checkout-summary {
+      display: grid;
+      gap: 10px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
+    }
+    .checkout-summary__list { display: grid; gap: 6px; }
+    .checkout-summary__row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+    .checkout-summary__row--total {
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .checkout-summary__info {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .checkout-summary__error {
+      font-size: 13px;
+      color: var(--danger);
+    }
+    .checkout-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .checkout-submit {
+      padding: 12px 20px;
+      border-radius: var(--radius);
+      background: var(--brand);
+      color: #fff;
+      font-weight: 600;
+      transition: var(--transition);
+      border: 0;
+      cursor: pointer;
+    }
+    .checkout-submit:hover { background: var(--brand-700); }
+    .checkout-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .checkout-cancel {
+      padding: 12px 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--muted);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .checkout-cancel:hover { background: #f8fafc; }
+
+    @media (max-width: 1024px) {
+      .restaurant-hero { grid-template-columns: 1fr; text-align: left; padding: 24px; }
+      .restaurant-hero__media { aspect-ratio: 3 / 2; }
+      .restaurant-menu-nav { top: 64px; margin: 20px 0 8px; }
+      .menu-card { flex-direction: column; height: auto; min-height: 0; }
+      .menu-card__media { width: 100%; min-width: 0; height: 200px; }
+      .menu-card__spice-badge { left: 16px; transform: none; }
+    }
+    @media (max-width: 640px) {
+      .restaurant-hero { padding: 20px; gap: 20px; }
+      .restaurant-menu-nav { padding: 10px 12px; }
+      .menu-card__price-badge { font-size: 12px; padding: 5px 10px; }
+      .menu-card__media-nav { width: 28px; height: 28px; }
+      .restaurant-cart-bar {
+        bottom: 18px;
+        width: calc(100% - 32px);
+        transform: none;
+        left: 16px;
+        right: 16px;
+        justify-content: space-between;
+      }
+      .restaurant-cart-bar__label { font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- ====== HEADER ====== -->
+  <header class="topbar" role="banner">
+    <div class="topbar-main">
+      <button id="nav-home" class="brand-button is-active" type="button" aria-label="Lieferspatz home" data-nav-tab="true">
+        <i class="fa-solid fa-dove" aria-hidden="true"></i>
+      </button>
+      <span class="brand-name">Lieferspatz</span>
+
+      <div class="delivery-options" aria-label="Delivery options" role="tablist">
+        <button class="seg active" type="button" id="opt-delivery" role="tab" aria-selected="true">Delivery</button>
+        <button class="seg" type="button" id="opt-pickup" role="tab" aria-selected="false">Collection</button>
+      </div>
+
+      <form id="search-form" class="header-search" role="search" aria-label="Search by PLZ">
+        <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+        <input id="search-plz" type="text" inputmode="numeric" autocomplete="postal-code"
+               placeholder="PLZ eingeben (z. B. 10115)" aria-label="Postal code"/>
+        <select id="search-radius" aria-label="Search radius">
+          <option value="1">1 km</option>
+          <option value="5" selected>5 km</option>
+          <option value="10">10 km</option>
+          <option value="20">20 km</option>
+          <option value="30">30 km</option>
+          <option value="50">50 km</option>
+        </select>
+        <button id="search-btn" class="btn" type="submit">Search</button>
+      </form>
+
+      <div class="location-pill">
+        <span id="current-location" class="location">📍 Set your PLZ</span>
+      </div>
+
+      <div class="header-right">
+        <div class="lang-switch" aria-label="Language">
+          <button id="lang-de" class="lang is-active" type="button" data-lang="de" title="Deutsch">
+            <span class="flag"></span> DE
+          </button>
+          <button id="lang-en" class="lang" type="button" data-lang="en" title="English">
+            <span class="flag"></span> EN
+          </button>
+        </div>
+        <button id="btn-menu" class="menu-toggle" aria-expanded="false" aria-controls="menu-panel" title="Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div id="menu-panel" class="menu-panel" role="dialog" aria-modal="false" aria-labelledby="menu-title">
+          <div class="menu-inner">
+            <div class="menu-head">
+              <strong id="menu-title">Account</strong>
+              <span id="whoami" class="who">Not logged in</span>
+            </div>
+
+            <!-- customer auth row (kept same IDs) -->
+            <div id="auth-bar" class="auth-grid">
+              <button id="btn-login-customer" class="btn btn--ghost btn--sm" type="button">Login</button>
+              <button id="btn-register-customer" class="btn btn--ghost btn--sm" type="button">Register</button>
+            </div>
+
+            <hr class="menu-sep"/>
+
+            <!-- business section -->
+            <div class="menu-block">
+              <div class="menu-block-title">For business (restaurant owners)</div>
+              <div class="menu-links">
+                <a class="menu-link" href="restaurant-dashboard.html#auth?tab=login">
+                  <i class="fa-solid fa-right-to-bracket"></i> Owner Login
+                </a>
+                <a class="menu-link" href="restaurant-dashboard.html#auth?tab=register">
+                  <i class="fa-solid fa-store"></i> Register restaurant
+                </a>
+              </div>
+            </div>
+
+            <div class="menu-block">
+              <a class="menu-link" href="#">
+                <i class="fa-solid fa-handshake-angle"></i> Partner with us
+              </a>
+              <button id="nav-orders" class="tab" type="button">My Orders</button>
+              <button id="nav-wallet" class="tab" type="button">Wallet</button>
+            </div>
+
+            
+
+            <hr class="menu-sep"/>
+
+            <button id="btn-logout" class="btn btn--danger btn--sm" type="button" style="display:none">
+              <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ====== CATEGORY ICONS ====== -->
+    <nav class="categories categories--topbar" aria-label="Browse categories">
+      <div>
+        <img src="img/icons/Blumen.jpeg" alt="Blumen" loading="lazy"/>
+        <span>Blumen</span>
+      </div>
+      <div>
+        <img src="img/icons/non-food.jpeg" alt="Non Food" loading="lazy"/>
+        <span>Non Food</span>
+      </div>
+      <div>
+        <img src="img/icons/groceries.jpeg" alt="Groceries" loading="lazy"/>
+        <span>Groceries</span>
+      </div>
+      <div>
+        <img src="img/icons/drinks.jpeg" alt="Drinks" loading="lazy"/>
+        <span>Drinks</span>
+      </div>
+      <div>
+        <img src="img/icons/sweets.jpeg" alt="Sweets" loading="lazy"/>
+        <span>Sweets</span>
+      </div>
+      <div>
+        <img src="img/icons/bakery.jpeg" alt="Bakery" loading="lazy"/>
+        <span>Bakery</span>
+      </div>
+      <div>
+        <img src="img/icons/cash.png" alt="Takes cash" loading="lazy"/>
+        <span>Takes cash</span>
+      </div>
+      <div>
+        <img src="img/icons/italien.png" alt="Italian Style Pizza" loading="lazy"/>
+        <span>Italian Style Pizza</span>
+      </div>
+      <div>
+        <img src="img/icons/chines.jpeg" alt="Chinese" loading="lazy"/>
+        <span>Chinese</span>
+      </div>
+      <div>
+        <img src="img/icons/Burger.png" alt="Burgers" loading="lazy"/>
+        <span>Burgers</span>
+      </div>
+      <div>
+        <img src="img/icons/italien.png" alt="Pasta" loading="lazy"/>
+        <span>Pasta</span>
+      </div>
+      <div>
+        <img src="img/icons/indian.jpeg" alt="Indian" loading="lazy"/>
+        <span>Indian</span>
+      </div>
+      <div>
+        <img src="img/icons/halal.png" alt="Halal" loading="lazy"/>
+        <span>Halal</span>
+      </div>
+      <div>
+        <img src="img/icons/Thi.png" alt="Thai Style" loading="lazy"/>
+        <span>Thai Style</span>
+      </div>
+      <div>
+        <img src="img/icons/Japanies.png" alt="Japanese Style" loading="lazy"/>
+        <span>Japanese Style</span>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ====== TOP TABS ====== -->
+  <!-- ====== PAGE ====== -->
+  <main class="container" role="main">
+    <aside class="sidebar" aria-label="Filters">
+      <div class="filter-card filter-card--summary">
+        <div class="filter-summary">
+          <span id="place-count" class="filter-summary__count">Places</span>
+          <span class="filter-summary__hint">Pick any filter — results update instantly.</span>
+        </div>
+      </div>
+
+      <div class="filter-card">
+        <div class="filter-card__title">
+          <i class="fa-solid fa-bolt"></i>
+          <span>Availability</span>
+        </div>
+        <div class="filter-chip-list">
+          <label class="filter-chip">
+            <input id="flt-open" type="checkbox"/>
+            <span class="filter-chip__body">
+              <span class="filter-chip__icon"><i class="fa-solid fa-clock"></i></span>
+              <span class="filter-chip__title">Open now</span>
+            </span>
+          </label>
+          <label class="filter-chip">
+            <input id="flt-new" type="checkbox"/>
+            <span class="filter-chip__body">
+              <span class="filter-chip__icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+              <span class="filter-chip__title">New arrivals</span>
+            </span>
+          </label>
+          <label class="filter-chip">
+            <input id="flt-free" type="checkbox"/>
+            <span class="filter-chip__body">
+              <span class="filter-chip__icon"><i class="fa-solid fa-truck-fast"></i></span>
+              <span class="filter-chip__title">Free delivery</span>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div class="filter-card">
+        <div class="filter-card__title">
+          <i class="fa-solid fa-wallet"></i>
+          <span>Minimum order</span>
+        </div>
+        <p class="filter-card__caption">Choose the maximum minimum-order value you are willing to pay.</p>
+        <div class="filter-chip-group filter-chip-group--segmented">
+          <label class="filter-chip filter-chip--compact">
+            <input name="minOrder" type="radio" value="all" checked/>
+            <span class="filter-chip__body">
+              <span class="filter-chip__title">Show all</span>
+            </span>
+          </label>
+          <label class="filter-chip filter-chip--compact">
+            <input name="minOrder" type="radio" value="10"/>
+            <span class="filter-chip__body">
+              <span class="filter-chip__title">≤ 10 €</span>
+            </span>
+          </label>
+          <label class="filter-chip filter-chip--compact">
+            <input name="minOrder" type="radio" value="15"/>
+            <span class="filter-chip__body">
+              <span class="filter-chip__title">≤ 15 €</span>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div class="filter-card">
+        <div class="filter-card__title">
+          <i class="fa-solid fa-star"></i>
+          <span>Rating</span>
+        </div>
+        <div class="filter-chip-list">
+          <label class="filter-chip">
+            <input id="flt-rating" type="checkbox"/>
+            <span class="filter-chip__body">
+              <span class="filter-chip__icon"><i class="fa-solid fa-star"></i></span>
+              <span class="filter-chip__text">
+                <span class="filter-chip__title">Top rated</span>
+                <span class="filter-chip__meta"><span class="rating-stars" aria-hidden="true">★★★★☆</span> 4.0 or higher</span>
+              </span>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div class="filter-card">
+        <div class="filter-card__title">
+          <i class="fa-solid fa-tags"></i>
+          <span>Offers &amp; loyalty</span>
+        </div>
+        <div class="filter-chip-group">
+          <label class="filter-chip">
+            <input id="flt-deals" type="checkbox"/>
+            <span class="filter-chip__body">
+              <span class="filter-chip__icon"><i class="fa-solid fa-percent"></i></span>
+              <span class="filter-chip__title">Deals</span>
+            </span>
+          </label>
+          <label class="filter-chip">
+            <input id="flt-stamps" type="checkbox"/>
+            <span class="filter-chip__body">
+              <span class="filter-chip__icon"><i class="fa-solid fa-ticket"></i></span>
+              <span class="filter-chip__title">Stamp cards</span>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div class="filter-card">
+        <div class="filter-card__title">
+          <i class="fa-solid fa-leaf"></i>
+          <span>Dietary preferences</span>
+        </div>
+        <div class="filter-chip-list">
+          <label class="filter-chip">
+            <input id="flt-halal" type="checkbox"/>
+            <span class="filter-chip__body">
+              <span class="filter-chip__icon"><i class="fa-solid fa-mosque"></i></span>
+              <span class="filter-chip__title">Halal friendly</span>
+            </span>
+          </label>
+        </div>
+      </div>
+    </aside>
+
+    <section class="content">
+      <div class="search-sort" aria-hidden="true">
+      </div>
+
+      <!-- dynamic app root (filled by js/customer-app.js) -->
+      <section id="app" aria-live="polite"></section>
+
+      <!-- Optional static sections -->
+      <h2 class="section-title">Today's deals</h2>
+      <div class="deals" id="deals-grid"></div>
+      <div class="local-heroes" aria-hidden="true">
+        <h2>Local heroes</h2>
+        <p>Locally loved, picked by you</p>
+        <button class="feedback-btn" type="button">Feedback</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ====== FOOTER ====== -->
+  <footer>
+    <div class="footer-links">
+      <div class="footer-column">
+        <h4>Company</h4>
+        <a href="#">Recommend a restaurant</a>
+        <a href="#">Sign up a restaurant</a>
+        <a href="#">Jobs</a>
+      </div>
+      <div class="footer-column">
+        <h4>Legal</h4>
+        <a href="#">Terms of Service</a>
+        <a href="#">Privacy statement</a>
+        <a href="#">Colophon</a>
+        <a href="#">Cookie Statement</a>
+      </div>
+      <div class="footer-column">
+        <h4>Support</h4>
+        <a href="#">Accessibility</a>
+        <a href="#">Report Vulnerability</a>
+        <a href="#">Ethics hotline</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Lieferspatz.de</span>
+      <a href="#" class="cookie-preferences">Check my cookie preferences</a>
+    </div>
+  </footer>
+
+  <!-- ====== CART FAB + DRAWER ====== -->
+  <button id="btn-cart" class="cart-toggle" aria-controls="cart" aria-expanded="false">
+    <i class="fa-solid fa-basket-shopping"></i>
+    <span>Cart</span>
+    <span id="cart-count" class="cart-badge">0</span>
+  </button>
+  <aside id="cart" class="cart" role="dialog" aria-modal="true" aria-label="Shopping cart">
+    <div class="cart__head">
+      <span><i class="fa-solid fa-basket-shopping"></i> Your Cart</span>
+      <button id="cart-close" class="btn btn--ghost btn--sm" type="button">Close</button>
+    </div>
+    <div id="cart-items" class="cart__body" aria-live="polite"></div>
+    <div class="cart__foot">
+      <div class="row" style="margin-bottom:8px">
+        <strong>Total</strong>
+        <span class="right mono" id="cart-total">0.00 €</span>
+      </div>
+      <button id="btn-checkout" class="btn" style="width:100%" type="button">
+        <i class="fa-solid fa-credit-card"></i> Checkout
+      </button>
+      <div class="muted" style="margin-top:6px">You'll confirm address and contact on the next step.</div>
+    </div>
+  </aside>
+
+  <!-- ====== CUSTOMER AUTH / PROFILE MODAL ====== -->
+  <section id="modal-auth" class="modal" aria-hidden="true">
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+      <div class="sheet__head">
+        <div class="tabs-mini" role="tablist">
+          <button id="tab-login" class="tab is-active" role="tab" aria-controls="panel-login">Login</button>
+          <button id="tab-register" class="tab" role="tab" aria-controls="panel-register">Register</button>
+          <button id="tab-profile" class="tab hidden" role="tab" aria-controls="panel-profile">My Profile</button>
+        </div>
+        <button id="auth-close" class="btn btn--ghost btn--sm" type="button">Close</button>
+      </div>
+      <div class="sheet__body">
+        <!-- LOGIN -->
+        <form id="panel-login" class="grid" role="tabpanel" aria-labelledby="tab-login">
+          <div class="field">
+            <label for="login_email">Email</label>
+            <input id="login_email" type="email" autocomplete="email" placeholder="you@example.com" required>
+          </div>
+          <div class="field">
+            <label for="login_password">Password</label>
+            <input id="login_password" type="password" autocomplete="current-password" required>
+          </div>
+          <button id="btn-login-submit" class="btn" type="submit">Login</button>
+        </form>
+
+        <!-- REGISTER -->
+        <form id="panel-register" class="grid hidden" role="tabpanel" aria-labelledby="tab-register">
+          <div class="cols-2 grid">
+            <div class="field">
+              <label for="reg_name">Full name</label>
+              <input id="reg_name" type="text" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="reg_phone">Phone</label>
+              <input id="reg_phone" type="tel" autocomplete="tel" placeholder="+49…" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="reg_email">Email</label>
+            <input id="reg_email" type="email" autocomplete="email" required>
+          </div>
+          <div class="cols-2 grid">
+            <div class="field">
+              <label for="reg_street">Street & number</label>
+              <input id="reg_street" type="text" autocomplete="address-line1" required>
+            </div>
+            <div class="field">
+              <label for="reg_plz">Postal code (PLZ)</label>
+              <input id="reg_plz" type="text" inputmode="numeric" maxlength="5" autocomplete="postal-code" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="reg_city">City</label>
+            <input id="reg_city" type="text" autocomplete="address-level2" required>
+          </div>
+          <div class="field">
+            <label for="reg_password">Password</label>
+            <input id="reg_password" type="password" autocomplete="new-password" minlength="4" required>
+          </div>
+          <button id="btn-register-submit" class="btn" type="submit">Create account</button>
+        </form>
+
+        <!-- PROFILE (edit) -->
+        <form id="panel-profile" class="grid hidden" role="tabpanel" aria-labelledby="tab-profile">
+          <div class="field">
+            <label for="me_name">Full name</label>
+            <input id="me_name" type="text">
+          </div>
+          <div class="cols-2 grid">
+            <div class="field">
+              <label for="me_phone">Phone</label>
+              <input id="me_phone" type="tel">
+            </div>
+            <div class="field">
+              <label for="me_email">Email</label>
+              <input id="me_email" type="email">
+            </div>
+          </div>
+          <div class="cols-2 grid">
+            <div class="field">
+              <label for="me_street">Street & number</label>
+              <input id="me_street" type="text">
+            </div>
+            <div class="field">
+              <label for="me_plz">Postal code (PLZ)</label>
+              <input id="me_plz" type="text" inputmode="numeric" maxlength="5">
+            </div>
+          </div>
+          <div class="field">
+            <label for="me_city">City</label>
+            <input id="me_city" type="text">
+          </div>
+          <button id="btn-profile-save" class="btn" type="submit">Save profile</button>
+        </form>
+      </div>
+    </div>
+  </section>
+  
+  <!-- ====== Toasts ====== -->
+  <div id="toasts" class="toasts" aria-live="polite" aria-atomic="true"></div>
+  
+  <!-- ====== Scripts ====== -->
+  <script>
+    // --- 3-bars dropdown ---
+    (function(){
+      function setupMenuToggle() {
+        const btn = document.getElementById('btn-menu');
+        const panel = document.getElementById('menu-panel');
+        if (!btn || !panel || btn.dataset.menuReady === 'true') return;
+
+        const close = () => {
+          panel.classList.remove('is-open');
+          btn.setAttribute('aria-expanded', 'false');
+        };
+        const open = () => {
+          panel.classList.add('is-open');
+          btn.setAttribute('aria-expanded', 'true');
+        };
+
+        btn.addEventListener('click', (e) => {
+          const isOpen = panel.classList.contains('is-open');
+          isOpen ? close() : open();
+          e.stopPropagation();
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!panel.contains(e.target) && !btn.contains(e.target)) close();
+        });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+
+        btn.dataset.menuReady = 'true';
+      }
+
+      window.setupMenuToggle = setupMenuToggle;
+      setupMenuToggle();
+    })();
+  
+    // --- Delivery/Collection segmented (IDs kept; your other JS can hook) ---
+    (function(){
+      const d = document.getElementById('opt-delivery');
+      const p = document.getElementById('opt-pickup');
+      if (!d || !p) return;
+      const set = (which)=>{
+        d.classList.toggle('active', which==='delivery');
+        p.classList.toggle('active', which==='pickup');
+        d.setAttribute('aria-selected', which==='delivery' ? 'true':'false');
+        p.setAttribute('aria-selected', which==='pickup'   ? 'true':'false');
+        // TODO: if you add filtering logic, call it here.
+        // e.g. window.setServiceMode?.(which)
+      };
+      d.addEventListener('click', ()=>set('delivery'));
+      p.addEventListener('click', ()=>set('pickup'));
+    })();
+  
+    // --- Language toggle (simple UI + remember choice) ---
+    (function(){
+      const de = document.getElementById('lang-de');
+      const en = document.getElementById('lang-en');
+      if (!de || !en) return;
+      const apply = (lang)=>{
+        [de,en].forEach(b => b.classList.toggle('is-active', b.dataset.lang===lang));
+        localStorage.setItem('lang', lang);
+        document.documentElement.lang = lang === 'de' ? 'de' : 'en';
+        // hook to your i18n (if any) here
+      };
+      const saved = localStorage.getItem('lang') || 'de';
+      apply(saved);
+      de.addEventListener('click', ()=>apply('de'));
+      en.addEventListener('click', ()=>apply('en'));
+    })();
+
+    // --- Cart functionality ---
+    (function(){
+      const cart = document.getElementById('cart');
+      const cartBtn = document.getElementById('btn-cart');
+      const cartClose = document.getElementById('cart-close');
+      
+      if (!cart || !cartBtn || !cartClose) return;
+      
+      cartClose.addEventListener('click', () => {
+        cart.classList.remove('is-open'); 
+        cartBtn.setAttribute('aria-expanded','false');
+      });
+      
+      cartBtn.addEventListener('click', () => {
+        const open = cart.classList.toggle('is-open');
+        cartBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      
+      // Close cart when clicking outside
+      document.addEventListener('click', (e) => {
+        if (cart.classList.contains('is-open') && 
+            !cart.contains(e.target) && 
+            e.target !== cartBtn) {
+          cart.classList.remove('is-open');
+          cartBtn.setAttribute('aria-expanded', 'false');
+        }
+
+        const a = e.target.closest('a');
+  if (!a) return;
+
+  const href = a.getAttribute('href') || '';
+
+  // 1) Allow explicit bypass links
+  if (a.hasAttribute('data-bypass')) return;
+
+  // 2) Allow navigation to real .html files
+  if (/\.html(\?|#|$)/i.test(href)) return;
+      });
+
+
+    })();
+
+    // --- Modal functionality ---
+    (function(){
+      const modal = document.getElementById('modal-auth');
+      const authClose = document.getElementById('auth-close');
+      const tabLogin = document.getElementById('tab-login');
+      const tabRegister = document.getElementById('tab-register');
+      const pnlLogin = document.getElementById('panel-login');
+      const pnlRegister = document.getElementById('panel-register');
+      
+      if (!modal || !authClose) return;
+      
+      authClose.addEventListener('click', () => modal.classList.remove('is-open'));
+      
+      // Close modal when clicking outside
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.classList.remove('is-open');
+      });
+      
+      // Tab switching
+      if (tabLogin && tabRegister && pnlLogin && pnlRegister) {
+        tabLogin.addEventListener('click', () => {
+          tabLogin.classList.add('is-active'); 
+          tabRegister.classList.remove('is-active');
+          pnlLogin.classList.remove('hidden'); 
+          pnlRegister.classList.add('hidden');
+        });
+        
+        tabRegister.addEventListener('click', () => {
+          tabRegister.classList.add('is-active'); 
+          tabLogin.classList.remove('is-active');
+          pnlRegister.classList.remove('hidden'); 
+          pnlLogin.classList.add('hidden');
+        });
+      }
+      
+      // Open modal from menu buttons
+      const loginBtn = document.getElementById('btn-login-customer');
+      const registerBtn = document.getElementById('btn-register-customer');
+      
+      if (loginBtn) {
+        loginBtn.addEventListener('click', () => { 
+          modal.classList.add('is-open'); 
+          if (tabLogin) tabLogin.click(); 
+        });
+      }
+      
+      if (registerBtn) {
+        registerBtn.addEventListener('click', () => { 
+          modal.classList.add('is-open'); 
+          if (tabRegister) tabRegister.click(); 
+        });
+      }
+    })();
+
+    // --- Form submission prevention ---
+    (function(){
+      const forms = document.querySelectorAll('form');
+      forms.forEach(form => {
+        form.addEventListener('submit', (e) => e.preventDefault());
+      });
+    })();
+
+    // --- Search functionality (route to real results) ---
+    (function(){
+      const searchForm = document.getElementById('search-form');
+      const plzInput = document.getElementById('search-plz');
+      const loc = document.getElementById('current-location');
+      if (!searchForm || !plzInput) return;
+      searchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const plz = (plzInput.value || '').trim();
+        if (!/^\d{5}$/.test(plz)) return;
+        localStorage.setItem('last_plz', plz);
+        if (loc) loc.textContent = `📍 Delivery to ${plz}`;
+        location.hash = '#restaurants';
+      });
+    })();
+
+    // --- Tab navigation ---
+    (function(){
+      const tabs = document.querySelectorAll('.primary-tabs .tab');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('is-active'));
+          tab.classList.add('is-active');
+        });
+      });
+    })();
+
+    // --- Category navigation ---
+    (function(){
+      const categories = document.querySelectorAll('.categories div');
+      const tags = document.querySelectorAll('.tags span');
+      function setActiveTag(label){
+        let found = false;
+        tags.forEach(t => {
+          const txt = (t.textContent||'').trim().toLowerCase();
+          const want = (label||'').trim().toLowerCase();
+          const match = txt === want || (want && txt.includes(want));
+          t.classList.toggle('active', match);
+          if (match) found = true;
+        });
+        if (!found) {
+          // fall back to 'Show all'
+          tags.forEach(t => t.classList.toggle('active', (t.textContent||'').trim().toLowerCase()==='show all'));
+        }
+      }
+      categories.forEach(cat => {
+        cat.addEventListener('click', () => {
+          categories.forEach(c => c.style.color = '');
+          cat.style.color = 'var(--brand)';
+          const label = (cat.textContent||'').trim();
+          setActiveTag(label === 'Restaurants' ? 'Show all' : label);
+          // navigate to results; customer-app will read the active tag
+          location.hash = '#restaurants';
+        });
+      });
+    })();
+
+    // Filters are wired in js/customer-app.js
+
+    // --- Favorite toggle functionality ---
+    (function(){
+      const favoriteButtons = document.querySelectorAll('.r-card__favorite');
+      favoriteButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          e.stopPropagation();
+          this.classList.toggle('active');
+          const icon = this.querySelector('i');
+          if (this.classList.contains('active')) {
+            icon.classList.remove('far');
+            icon.classList.add('fas');
+          } else {
+            icon.classList.remove('fas');
+            icon.classList.add('far');
+          }
+        });
+      });
+    })();
+  </script>
+
+  <!-- ====== App scripts (order matters) ====== -->
+  <script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/customer-app.js"></script>
+
+  <!-- Fallback: if the main app fails to render, show basic data from API -->
+  <script>
+    (function(){
+      const root = document.getElementById('app');
+      function money(c){ return ((c||0)/100).toFixed(2) + ' €'; }
+      async function fallback(){
+        if (!root || root.innerHTML.trim()) return; // app already rendered
+        root.innerHTML = '<div class="card mono">Loading restaurants…</div>';
+        try {
+          const data = await API.restaurants.list({ all: true });
+          if (!Array.isArray(data) || !data.length) {
+            root.innerHTML = `<div class="card mono">No restaurants found (API ${window.API_BASE || ''}).</div>`;
+            return;
+          }
+          const list = document.createElement('div');
+          list.className = 'list';
+          data.forEach(r => {
+            const card = document.createElement('div');
+            card.className = 'card clickable';
+            const img = r.image_url ? `<img src="${r.image_url}" alt="${r.name}" style="width:100%;max-height:160px;object-fit:cover">` : '';
+            card.innerHTML = `${img}<div style="padding:12px"><h3 style="margin:0 0 6px">${r.name}</h3><div style="opacity:.8">${r.description || ''}</div><div class="mono" style="margin-top:6px">PLZ ${r.postal_code || ''}</div></div>`;
+            card.setAttribute('data-nav-restaurant', String(r.id));
+            card.addEventListener('click', () => { location.hash = `#restaurant/${r.id}`; });
+            list.appendChild(card);
+          });
+          root.innerHTML = '';
+          root.appendChild(list);
+        } catch (e) {
+          root.innerHTML = `<div class="card mono" style="color:#b91c1c">API error (${window.API_BASE || ''}): ${e?.message || e}</div>`;
+        }
+      }
+      // wait briefly; if primary app didn’t render, show fallback
+      setTimeout(fallback, 1200);
+    })();
+  </script>
+  <script>
+  // --- 3-bars dropdown (fallback ensure) ---
+  (function(){
+    if (window.setupMenuToggle) {
+      window.setupMenuToggle();
+    }
+  })();
+
+  // --- Delivery/Collection segmented (IDs kept; your other JS can hook) ---
+  (function(){
+    const d = document.getElementById('opt-delivery');
+    const p = document.getElementById('opt-pickup');
+    if (!d || !p) return;
+    const set = (which)=>{
+      d.classList.toggle('active', which==='delivery');
+      p.classList.toggle('active', which==='pickup');
+      d.setAttribute('aria-selected', which==='delivery' ? 'true':'false');
+      p.setAttribute('aria-selected', which==='pickup'   ? 'true':'false');
+      // TODO: if you add filtering logic, call it here.
+      // e.g. window.setServiceMode?.(which)
+    };
+    d.addEventListener('click', ()=>set('delivery'));
+    p.addEventListener('click', ()=>set('pickup'));
+  })();
+
+  // --- Language toggle (simple UI + remember choice) ---
+  (function(){
+    const de = document.getElementById('lang-de');
+    const en = document.getElementById('lang-en');
+    if (!de || !en) return;
+    const apply = (lang)=>{
+      [de,en].forEach(b => b.classList.toggle('is-active', b.dataset.lang===lang));
+      localStorage.setItem('lang', lang);
+      document.documentElement.lang = lang === 'de' ? 'de' : 'en';
+      // hook to your i18n (if any) here
+    };
+    const saved = localStorage.getItem('lang') || 'de';
+    apply(saved);
+    de.addEventListener('click', ()=>apply('de'));
+    en.addEventListener('click', ()=>apply('en'));
+  })();
+</script>
+</body>
+</html>

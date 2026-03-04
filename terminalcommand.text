@@ -1,0 +1,48 @@
+cd ~/lieferspatz/lieferspatz_updated2
+source .venv/bin/activate
+
+# 1) install deps (already done, but safe to re-run)
+pip install -r backend/requirements.txt
+pip install --force-reinstall 'bcrypt==4.1.2' 'passlib[bcrypt]==1.7.4'
+
+# 2) seed (now Py3.9-safe)
+python -m backend.seed
+
+# 3) start API
+uvicorn backend.main:app --reload
+
+LIEFERSPATZ/
+├─ .venv/
+├─ backend/
+│  ├─ sql/
+│  │  └─ migrations/
+│  │     ├─ 2025-09-07_add_restops.sql
+│  │     ├─ 2025-09-12_add_is_demo.sql
+│  │     ├─ 2025-09-13_add_menuitem_extra.sql
+│  │     └─ 2025-09-14_add_restaurant_extra.sql
+│  ├─ app.db
+│  ├─ database.py
+│  ├─ deps.py
+│  ├─ main.py
+│  ├─ models.py
+│  ├─ requirements.txt
+│  ├─ routers_auth.py
+│  ├─ routers_discovery.py
+│  ├─ routers_orders.py
+│  ├─ routers_paper_addons.py
+│  ├─ routers_restaurants.py
+│  ├─ routers_wallets.py
+│  ├─ schemas.py
+│  ├─ security.py
+│  ├─ seed.py
+│  ├─ utils.py
+│  └─ ws.py
+├─ frontend/
+│  ├─ css/
+│  ├─ js/
+│  │  ├─ api.js
+│  │  ├─ config.js
+│  │  ├─ customer-app.js
+│  │  └─ ui.modals.js
+│  ├─ restaurant-dashboard.html
+│  └─ index.html
